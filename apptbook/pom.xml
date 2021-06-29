@@ -65,7 +65,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>edu.pdx.cs410J.chanwai.apptbook.Project1</mainClass>
+              <mainClass>edu.pdx.cs410J.chanwai.Project1</mainClass>
             </manifest>
           </archive>
         </configuration>

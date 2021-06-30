@@ -32,13 +32,13 @@ public class Project1 {
       appointment.endTime = args[6];
 
     }else if("-print".equals(args[0])){
-      appointment.toString();
       appointment.owner = args[1];
       appointment.description = args[2];
       appointment.beginDate = args[3];
       appointment.beginTime = args[4];
       appointment.endDate = args[5];
       appointment.endTime = args[6];
+      appointment.toString();
     }else{
       appointment.owner = args[0];
       appointment.description = args[1];

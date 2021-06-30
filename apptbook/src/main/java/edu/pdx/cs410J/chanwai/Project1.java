@@ -39,6 +39,7 @@ public class Project1 {
       appointment.endDate = args[5];
       appointment.endTime = args[6];
       appointment.toString();
+      System.out.print(appointment.beginTime);
     }else{
       appointment.owner = args[0];
       appointment.description = args[1];

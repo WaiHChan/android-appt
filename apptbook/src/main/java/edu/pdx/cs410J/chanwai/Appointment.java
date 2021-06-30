@@ -25,6 +25,6 @@ public class Appointment extends AbstractAppointment {
   @Override
   public String getDescription() {
     //return this.description;
-    return null;
+    return "not yet";
   }
 }

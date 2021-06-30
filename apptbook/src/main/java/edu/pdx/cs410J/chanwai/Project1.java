@@ -54,13 +54,6 @@ public class Project1 {
     }
      */
 
-    System.out.print("args 2" + args[2]);
-    System.out.print("\n");
-    System.out.print("owner " + appointment.owner);
-    System.out.print("\n");
-    System.out.print("args 5" + args[5]);
-    System.out.print("\n");
-
     System.exit(1);
   }
 }

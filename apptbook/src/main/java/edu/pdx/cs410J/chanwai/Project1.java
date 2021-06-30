@@ -13,7 +13,7 @@ public class Project1 {
 
     if("-README".equals(args[0])) {
       try {
-        File myfile = new File("edu/pdx/cs410J/chanwai/README.txt");
+        File myfile = new File("src/main/resources/edu/pdx/cs410J/chanwai/README.txt");
         Scanner myScanner = new Scanner(myfile);
         while (myScanner.hasNextLine()) {
           String txt = myScanner.nextLine();

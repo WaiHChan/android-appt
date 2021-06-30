@@ -41,9 +41,9 @@ public class Project1 {
     }
      */
 
-    System.out.print(args[0]);
+    System.out.print("1 "+ args[0]);
     System.out.print("\n");
-    System.out.print(appointment.owner);
+    System.out.print("2 " + appointment.owner);
     System.out.print("\n");
 
     System.exit(1);

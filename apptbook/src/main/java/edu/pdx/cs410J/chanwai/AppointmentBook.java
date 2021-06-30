@@ -7,9 +7,11 @@ import java.util.Collection;
 
 public class AppointmentBook extends AbstractAppointmentBook {
 
+    protected String ownerName;
+
     @Override
     public String getOwnerName() {
-        return null;
+        return ownerName;
     }
 
     @Override

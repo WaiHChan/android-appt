@@ -12,8 +12,9 @@ public class Project1 {
     for (String arg : args) {
       System.out.println(arg);
     }*/
-  System.out.print("First");
 
+    System.out.print(args[0]);
+    System.out.print(args[1]);
 
     if("-print".equals(args[2])){
       appointment.toString();

@@ -13,9 +13,6 @@ public class Project1 {
       System.out.println(arg);
     }
 
-    System.out.print(args[0]);
-    System.out.print(args[1]);
-
     /**
     if("-print".equals(args[2])){
       appointment.toString();
@@ -45,7 +42,6 @@ public class Project1 {
       System.out.print("111");
     }
      */
-    System.out.print("wtf");
     System.exit(1);
   }
 

@@ -39,12 +39,12 @@ public class Project1 {
     for (String arg : args) {
       System.out.println(arg);
     }
+     */
 
     System.out.print("1");
     System.out.print("\n");
     System.out.print("2 " + appointment.owner);
     System.out.print("\n");
-    */
 
     System.exit(1);
   }

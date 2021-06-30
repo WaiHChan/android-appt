@@ -16,6 +16,7 @@ public class Project1 {
     System.out.print(args[0]);
     System.out.print(args[1]);
 
+    /**
     if("-print".equals(args[2])){
       appointment.toString();
       appointment.owner = args[3];
@@ -43,6 +44,7 @@ public class Project1 {
       appointment.endTime = args[7];
       System.out.print("111");
     }
+     */
     System.out.print("wtf");
     System.exit(1);
   }

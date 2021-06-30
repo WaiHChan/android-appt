@@ -5,7 +5,7 @@ import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.Collection;
 
-public class AppointmentBook extends AbstractAppointmentBook {
+public class AppointmentBook<T> extends AbstractAppointmentBook {
 
     protected String ownerName;
 
@@ -15,7 +15,7 @@ public class AppointmentBook extends AbstractAppointmentBook {
     }
 
     @Override
-    public Collection getAppointments() {
+    public Collection<T> getAppointments() {
         return null;
     }
 

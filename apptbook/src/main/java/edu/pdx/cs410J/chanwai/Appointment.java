@@ -13,7 +13,6 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getBeginTimeString() {
-
     return this.beginDate + " " + this.beginTime;
   }
 
@@ -25,6 +24,8 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getDescription() {
+    System.out.println("DES " + this.description);
+    System.out.println("\n");
     return this.description;
     /**return "This method is not implemented yet";*/
   }

@@ -13,6 +13,8 @@ public class Project1 {
       System.out.println(arg);
     }
 
+    System.out.print(args[2]);
+
     System.exit(1);
   }
 

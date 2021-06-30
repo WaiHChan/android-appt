@@ -11,7 +11,8 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
 
     @Override
     public String getOwnerName() {
-        return ownerName;
+        //return ownerName;
+        return null;
     }
 
     @Override

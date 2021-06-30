@@ -33,6 +33,19 @@ public class Project1 {
 
     }else if("-print".equals(args[0])){
       appointment.toString();
+      appointment.owner = args[1];
+      appointment.description = args[2];
+      appointment.beginDate = args[3];
+      appointment.beginTime = args[4];
+      appointment.endDate = args[5];
+      appointment.endTime = args[6];
+    }else{
+      appointment.owner = args[0];
+      appointment.description = args[1];
+      appointment.beginDate = args[2];
+      appointment.beginTime = args[3];
+      appointment.endDate = args[4];
+      appointment.endTime = args[5];
     }
     /**
     System.err.println("Missing command line arguments");
@@ -41,9 +54,11 @@ public class Project1 {
     }
      */
 
-    System.out.print("1" + args[0]);
+    System.out.print("args 2" + args[2]);
     System.out.print("\n");
-    System.out.print("2 " + appointment.owner);
+    System.out.print("owner " + appointment.owner);
+    System.out.print("\n");
+    System.out.print("args 5" + args[5]);
     System.out.print("\n");
 
     System.exit(1);

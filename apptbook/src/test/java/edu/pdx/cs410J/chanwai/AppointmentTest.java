@@ -16,13 +16,13 @@ public class AppointmentTest {
   @Test
   void getBeginTimeStringNeedsToBeImplemented() {
     Appointment appointment = new Appointment();
-    assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);
+    /*assertThrows(UnsupportedOperationException.class, appointment::getBeginTimeString);*/
   }
 
   @Test
   void initiallyAllAppointmentsHaveTheSameDescription() {
     Appointment appointment = new Appointment();
-    assertThat(appointment.getDescription(), containsString("not implemented"));
+    /*assertThat(appointment.getDescription(), containsString("not implemented"));*/
   }
 
   @Test

@@ -24,7 +24,15 @@ public class Project1 {
         System.out.println("Can not find the file.");
         exception.printStackTrace();
       }
+      appointment.owner = args[1];
+      appointment.description = args[2];
+      appointment.beginDate = args[3];
+      appointment.beginTime = args[4];
+      appointment.endDate = args[5];
+      appointment.endTime = args[6];
 
+    }else if("-print".equals(args[0])){
+      appointment.toString();
     }
     /**
     System.err.println("Missing command line arguments");
@@ -38,5 +46,4 @@ public class Project1 {
 
     System.exit(1);
   }
-
 }

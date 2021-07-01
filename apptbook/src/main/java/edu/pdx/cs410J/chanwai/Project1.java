@@ -20,6 +20,7 @@ public class Project1 {
       for (String arg : args) {
         System.out.println(arg);
       }
+    }
 
       System.out.println(args.length);
 
@@ -64,4 +65,3 @@ public class Project1 {
       System.exit(1);
     }
   }
-}

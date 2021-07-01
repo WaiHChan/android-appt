@@ -38,7 +38,7 @@ public class Project1 {
       appointment.beginTime = args[4];
       appointment.endDate = args[5];
       appointment.endTime = args[6];
-      appointment.toString();
+      System.out.println(appointment);
       System.out.print(appointment.beginTime);
     }else{
       appointment.owner = args[0];

@@ -13,22 +13,16 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getBeginTimeString() {
-    System.out.println("BEginDate " + this.beginDate + ". BeginTime " + this.beginTime);
-    System.out.println("\n");
     return this.beginDate + " " + this.beginTime;
   }
 
   @Override
   public String getEndTimeString() {
-    System.out.println("EndDate " + this.endDate + ". EndTime " + this.endTime);
-    System.out.println("\n");
     return this.endDate + " " + this.endTime;
   }
 
   @Override
   public String getDescription() {
-    System.out.println("DES " + this.description);
-    System.out.println("\n");
     return this.description;
   }
 }

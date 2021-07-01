@@ -9,51 +9,59 @@ import java.util.Scanner;
 public class Project1 {
 
   public static void main(String[] args) {
-    Appointment appointment = new Appointment();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
-    if("-README".equals(args[0])) {
-      try {
-        File myfile = new File("src/main/resources/edu/pdx/cs410J/chanwai/README.txt");
-        Scanner myScanner = new Scanner(myfile);
-        while (myScanner.hasNextLine()) {
-          String txt = myScanner.nextLine();
-          System.out.println(txt);
-        }
-        myScanner.close();
-      } catch (FileNotFoundException exception) {
-        System.out.println("Can not find the file.");
-        exception.printStackTrace();
+    if (args.length < 6) {
+      System.err.println("Missing command line arguments");
+      for (String arg : args) {
+        System.out.println(arg);
       }
-      appointment.owner = args[1];
-      appointment.description = args[2];
-      appointment.beginDate = args[3];
-      appointment.beginTime = args[4];
-      appointment.endDate = args[5];
-      appointment.endTime = args[6];
+    } else if (args.length > 7) {
+      System.err.println("Too many command line arguments");
+      for (String arg : args) {
+        System.out.println(arg);
+      }
 
-    }else if("-print".equals(args[0])){
-      appointment.owner = args[1];
-      appointment.description = args[2];
-      appointment.beginDate = args[3];
-      appointment.beginTime = args[4];
-      appointment.endDate = args[5];
-      appointment.endTime = args[6];
-      System.out.println(appointment);
-    }else{
-      appointment.owner = args[0];
-      appointment.description = args[1];
-      appointment.beginDate = args[2];
-      appointment.beginTime = args[3];
-      appointment.endDate = args[4];
-      appointment.endTime = args[5];
-    }
-    /**
-    System.err.println("Missing command line arguments");
-    for (String arg : args) {
-      System.out.println(arg);
-    }
-     */
+      System.out.println(args.length);
 
-    System.exit(1);
+      Appointment appointment = new Appointment();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
+
+      if ("-README".equals(args[0])) {
+        try {
+          File myfile = new File("src/main/resources/edu/pdx/cs410J/chanwai/README.txt");
+          Scanner myScanner = new Scanner(myfile);
+          while (myScanner.hasNextLine()) {
+            String txt = myScanner.nextLine();
+            System.out.println(txt);
+          }
+          myScanner.close();
+        } catch (FileNotFoundException exception) {
+          System.out.println("Can not find the file.");
+          exception.printStackTrace();
+        }
+        appointment.owner = args[1];
+        appointment.description = args[2];
+        appointment.beginDate = args[3];
+        appointment.beginTime = args[4];
+        appointment.endDate = args[5];
+        appointment.endTime = args[6];
+
+      } else if ("-print".equals(args[0])) {
+        appointment.owner = args[1];
+        appointment.description = args[2];
+        appointment.beginDate = args[3];
+        appointment.beginTime = args[4];
+        appointment.endDate = args[5];
+        appointment.endTime = args[6];
+        System.out.println(appointment);
+      } else {
+        appointment.owner = args[0];
+        appointment.description = args[1];
+        appointment.beginDate = args[2];
+        appointment.beginTime = args[3];
+        appointment.endDate = args[4];
+        appointment.endTime = args[5];
+      }
+      System.exit(1);
+    }
   }
 }

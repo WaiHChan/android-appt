@@ -3,6 +3,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 /**
  * The main class for the CS410J appointment book Project
  */
@@ -27,10 +32,18 @@ public class Project1 {
       Appointment appointment = new Appointment();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
       if ("-README".equals(args[0])) {
-        try {
-          File myfile = new File("src/main/resources/edu/pdx/cs410J/chanwai/README.txt");
-          Scanner myScanner = new Scanner(myfile);
-          while (myScanner.hasNextLine()) {
+        try (
+          InputStream readme = Project1.class.getResourceAsStream("README.txt")
+        ) {
+          BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+          String txt = reader.readLine();
+          System.out.println(txt);
+        } catch (IOException e) {
+          System.out.println("Can not find the file.");
+          e.printStackTrace();
+        }
+        /*
+        while (myScanner.hasNextLine()) {
             String txt = myScanner.nextLine();
             System.out.println(txt);
           }
@@ -38,13 +51,15 @@ public class Project1 {
         } catch (FileNotFoundException exception) {
           System.out.println("Can not find the file.");
           exception.printStackTrace();
-        }
+        }*/
         appointment.owner = args[1];
         appointment.description = args[2];
         appointment.beginDate = args[3];
         appointment.beginTime = args[4];
         appointment.endDate = args[5];
         appointment.endTime = args[6];
+        AppointmentBook appointmentBook = new AppointmentBook();
+        appointmentBook.addAppointment(appointment);
 
       } else if ("-print".equals(args[0])) {
         appointment.owner = args[1];

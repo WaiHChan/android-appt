@@ -36,8 +36,11 @@ public class Project1 {
           InputStream readme = Project1.class.getResourceAsStream("README.txt")
         ) {
           BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-          String txt = reader.readLine();
-          System.out.println(txt);
+          String txt;
+          while((txt = reader.readLine()) != null){
+            System.out.println(txt);
+          }
+          reader.close();
         } catch (IOException e) {
           System.out.println("Can not find the file.");
           e.printStackTrace();

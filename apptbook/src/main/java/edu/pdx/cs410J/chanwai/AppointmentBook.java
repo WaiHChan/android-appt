@@ -10,21 +10,24 @@ import java.util.List;
 public class AppointmentBook<T> extends AbstractAppointmentBook {
 
     protected String ownerName;
-    List<Appointment> appointmentList = new ArrayList<>();
+    List<Appointment> appointmentBook = new ArrayList<>();
 
     @Override
     public String getOwnerName() {
-        return ownerName;
+        return this.ownerName;
     }
 
     @Override
     public Collection<T> getAppointments() {
-        return null;
+        return (Collection<T>) this.appointmentBook;
     }
 
     @Override
     public void addAppointment(AbstractAppointment appointment) {
-        appointmentList.add((Appointment) appointment);
-        System.out.println(appointmentList);
+        appointmentBook.add((Appointment) appointment);
+        ownerName = ((Appointment) appointment).owner;
+        System.out.println(appointmentBook);
+        System.out.println("\n");
+        System.out.println(ownerName);
     }
 }

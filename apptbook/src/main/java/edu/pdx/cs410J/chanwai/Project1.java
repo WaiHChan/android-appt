@@ -45,14 +45,6 @@ public class Project1 {
           System.out.println("Can not find the file.");
           e.printStackTrace();
         }
-        appointment.owner = args[1];
-        appointment.description = args[2];
-        appointment.beginDate = args[3];
-        appointment.beginTime = args[4];
-        appointment.endDate = args[5];
-        appointment.endTime = args[6];
-        AppointmentBook appointmentBook = new AppointmentBook();
-        appointmentBook.addAppointment(appointment);
 
       } else if ("-print".equals(args[0])) {
         appointment.owner = args[1];

@@ -18,15 +18,15 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
     }
 
     @Override
-    public Collection<T> getAppointments() {
-        return (Collection<T>) this.appointmentBook;
+    public Collection<Appointment> getAppointments() {
+        return this.appointmentBook;
     }
 
     @Override
     public void addAppointment(AbstractAppointment appointment) {
         appointmentBook.add((Appointment) appointment);
         ownerName = ((Appointment) appointment).owner;
-        System.out.println(getAppointments());
+        System.out.println(appointmentBook.toString());
         System.out.println("\n");
         System.out.println(ownerName);
     }

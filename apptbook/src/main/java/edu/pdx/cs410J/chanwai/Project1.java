@@ -42,16 +42,6 @@ public class Project1 {
           System.out.println("Can not find the file.");
           e.printStackTrace();
         }
-        /*
-        while (myScanner.hasNextLine()) {
-            String txt = myScanner.nextLine();
-            System.out.println(txt);
-          }
-          myScanner.close();
-        } catch (FileNotFoundException exception) {
-          System.out.println("Can not find the file.");
-          exception.printStackTrace();
-        }*/
         appointment.owner = args[1];
         appointment.description = args[2];
         appointment.beginDate = args[3];

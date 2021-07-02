@@ -27,8 +27,6 @@ public class Project1 {
       }
     }
 
-      System.out.println(args.length);
-
       Appointment appointment = new Appointment();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
 
       if ("-README".equals(args[0])) {
@@ -54,6 +52,8 @@ public class Project1 {
         appointment.endDate = args[5];
         appointment.endTime = args[6];
         System.out.println(appointment);
+        AppointmentBook newBook = new AppointmentBook();
+        newBook.addAppointment(appointment);
       } else {
         appointment.owner = args[0];
         appointment.description = args[1];
@@ -61,6 +61,8 @@ public class Project1 {
         appointment.beginTime = args[3];
         appointment.endDate = args[4];
         appointment.endTime = args[5];
+        AppointmentBook newBook = new AppointmentBook();
+        newBook.addAppointment(appointment);
       }
       System.exit(1);
     }

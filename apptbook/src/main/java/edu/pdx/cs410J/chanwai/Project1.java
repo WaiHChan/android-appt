@@ -125,16 +125,14 @@ public class Project1 {
       int year = Integer.parseInt(st.nextToken());
       int month = Integer.parseInt(st.nextToken());
       int day = Integer.parseInt(st.nextToken());
-      System.out.println(year);
-      System.out.println(month);
-      System.out.println(day);
-      if (year < 0 || year > 9999){
+
+      if (year < 0 || year > 10000){
         printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
       }
-      if (month < 1 || year > 12){
+      if (month < 0 || year > 13){
         printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
       }
-      if (day < 1 || day > 31){
+      if (day < 0 || day > 32){
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
     } catch (NumberFormatException ex){

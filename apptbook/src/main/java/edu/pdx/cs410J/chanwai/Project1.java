@@ -104,14 +104,18 @@ public class Project1 {
       }
     } else if (args.length == 7) {
       if ("-print".equals(args[0])) {
-        Appointment appointment = new Appointment();
-        appointment.owner = args[1];
-        appointment.description = args[2];
-        appointment.beginDate = args[3];
-        appointment.beginTime = args[4];
-        appointment.endDate = args[5];
-        appointment.endTime = args[6];
-        System.out.println(appointment);
+        if(isDateCorrect(args[3]) && isTimeCorrect(args[4])) {
+          Appointment appointment = new Appointment();
+          appointment.owner = args[1];
+          appointment.description = args[2];
+          appointment.beginDate = args[3];
+          appointment.beginTime = args[4];
+          appointment.endDate = args[5];
+          appointment.endTime = args[6];
+          AppointmentBook newBook = new AppointmentBook();
+          newBook.addAppointment(appointment);
+          System.out.println(appointment);
+        }
       } else {
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       }
@@ -136,7 +140,6 @@ public class Project1 {
       if (day <= 0 || day >= 32){
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
-
     } catch (NumberFormatException ex){
       printErrorMessageAndExit("Invalid Date: " + date);
     }

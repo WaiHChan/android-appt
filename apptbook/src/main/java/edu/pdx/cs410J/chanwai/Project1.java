@@ -24,6 +24,8 @@ public class Project1 {
   static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
   static final String MONTH_OUT_OF_BOUNDS = "Month out of bounds" ;
   static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
+  static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
+  static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
 
   public static void main(String[] args) {
 
@@ -88,18 +90,17 @@ public class Project1 {
       } else if ("-README".equals(args[0])) {
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       } else {
-        if(isDateCorrect(args[2])){
-
+        if(isDateCorrect(args[2]) && isTimeCorrect(args[3])) {
+          Appointment appointment = new Appointment();
+          appointment.owner = args[0];
+          appointment.description = args[1];
+          appointment.beginDate = args[2];
+          appointment.beginTime = args[3];
+          appointment.endDate = args[4];
+          appointment.endTime = args[5];
+          AppointmentBook newBook = new AppointmentBook();
+          newBook.addAppointment(appointment);
         }
-        Appointment appointment = new Appointment();
-        appointment.owner = args[0];
-        appointment.description = args[1];
-        appointment.beginDate = args[2];
-        appointment.beginTime = args[3];
-        appointment.endDate = args[4];
-        appointment.endTime = args[5];
-        AppointmentBook newBook = new AppointmentBook();
-        newBook.addAppointment(appointment);
       }
     } else if (args.length == 7) {
       if ("-print".equals(args[0])) {
@@ -118,33 +119,45 @@ public class Project1 {
     System.exit(0);
   }
 
-  private static boolean isDateCorrect(String arg) {
-    StringTokenizer st = new StringTokenizer(arg, "/");
+  private static boolean isDateCorrect(String date) {
+    StringTokenizer stHour = new StringTokenizer(date, "/");
 
     try {
-      int month = Integer.parseInt(st.nextToken());
-      int day = Integer.parseInt(st.nextToken());
-      int year = Integer.parseInt(st.nextToken());
+      int month = Integer.parseInt(stHour.nextToken());
+      int day = Integer.parseInt(stHour.nextToken());
+      int year = Integer.parseInt(stHour.nextToken());
 
-      System.out.println(month);
-      System.out.println("\n");
-      System.out.println(day);
-      System.out.println("\n");
-      System.out.println(year);
-      System.out.println("\n");
-      if (year < 0 || year > 10000){
+      if (year <= 0 || year >= 10000){
         printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
       }
-      if (month < 0 || month > 13){
+      if (month <= 0 || month >= 13){
         printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
       }
-      if (day < 0 || day > 32){
+      if (day <= 0 || day >= 32){
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
-    } catch (NumberFormatException ex){
-      printErrorMessageAndExit("Invalid Begin Date: " + arg);
-    }
 
+    } catch (NumberFormatException ex){
+      printErrorMessageAndExit("Invalid Date: " + date);
+    }
+    return true;
+  }
+
+  private static boolean isTimeCorrect(String mins){
+    StringTokenizer st = new StringTokenizer(mins, ":");
+    try {
+      int hour = Integer.parseInt(st.nextToken());
+      int min = Integer.parseInt(st.nextToken());
+
+      if (hour < 0 || hour >= 25) {
+        printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);
+      }
+      if (min < 0 || min > 61) {
+        printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
+      }
+    }catch (NumberFormatException ex){
+      printErrorMessageAndExit("Invalid Time: " + mins);
+    }
     return true;
   }
 

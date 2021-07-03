@@ -20,6 +20,9 @@ public class Project1 {
   static final String MISSING_BEGINE_TIME = "Missing Begin Time";
   static final String MISSING_END_DATE = "Missing End Date";
   static final String MISSING_END_TIME = "Missing End Time";
+  static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
+  static final String MONTH_OUT_OF_BOUNDS = "Month out of bounds" ;
+  static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
 
   public static void main(String[] args) {
 
@@ -85,7 +88,7 @@ public class Project1 {
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       } else {
         if(isDateCorrect(args[2])){
-          printErrorMessageAndExit("Yes");
+
         }
         Appointment appointment = new Appointment();
         appointment.owner = args[0];
@@ -116,13 +119,28 @@ public class Project1 {
 
   private static boolean isDateCorrect(String arg) {
     StringTokenizer st = new StringTokenizer(arg, "/");
-    String year = st.nextToken();
-    String month = st.nextToken();
-    String day = st.nextToken();
 
-    System.out.println(year);
-    System.out.println(month);
-    System.out.println(day);
+
+    try {
+      int year = Integer.parseInt(st.nextToken());
+      int month = Integer.parseInt(st.nextToken());
+      int day = Integer.parseInt(st.nextToken());
+      System.out.println(year);
+      System.out.println(month);
+      System.out.println(day);
+      if (year < 0 || year > 9999){
+        printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
+      }
+      if (month < 1 || year > 12){
+        printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
+      }
+      if (day < 1 || day > 31){
+        printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
+      }
+    } catch (NumberFormatException ex){
+      printErrorMessageAndExit("Invalid Begin Date: " + arg);
+    }
+
     return true;
   }
 

@@ -149,10 +149,10 @@ public class Project1 {
       int hour = Integer.parseInt(st.nextToken());
       int min = Integer.parseInt(st.nextToken());
 
-      if (hour < 0 || hour >= 25) {
+      if (hour < 0 || hour >= 24) {
         printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);
       }
-      if (min < 0 || min > 61) {
+      if (min < 0 || min >= 60) {
         printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
       }
     }catch (NumberFormatException ex){

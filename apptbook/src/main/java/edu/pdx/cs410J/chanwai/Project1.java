@@ -120,11 +120,10 @@ public class Project1 {
   private static boolean isDateCorrect(String arg) {
     StringTokenizer st = new StringTokenizer(arg, "/");
 
-
     try {
-      int year = Integer.parseInt(st.nextToken());
       int month = Integer.parseInt(st.nextToken());
       int day = Integer.parseInt(st.nextToken());
+      int year = Integer.parseInt(st.nextToken());
 
       if (year < 0 || year > 10000){
         printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
@@ -133,6 +132,9 @@ public class Project1 {
         printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
       }
       if (day < 0 || day > 32){
+        System.out.println("Day: ");
+        System.out.println(day);
+        System.out.println("\n");
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
     } catch (NumberFormatException ex){

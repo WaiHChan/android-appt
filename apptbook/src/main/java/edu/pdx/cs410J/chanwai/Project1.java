@@ -135,13 +135,10 @@ public class Project1 {
       if (year < 0 || year > 10000){
         printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
       }
-      if (month < 0 || year > 13){
+      if (month < 0 || month > 13){
         printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
       }
       if (day < 0 || day > 32){
-        System.out.println("Day: ");
-        System.out.println(day);
-        System.out.println("\n");
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
     } catch (NumberFormatException ex){

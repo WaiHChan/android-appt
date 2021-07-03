@@ -47,12 +47,5 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
     public void addAppointment(AbstractAppointment appointment) {
         appointmentBook.add((Appointment) appointment);
         ownerName = ((Appointment) appointment).owner;
-        System.out.println(appointmentBook.toString());
-        System.out.println("\n");
-        System.out.println(super.toString());
-        System.out.println("\n");
-        System.out.println(getAppointments());
-        System.out.println("\n");
-        System.out.println(appointmentBook);
     }
 }

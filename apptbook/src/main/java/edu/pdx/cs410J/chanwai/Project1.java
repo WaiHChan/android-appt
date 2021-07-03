@@ -106,6 +106,7 @@ public class Project1 {
         appointment.beginTime = args[4];
         appointment.endDate = args[5];
         appointment.endTime = args[6];
+        System.out.println(appointment);
       } else {
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       }

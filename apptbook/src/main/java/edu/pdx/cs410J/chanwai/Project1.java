@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.Month;
 import java.util.StringTokenizer;
 
 /**
@@ -125,6 +126,12 @@ public class Project1 {
       int day = Integer.parseInt(st.nextToken());
       int year = Integer.parseInt(st.nextToken());
 
+      System.out.println(month);
+      System.out.println("\n");
+      System.out.println(day);
+      System.out.println("\n");
+      System.out.println(year);
+      System.out.println("\n");
       if (year < 0 || year > 10000){
         printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
       }

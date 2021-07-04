@@ -173,11 +173,12 @@ public class Project1 {
   private static String formatToTwoDecimal(String arg){
     StringTokenizer time = new StringTokenizer(arg, ":");
     String hour = time.nextToken();
-    String mins = time.nextToken();
+    int temp_mins = Integer.parseInt(time.nextToken());
 
     DecimalFormat formatter = new DecimalFormat("00");
+    String mins = formatter.format(temp_mins);
 
-    return hour + ":" + formatter.format(mins);
+    return hour + ":" + mins;
   }
 
 }

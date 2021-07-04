@@ -36,20 +36,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
       } else if ("-README".equals(args[0])) {
-        try (
-                InputStream readme = Project1.class.getResourceAsStream("README.txt")
-        ) {
-          BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-          String txt;
-          while ((txt = reader.readLine()) != null) {
-            System.out.println(txt);
-          }
-          reader.close();
-        } catch (IOException e) {
-          System.out.println("Can not find the file.");
-          e.printStackTrace();
-        }
-        System.exit(1);
+        printReadme();
       } else { //If it is not -print/-readme, it is owner_name
         printErrorMessageAndExit(MISSING_DESCRIPTION);
       }
@@ -57,7 +44,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_DESCRIPTION);
       } else if ("-README".equals(args[0])) {
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        printReadme();
       } else {
         printErrorMessageAndExit(MISSING_BEGINE_DATE);
       }
@@ -65,7 +52,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_BEGINE_DATE);
       } else if ("-README".equals(args[0])) {
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        printReadme();
       } else {
         printErrorMessageAndExit(MISSING_BEGINE_TIME);
       }
@@ -73,7 +60,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_BEGINE_TIME);
       } else if ("-README".equals(args[0])) {
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        printReadme();
       } else {
         printErrorMessageAndExit(MISSING_END_DATE);
       }
@@ -81,7 +68,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_END_DATE);
       } else if ("-README".equals(args[0])) {
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        printReadme();
       } else {
         printErrorMessageAndExit(MISSING_END_TIME);
       }
@@ -89,7 +76,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_END_TIME);
       } else if ("-README".equals(args[0])) {
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        printReadme();
       } else {
         if(isDateCorrect(args[2]) && isTimeCorrect(args[3])) {
           Appointment appointment = new Appointment();
@@ -117,11 +104,30 @@ public class Project1 {
           newBook.addAppointment(appointment);
           System.out.println(appointment);
         }
-      } else {
+      }else if("-README".equals(args[0])) {
+        printReadme();
+      }else{
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       }
     }
     System.exit(0);
+  }
+
+  private static void printReadme() {
+    try (
+            InputStream readme = Project1.class.getResourceAsStream("README.txt")
+    ) {
+      BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+      String txt;
+      while ((txt = reader.readLine()) != null) {
+        System.out.println(txt);
+      }
+      reader.close();
+    } catch (IOException e) {
+      System.out.println("Can not find the file.");
+      e.printStackTrace();
+    }
+    System.exit(1);
   }
 
   private static boolean isDateCorrect(String date) {

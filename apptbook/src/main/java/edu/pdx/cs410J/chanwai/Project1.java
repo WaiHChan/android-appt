@@ -171,12 +171,13 @@ public class Project1 {
   }
 
   private static String formatToTwoDecimal(String arg){
-    StringTokenizer hour = new StringTokenizer(arg, ":");
-    int temp = Integer.parseInt(hour.nextToken());
-    int mins = Integer.parseInt(hour.nextToken());
+    StringTokenizer time = new StringTokenizer(arg, ":");
+    String hour = time.nextToken();
+    String mins = time.nextToken();
 
     DecimalFormat formatter = new DecimalFormat("00");
-    return formatter.format(mins);
+
+    return hour + ":" + formatter.format(mins);
   }
 
 }

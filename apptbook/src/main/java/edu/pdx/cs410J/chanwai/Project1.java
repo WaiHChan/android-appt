@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.time.Month;
 import java.util.StringTokenizer;
 
@@ -109,9 +110,9 @@ public class Project1 {
           appointment.owner = args[1];
           appointment.description = args[2];
           appointment.beginDate = args[3];
-          appointment.beginTime = args[4];
+          appointment.beginTime = formatToTwoDecimal(args[4]);
           appointment.endDate = args[5];
-          appointment.endTime = args[6];
+          appointment.endTime = formatToTwoDecimal(args[6]);
           AppointmentBook newBook = new AppointmentBook();
           newBook.addAppointment(appointment);
           System.out.println(appointment);
@@ -125,7 +126,6 @@ public class Project1 {
 
   private static boolean isDateCorrect(String date) {
     StringTokenizer stHour = new StringTokenizer(date, "/");
-
     try {
       int month = Integer.parseInt(stHour.nextToken());
       int day = Integer.parseInt(stHour.nextToken());
@@ -165,8 +165,18 @@ public class Project1 {
   }
 
   private static void printErrorMessageAndExit(String message){
-      System.err.println(message);
-      System.err.println(USAGE_MESSAGE);
-      System.exit(1);
-    }
+    System.err.println(message);
+    System.err.println(USAGE_MESSAGE);
+    System.exit(1);
   }
+
+  private static String formatToTwoDecimal(String arg){
+    StringTokenizer hour = new StringTokenizer(arg, ":");
+    int temp = Integer.parseInt(hour.nextToken());
+    int mins = Integer.parseInt(hour.nextToken());
+
+    DecimalFormat formatter = new DecimalFormat("00");
+    return formatter.format(mins);
+  }
+
+}

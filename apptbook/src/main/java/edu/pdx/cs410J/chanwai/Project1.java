@@ -28,6 +28,12 @@ public class Project1 {
   static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
 
   public static void main(String[] args) {
+    String owner;
+    String description;
+    String beginDate;
+    String beginTime;
+    String endDate;
+    String endTime;
 
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
@@ -78,28 +84,28 @@ public class Project1 {
         printReadme();
       } else {
         if(isDateCorrect(args[2]) && isDateCorrect(args[4]) && isTimeCorrect(args[3]) && isTimeCorrect(args[5])) {
-          Appointment appointment = new Appointment();
-          appointment.owner = args[0];
-          appointment.description = args[1];
-          appointment.beginDate = args[2];
-          appointment.beginTime = args[3];
-          appointment.endDate = args[4];
-          appointment.endTime = args[5];
-          AppointmentBook newBook = new AppointmentBook();
+          owner = args[0];
+          description = args[1];
+          beginDate = args[2];
+          beginTime = args[3];
+          endDate = args[4];
+          endTime = args[5];
+          Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+          AppointmentBook newBook = new AppointmentBook(owner);
           newBook.addAppointment(appointment);
         }
       }
     } else if (args.length == 7) {
       if ("-print".equals(args[0])) {
         if(isDateCorrect(args[3]) && isDateCorrect(args[5]) && isTimeCorrect(args[4]) && isTimeCorrect(args[6])) {
-          Appointment appointment = new Appointment();
-          appointment.owner = args[1];
-          appointment.description = args[2];
-          appointment.beginDate = args[3];
-          appointment.beginTime = formatToTwoDecimal(args[4]);
-          appointment.endDate = args[5];
-          appointment.endTime = formatToTwoDecimal(args[6]);
-          AppointmentBook newBook = new AppointmentBook();
+          owner = args[1];
+          description = args[2];
+          beginDate = args[3];
+          beginTime = formatToTwoDecimal(args[4]);
+          endDate = args[5];
+          endTime = formatToTwoDecimal(args[6]);
+          Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+          AppointmentBook newBook = new AppointmentBook(owner);
           newBook.addAppointment(appointment);
           System.out.println(appointment);
         }
@@ -147,6 +153,7 @@ public class Project1 {
       }
     } catch (NumberFormatException ex){
       printErrorMessageAndExit("Invalid Date: " + date);
+      return false;
     }
     return true;
   }
@@ -165,6 +172,7 @@ public class Project1 {
       }
     }catch (NumberFormatException ex){
       printErrorMessageAndExit("Invalid Time: " + mins);
+      return false;
     }
     return true;
   }
@@ -185,5 +193,4 @@ public class Project1 {
 
     return hour + ":" + mins;
   }
-
 }

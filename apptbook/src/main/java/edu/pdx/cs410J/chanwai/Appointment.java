@@ -8,6 +8,13 @@ import edu.pdx.cs410J.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment {
 
+  protected String owner;
+  protected String description;
+  protected String beginDate;
+  protected String beginTime;
+  protected String endDate;
+  protected String endTime;
+
   /**
    * Creates a new <code>Appointment</code>
    *
@@ -24,13 +31,15 @@ public class Appointment extends AbstractAppointment {
    * @param endTime
    *        The end time of the appointment
    */
+  public Appointment(String owner, String description, String beginDate, String beginTime, String endDate,String endTime){
+    this.owner = owner;
+    this.description = description;
+    this.beginDate = beginDate;
+    this.beginTime = beginTime;
+    this.endDate = endDate;
+    this.endTime = endTime;
+  }
 
-  protected String owner;
-  protected String description;
-  protected String beginDate;
-  protected String beginTime;
-  protected String endDate;
-  protected String endTime;
 
   /**
    * Returns a <code>String</code> that describes the

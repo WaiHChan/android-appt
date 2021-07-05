@@ -22,6 +22,9 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
     protected String ownerName;
     List<Appointment> appointmentBook = new ArrayList<>();
 
+    AppointmentBook(String ownerName){
+        this.ownerName = ownerName;
+    }
     /**
      * Returns a <code>String</code> that describes the
      * <code>Owner of the appointment book</code>
@@ -46,6 +49,5 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
     @Override
     public void addAppointment(AbstractAppointment appointment) {
         appointmentBook.add((Appointment) appointment);
-        ownerName = ((Appointment) appointment).owner;
     }
 }

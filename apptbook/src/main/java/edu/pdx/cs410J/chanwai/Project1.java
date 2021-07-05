@@ -120,6 +120,9 @@ public class Project1 {
     System.exit(0);
   }
 
+  /**
+   * Open the README.txt file
+   */
   private static void printReadme() {
     try (
             InputStream readme = Project1.class.getResourceAsStream("README.txt")
@@ -137,6 +140,11 @@ public class Project1 {
     System.exit(1);
   }
 
+  /**
+   * Returns true or false if the date is correct
+   * @param date a date needed to be check if it is within the range
+   * @return Returns true or false if the date is valid or invalid
+   */
   private static boolean isDateCorrect(String date) {
     StringTokenizer stHour = new StringTokenizer(date, "/");
     try {
@@ -160,8 +168,13 @@ public class Project1 {
     return true;
   }
 
-  private static boolean isTimeCorrect(String mins){
-    StringTokenizer st = new StringTokenizer(mins, ":");
+  /**
+   * Returns true or false if the time is correct
+   * @param time the appointment time needed to be checked
+   * @return True or False if the time is valid or invalid
+   */
+  private static boolean isTimeCorrect(String time){
+    StringTokenizer st = new StringTokenizer(time, ":");
     try {
       int hour = Integer.parseInt(st.nextToken());
       int min = Integer.parseInt(st.nextToken());
@@ -173,18 +186,27 @@ public class Project1 {
         printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
       }
     }catch (NumberFormatException ex){
-      printErrorMessageAndExit("Invalid Time: " + mins);
+      printErrorMessageAndExit("Invalid Time: " + time);
       return false;
     }
     return true;
   }
 
+  /**
+   * Print error message and exit the program
+   * @param message an error message that needed to be printed
+   */
   private static void printErrorMessageAndExit(String message){
     System.err.println(message);
     System.err.println(USAGE_MESSAGE);
     System.exit(1);
   }
 
+  /**
+   * Convert a string to two decimal
+   * @param arg an string representing the minutes of the appointment
+   * @return a converted two decimal string
+   */
   private static String formatToTwoDecimal(String arg){
     StringTokenizer time = new StringTokenizer(arg, ":");
     String hour = time.nextToken();

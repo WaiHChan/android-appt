@@ -16,7 +16,6 @@ public class Project1 {
   static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
   static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
   static final String TOO_MANY_COMMAND_LINE_ARGUMENTS = "Too many command line arguments";
-  static final String MISSING_OWNER = "Missing Owner";
   static final String MISSING_DESCRIPTION = "Missing Description";
   static final String MISSING_BEGINE_DATE = "Missing Begin Date";
   static final String MISSING_BEGINE_TIME = "Missing Begin Time";
@@ -78,7 +77,7 @@ public class Project1 {
       } else if ("-README".equals(args[0])) {
         printReadme();
       } else {
-        if(isDateCorrect(args[2]) && isTimeCorrect(args[3])) {
+        if(isDateCorrect(args[2]) && isDateCorrect(args[4]) && isTimeCorrect(args[3]) && isTimeCorrect(args[5])) {
           Appointment appointment = new Appointment();
           appointment.owner = args[0];
           appointment.description = args[1];
@@ -92,7 +91,7 @@ public class Project1 {
       }
     } else if (args.length == 7) {
       if ("-print".equals(args[0])) {
-        if(isDateCorrect(args[3]) && isTimeCorrect(args[4])) {
+        if(isDateCorrect(args[3]) && isDateCorrect(args[5]) && isTimeCorrect(args[4]) && isTimeCorrect(args[6])) {
           Appointment appointment = new Appointment();
           appointment.owner = args[1];
           appointment.description = args[2];

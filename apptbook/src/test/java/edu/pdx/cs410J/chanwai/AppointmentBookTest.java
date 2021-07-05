@@ -8,11 +8,14 @@ import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
 /**
  * Unit tests for the {@link AppointmentBook} class.
- *
- * You'll need to update these unit tests as you build out your program.
  */
 
 public class AppointmentBookTest {
+
+    /**
+     * Tests that invoking the AppointmentBook.getOwnerName()
+     * Check if getOwnerName() returns the correct name of newly added appointment
+     */
     @Test
     void ownerNamedJimIsNamedJim(){
         String name = "Jim";
@@ -21,6 +24,10 @@ public class AppointmentBookTest {
         assertThat(jim.getOwnerName(), equalTo(name));
     }
 
+    /**
+     * Tests that invoking the toString method from AbstractAppointmentBook
+     * Check if the toString method displays the correct string
+     */
     @Test
     void checkAddAppointment(){
         String name = "Jim";
@@ -35,6 +42,4 @@ public class AppointmentBookTest {
         newBook.addAppointment(app);
         assertThat(newBook.toString(), containsString("Jim's appointment book with 1 appointments"));
     }
-
-
 }

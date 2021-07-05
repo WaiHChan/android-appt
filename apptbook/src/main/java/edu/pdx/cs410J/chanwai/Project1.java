@@ -114,6 +114,8 @@ public class Project1 {
       }else{
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
       }
+    }else if(args.length >= 8){
+      printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
     }
     System.exit(0);
   }

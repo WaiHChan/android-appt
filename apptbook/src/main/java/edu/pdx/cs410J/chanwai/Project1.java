@@ -37,6 +37,7 @@ public class Project1 {
 
     for (String  arg : args) {
       if ("-print" == arg){
+        System.out.println(args.length);
         System.out.println(arg);
       }
       if (owner == null) {

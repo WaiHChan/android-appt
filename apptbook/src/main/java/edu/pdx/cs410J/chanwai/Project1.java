@@ -47,111 +47,41 @@ public class Project1 {
       } else if (description == null){
         description = arg;
       } else if (beginDate == null){
-        beginDate = arg;
+        beginDate = isDateCorrect(arg);
       } else if (beginTime == null){
-        beginTime = arg;
+        beginTime = isTimeCorrect(arg);
       } else if (endDate == null){
-        endDate = arg;
+        endDate = isDateCorrect(arg);
       } else if (endTime == null){
-        endTime = arg;
+        endTime = isTimeCorrect(arg);
       }
     }
-    System.out.println(print);
-    System.out.println(owner);
-    System.out.println(description);
-    System.out.println(beginDate);
-    System.out.println(beginTime);
-    System.out.println(endDate);
-    System.out.println(endTime);
 
-    if (args.length == 0) {
+    if (owner == null) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
-    } else if (args.length == 1) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        printErrorMessageAndExit(MISSING_DESCRIPTION);
-      }
-    } else if (args.length == 2) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_DESCRIPTION);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        printErrorMessageAndExit(MISSING_BEGINE_DATE);
-      }
-    } else if (args.length == 3) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_BEGINE_DATE);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        printErrorMessageAndExit(MISSING_BEGINE_TIME);
-      }
-    } else if (args.length == 4) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_BEGINE_TIME);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        printErrorMessageAndExit(MISSING_END_DATE);
-      }
-    } else if (args.length == 5) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_END_DATE);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        printErrorMessageAndExit(MISSING_END_TIME);
-      }
-    } else if (args.length == 6) {
-      if ("-print".equals(args[0])) {
-        printErrorMessageAndExit(MISSING_END_TIME);
-      } else if ("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      } else {
-        if(isDateCorrect(args[2]) && isDateCorrect(args[4]) && isTimeCorrect(args[3]) && isTimeCorrect(args[5])) {
-          owner = args[0];
-          description = args[1];
-          beginDate = args[2];
-          beginTime = args[3];
-          endDate = args[4];
-          endTime = args[5];
-          Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
-          AppointmentBook newBook = new AppointmentBook(owner);
-          newBook.addAppointment(appointment);
-        }
-      }
-    } else if (args.length == 7) {
-      if ("-print".equals(args[0])) {
-        if(isDateCorrect(args[3]) && isDateCorrect(args[5]) && isTimeCorrect(args[4]) && isTimeCorrect(args[6])) {
-          owner = args[1];
-          description = args[2];
-          beginDate = args[3];
-          beginTime = formatToTwoDecimal(args[4]);
-          endDate = args[5];
-          endTime = formatToTwoDecimal(args[6]);
-          Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
-          AppointmentBook newBook = new AppointmentBook(owner);
-          newBook.addAppointment(appointment);
-          System.out.println(appointment);
-        }
-      }else if("-README".equals(args[0])) {
-        System.out.println("This is a README file!");
-        printReadme();
-      }else{
-        printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
-      }
-    }else if(args.length >= 8){
-      printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+      return;
+    } else if (description == null) {
+      printErrorMessageAndExit(MISSING_DESCRIPTION);
+      return;
+    } else if (beginDate == null) {
+      printErrorMessageAndExit(MISSING_BEGINE_DATE);
+      return;
+    } else if (beginTime == null) {
+      printErrorMessageAndExit(MISSING_BEGINE_TIME);
+      return;
+    } else if (endDate == null) {
+      printErrorMessageAndExit(MISSING_END_DATE);
+      return;
+    } else if (endTime == null) {
+      printErrorMessageAndExit(MISSING_END_TIME);
+      return;
+    }
+
+    Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+    AppointmentBook newBook = new AppointmentBook(owner);
+    newBook.addAppointment(appointment);
+    if (print != null) {
+      System.out.println(appointment);
     }
     System.exit(0);
   }
@@ -181,7 +111,7 @@ public class Project1 {
    * @param date a date needed to be check if it is within the range
    * @return Returns true or false if the date is valid or invalid
    */
-  private static boolean isDateCorrect(String date) {
+  private static String isDateCorrect(String date) {
     StringTokenizer stHour = new StringTokenizer(date, "/");
     try {
       int month = Integer.parseInt(stHour.nextToken());
@@ -197,11 +127,11 @@ public class Project1 {
       if (day <= 0 || day >= 32){
         printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
       }
+      return date;
     } catch (NumberFormatException ex){
       printErrorMessageAndExit("Invalid Date: " + date);
-      return false;
+      return null;
     }
-    return true;
   }
 
   /**
@@ -209,7 +139,7 @@ public class Project1 {
    * @param time the appointment time needed to be checked
    * @return True or False if the time is valid or invalid
    */
-  private static boolean isTimeCorrect(String time){
+  private static String isTimeCorrect(String time){
     StringTokenizer st = new StringTokenizer(time, ":");
     try {
       int hour = Integer.parseInt(st.nextToken());
@@ -221,11 +151,11 @@ public class Project1 {
       if (min < 0 || min >= 60) {
         printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
       }
+      return time;
     }catch (NumberFormatException ex){
       printErrorMessageAndExit("Invalid Time: " + time);
-      return false;
+      return null;
     }
-    return true;
   }
 
   /**

@@ -347,28 +347,6 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
-   * Tests that invoking the main method with too many arguments issues an error
-   * Issues an error when arguments does not contain "-print".
-   */
-  @Test
-  void tooManyCommandLineArguments(){
-    MainMethodResult result = invokeMain(Project1.class,  "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21", "12");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.TOO_MANY_COMMAND_LINE_ARGUMENTS));
-  }
-
-  /**
-   * Tests that invoking the main method with too many arguments issues an error
-   * Issues an error when arguments contain "-print".
-   */
-  @Test
-  void tooManyCommandLineArgumentsForPrint(){
-    MainMethodResult result = invokeMain(Project1.class,  "-print", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21a", "12");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.TOO_MANY_COMMAND_LINE_ARGUMENTS));
-  }
-
-  /**
    * Tests that invoking the main method with correct command line arguments
    * If year of begin date is zero or less, issues an error
    */

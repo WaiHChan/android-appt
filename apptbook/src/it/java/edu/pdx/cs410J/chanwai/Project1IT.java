@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -466,4 +465,15 @@ class Project1IT extends InvokeMainTestCase {
     assertThat(readme, nullValue());
   }
 
+  /**
+   * Tests that invoking the toString method from appointment class
+   * Check if toString() returns the correct string
+   */
+  @Test
+  void checkAssignmentToString(){
+    MainMethodResult result = invokeMain(Project1.class, "-print", "Jimmy", "Body Check", "10/10/1110", "22:32", "11/10/1996", "13:21");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), equalTo("Body Check from 10/10/1110 22:32 until 11/10/1996 13:21\r\n"));
+  }
 }

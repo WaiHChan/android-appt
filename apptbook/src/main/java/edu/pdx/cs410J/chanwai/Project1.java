@@ -82,6 +82,7 @@ public class Project1 {
     newBook.addAppointment(appointment);
     if (print != null) {
       System.out.println(appointment);
+      System.exit(1);
     }
     System.exit(0);
   }

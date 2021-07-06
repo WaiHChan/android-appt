@@ -28,12 +28,31 @@ public class Project1 {
   static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
 
   public static void main(String[] args) {
-    String owner;
-    String description;
-    String beginDate;
-    String beginTime;
-    String endDate;
-    String endTime;
+    String owner = null;
+    String description = null;
+    String beginDate = null;
+    String beginTime = null;
+    String endDate = null;
+    String endTime = null;
+
+    for (String  arg : args) {
+      if ("-print" == arg){
+        System.out.println(arg);
+      }
+      if (owner == null) {
+        owner = arg;
+      } else if (description == null){
+        description = arg;
+      } else if (beginDate == null){
+        beginDate = arg;
+      } else if (beginTime == null){
+        beginTime = arg;
+      } else if (endDate == null){
+        endDate = arg;
+      } else if (endTime == null){
+        endTime = arg;
+      }
+    }
 
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);

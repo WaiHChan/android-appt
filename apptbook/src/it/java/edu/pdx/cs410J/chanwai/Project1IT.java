@@ -63,8 +63,16 @@ class Project1IT extends InvokeMainTestCase {
    * If argument is only "-README", print a string
    */
   @Test
-  void testPrintReadmeOneArgument() {
+  void testPrintReadmeOneArgument() throws IOException {
     MainMethodResult result = invokeMain(Project1.class, "-README");
+
+    InputStream readme = Project1.class.getResourceAsStream("README.txt");
+
+    assertThat(readme, not(nullValue()));
+    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+    String line = reader.readLine();
+    assertThat(line, containsString("Name: Wai Chan"));
+
 
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));

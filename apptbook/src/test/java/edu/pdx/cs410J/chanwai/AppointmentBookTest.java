@@ -10,11 +10,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 
 public class AppointmentBookTest {
-
-    /**
+/*
+    *//**
      * Tests that invoking the AppointmentBook.getOwnerName()
      * Check if getOwnerName() returns the correct name of newly added appointment
-     */
+     *//*
     @Test
     void ownerNamedJimIsNamedJim(){
         String name = "Jim";
@@ -23,10 +23,10 @@ public class AppointmentBookTest {
         assertThat(jim.getOwnerName(), equalTo(name));
     }
 
-    /**
+    *//**
      * Tests that invoking the toString method from AbstractAppointmentBook
      * Check if the toString method displays the correct string
-     */
+     *//*
     @Test
     void checkAddAppointment(){
         String name = "Jim";
@@ -55,5 +55,5 @@ public class AppointmentBookTest {
         AppointmentBook newBook = new AppointmentBook(name);
         newBook.addAppointment(app);
         assertThat(newBook.getAppointments(), hasItem(app));
-    }
+    }*/
 }

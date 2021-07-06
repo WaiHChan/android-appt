@@ -59,6 +59,18 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
+   * Tests that invoking the main method with one argument issues an error
+   * If argument is only "-print", error
+   */
+  @Test
+  void testPrintReadmeOneArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+  }
+
+  /**
    * Tests that invoking the main method with two arguments issues an error
    * If argument is only "-print" "owner", missing description
    */

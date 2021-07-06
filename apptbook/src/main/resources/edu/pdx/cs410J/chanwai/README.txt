@@ -1,4 +1,3 @@
-This is a README file!
 Name: Wai Chan
 Project 1
 This project will create an appointment and an appointment book.

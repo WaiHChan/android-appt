@@ -38,11 +38,13 @@ public class Project1 {
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
     } else if (args.length == 1) {
-      if ("-print".equals(args[0])) {
+     if ("-print".equals(args[0])) {
+     // if (isFirstArgPrint(args[0])){
         printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
-      } else if (!"-print".equals(args[0]) && !"-README".equals(args[0])) {
+      } else {
         printErrorMessageAndExit(MISSING_DESCRIPTION);
       }
     } else if (args.length == 2) {
@@ -119,6 +121,8 @@ public class Project1 {
     }
     System.exit(0);
   }
+
+
 
   /**
    * Open the README.txt file

@@ -36,7 +36,7 @@ public class Project1 {
     String endTime = null;
 
     for (String  arg : args) {
-      if ("-print" == arg){
+      if ("-print".equals(arg)){
         System.out.println(args.length);
         System.out.println(arg);
       }

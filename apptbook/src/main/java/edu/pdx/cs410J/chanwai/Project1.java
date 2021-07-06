@@ -127,8 +127,6 @@ public class Project1 {
     System.exit(0);
   }
 
-
-
   /**
    * Open the README.txt file
    */

@@ -66,14 +66,6 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeOneArgument() throws IOException {
     MainMethodResult result = invokeMain(Project1.class, "-README");
 
-    InputStream readme = Project1.class.getResourceAsStream("README.txt");
-
-    assertThat(readme, not(nullValue()));
-    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-    String line = reader.readLine();
-    assertThat(line, containsString("Name: Wai Chan"));
-
-
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
@@ -237,49 +229,7 @@ class Project1IT extends InvokeMainTestCase {
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
-  /**
-   * Tests that invoking the main method with six command line arguments
-   * If the begin date contains any alphabet, issues an error
-   */
-  @Test
-  void invalidBeginDateForArgumentSix(){
-    MainMethodResult result = invokeMain(Project1.class, "Jimmy", "Body Check", "abc", "12:21", "10/26/1995", "13:21");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: abc"));
-  }
 
-  /**
-   * Tests that invoking the main method with six command line arguments
-   * If the minutes of begin time contains any alphabet, issues an error
-   */
-  @Test
-  void invalidBeginTimeForArgumentSix(){
-    MainMethodResult result = invokeMain(Project1.class, "Jimmy", "Body Check", "5/20/2019", "14:1e", "10/26/1242", "13:21");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 14:1e"));
-  }
-
-  /**
-   * Tests that invoking the main method with six command line arguments
-   * If the end date contains any alphabet, issues an error
-   */
-  @Test
-  void invalidEndDateForArgumentSix(){
-    MainMethodResult result = invokeMain(Project1.class,  "Jimmy", "Body Check", "5/20/2019", "12:21", "10/26a/1242", "13:21");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: 10/26a/1242"));
-  }
-
-  /**
-   * Tests that invoking the main method with six command line arguments
-   * If the end time contains any alphabet, issues an error
-   */
-  @Test
-  void invalidEndTimeForArgumentSix(){
-    MainMethodResult result = invokeMain(Project1.class, "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21a");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 13:21a"));
-  }
 
   /**
    * Tests that invoking the main method with seven command line arguments
@@ -343,7 +293,7 @@ class Project1IT extends InvokeMainTestCase {
    */
   @Test
   void tooManyCommandLineArguments(){
-    MainMethodResult result = invokeMain(Project1.class,  "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21a", "12");
+    MainMethodResult result = invokeMain(Project1.class,  "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21", "12");
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString(Project1.TOO_MANY_COMMAND_LINE_ARGUMENTS));
   }

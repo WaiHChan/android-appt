@@ -3,10 +3,14 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -43,14 +47,37 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
-   * Tests that invoking the main method with one arguments issues an error
-   * If argument is only "owner", missing description
+   * Tests that invoking the main method with one argument issues an error
+   * If argument is only "-print", error
    */
   @Test
-  void testMissingDescription(){
-    MainMethodResult result = invokeMain(Project1.class, "Jimmy");
+  void testMissSpellingPrintWithOneArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-prit");
+
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_DESCRIPTION));
+  }
+
+  /**
+   * Tests that invoking the main method with one arguments issues an error
+   * If argument is only "owner", missing command line arguments
+   */
+  @Test
+  void testMissingDescriptionOrMore(){
+    MainMethodResult result = invokeMain(Project1.class, "Jimmy");
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_COMMAND_LINE_ARGUMENTS));
+  }
+
+  /**
+   * Tests that invoking the main method with one argument issues an error
+   * If argument is only "-print", error
+   */
+  @Test
+  void testMissSpellingReadmeWithOneArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-READM");
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_COMMAND_LINE_ARGUMENTS));
   }
 
   /**
@@ -372,4 +399,13 @@ class Project1IT extends InvokeMainTestCase {
     assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MINS_OUT_OF_BOUNDS));
   }
 
+  /**
+   * Tests that invoking the read file method
+   * Check if the correct file is opened by comparing the string.
+   */
+  @Test
+  void readmeCanBeReadAsResource() {
+    InputStream readme = Project1.class.getResourceAsStream("READM.txt");
+    assertThat(readme, nullValue());
+  }
 }

@@ -11,13 +11,10 @@ import java.util.List;
  * This class is represents a <code>AppointmentBook</code>
  */
 
-public class AppointmentBook<T> extends AbstractAppointmentBook {
+public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 
     /**
-     * Creates a new <code>Appointment Book</code>
-     *
-     * @param ownerName
-     *        The owner of the appointment book
+     * The owner of the appointment book
      */
     protected String ownerName;
     List<Appointment> appointmentBook = new ArrayList<>();
@@ -47,7 +44,7 @@ public class AppointmentBook<T> extends AbstractAppointmentBook {
      * Adds a new <code>Appointment</code> to the <code>AppointmentBook</code>
      */
     @Override
-    public void addAppointment(AbstractAppointment appointment) {
-        appointmentBook.add((Appointment) appointment);
+    public void addAppointment(Appointment appointment) {
+        appointmentBook.add(appointment);
     }
 }

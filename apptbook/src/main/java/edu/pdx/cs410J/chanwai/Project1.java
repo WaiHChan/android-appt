@@ -42,7 +42,7 @@ public class Project1 {
         printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
       } else if ("-README".equals(args[0])) {
         printReadme();
-      } else { //If it is not -print/-readme, it is owner_name
+      } else if (!"-print".equals(args[0]) && !"-README".equals(args[0])) {
         printErrorMessageAndExit(MISSING_DESCRIPTION);
       }
     } else if (args.length == 2) {
@@ -134,7 +134,7 @@ public class Project1 {
       }
       reader.close();
     } catch (IOException e) {
-      System.out.println("Can not find the file.");
+      System.err.println("File doesn't exist.");
       e.printStackTrace();
     }
     System.exit(1);

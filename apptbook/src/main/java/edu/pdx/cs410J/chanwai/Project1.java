@@ -38,8 +38,7 @@ public class Project1 {
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
     } else if (args.length == 1) {
-     if ("-print".equals(args[0])) {
-     // if (isFirstArgPrint(args[0])){
+      if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
       } else if ("-README".equals(args[0])) {
         System.out.println("This is a README file!");
@@ -51,6 +50,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_DESCRIPTION);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       } else {
         printErrorMessageAndExit(MISSING_BEGINE_DATE);
@@ -59,6 +59,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_BEGINE_DATE);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       } else {
         printErrorMessageAndExit(MISSING_BEGINE_TIME);
@@ -67,6 +68,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_BEGINE_TIME);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       } else {
         printErrorMessageAndExit(MISSING_END_DATE);
@@ -75,6 +77,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_END_DATE);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       } else {
         printErrorMessageAndExit(MISSING_END_TIME);
@@ -83,6 +86,7 @@ public class Project1 {
       if ("-print".equals(args[0])) {
         printErrorMessageAndExit(MISSING_END_TIME);
       } else if ("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       } else {
         if(isDateCorrect(args[2]) && isDateCorrect(args[4]) && isTimeCorrect(args[3]) && isTimeCorrect(args[5])) {
@@ -112,6 +116,7 @@ public class Project1 {
           System.out.println(appointment);
         }
       }else if("-README".equals(args[0])) {
+        System.out.println("This is a README file!");
         printReadme();
       }else{
         printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);

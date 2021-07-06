@@ -59,8 +59,8 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
-   * Tests that invoking the main method with one argument issues an error
-   * If argument is only "-print", error
+   * Tests that invoking the main method with one argument
+   * If argument is only "-README", print a string
    */
   @Test
   void testPrintReadmeOneArgument() {
@@ -93,6 +93,18 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
+   * Tests that invoking the main method with two arguments
+   * If argument is "-README" "Owner", print a string
+   */
+  @Test
+  void testPrintReadmeTwoArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+  }
+
+  /**
    * Tests that invoking the main method with three arguments issues an error
    * If argument is only "-print" "owner" "description", missing begin date
    */
@@ -112,6 +124,18 @@ class Project1IT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain(Project1.class,"Jimmy", "Body Check", "1/1/2021");
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_BEGINE_TIME));
+  }
+
+  /**
+   * Tests that invoking the main method with three arguments
+   * If argument is "-README" "Owner" "Description", print a string
+   */
+  @Test
+  void testPrintReadmeThreeArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
   /**
@@ -137,6 +161,18 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
+   * Tests that invoking the main method with four arguments
+   * If argument is "-README" "Owner" "Description" "Begin Date", print a string
+   */
+  @Test
+  void testPrintReadmeFourArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+  }
+
+  /**
    * Tests that invoking the main method with five arguments issues an error
    * If argument is only "-print" "owner" "description" "begin date" "begin time", missing end date
    */
@@ -159,6 +195,18 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
+   * Tests that invoking the main method with five arguments
+   * If argument is "-README" "Owner" "Description" "Begin Date" "Begin Time", print a string
+   */
+  @Test
+  void testPrintReadmeFiveArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+  }
+
+  /**
    * Tests that invoking the main method with six arguments issues an error
    * If argument is only "-print" "owner" "description" "begin date" "begin time" "end date", missing end time
    */
@@ -167,6 +215,18 @@ class Project1IT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain(Project1.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "11/10/1996");
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_END_TIME));
+  }
+
+  /**
+   * Tests that invoking the main method with six arguments
+   * If argument is "-README" "Owner" "Description" "Begin Date" "Begin Time" "End Date", print a string
+   */
+  @Test
+  void testPrintReadmeSixArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
   /**
@@ -255,6 +315,18 @@ class Project1IT extends InvokeMainTestCase {
     MainMethodResult result = invokeMain(Project1.class, "-print", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21a");
     assertThat(result.getExitCode(), equalTo(1));
     assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 13:21a"));
+  }
+
+  /**
+   * Tests that invoking the main method with seven arguments
+   * If argument is "-README" "Owner" "Description" "Begin Date" "Begin Time" "End Date" "End Time", print a string
+   */
+  @Test
+  void testPrintReadmeSevenArgument() {
+    MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221", "1:51");
+
+    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
   /**

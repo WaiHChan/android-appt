@@ -53,7 +53,7 @@ public class Project1 {
         endTime = arg;
       }
     }
-
+/*
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
     } else if (args.length == 1) {
@@ -142,7 +142,7 @@ public class Project1 {
       }
     }else if(args.length >= 8){
       printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
-    }
+    }*/
     System.exit(0);
   }
 

@@ -39,6 +39,7 @@ public class Project1 {
       if ("-print".equals(arg)){
         System.out.println(args.length);
         System.out.println(arg);
+        System.out.println(arg);
       }
       if (owner == null) {
         owner = arg;

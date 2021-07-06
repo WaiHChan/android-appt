@@ -59,28 +59,6 @@ class Project1IT extends InvokeMainTestCase {
   }
 
   /**
-   * Tests that invoking the main method with one arguments issues an error
-   * If argument is only "owner", missing command line arguments
-   */
-  @Test
-  void testMissingDescriptionOrMore(){
-    MainMethodResult result = invokeMain(Project1.class, "Jimmy");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_COMMAND_LINE_ARGUMENTS));
-  }
-
-  /**
-   * Tests that invoking the main method with one argument issues an error
-   * If argument is only "-print", error
-   */
-  @Test
-  void testMissSpellingReadmeWithOneArgument() {
-    MainMethodResult result = invokeMain(Project1.class, "-READM");
-    assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.MISSING_COMMAND_LINE_ARGUMENTS));
-  }
-
-  /**
    * Tests that invoking the main method with two arguments issues an error
    * If argument is only "-print" "owner", missing description
    */

@@ -28,6 +28,7 @@ public class Project1 {
   static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
 
   public static void main(String[] args) {
+    String print = null;
     String owner = null;
     String description = null;
     String beginDate = null;
@@ -37,11 +38,11 @@ public class Project1 {
 
     for (String  arg : args) {
       if ("-print".equals(arg)){
-        System.out.println(args.length);
-        System.out.println(arg);
-        System.out.println(arg);
-      }
-      if (owner == null) {
+        print = arg;
+      }else if ("-README".equals(arg)) {
+        System.out.println("This is a README file!");
+        printReadme();
+      }else if (owner == null) {
         owner = arg;
       } else if (description == null){
         description = arg;
@@ -55,6 +56,13 @@ public class Project1 {
         endTime = arg;
       }
     }
+    System.out.println(print);
+    System.out.println(owner);
+    System.out.println(description);
+    System.out.println(beginDate);
+    System.out.println(beginTime);
+    System.out.println(endDate);
+    System.out.println(endTime);
 
     if (args.length == 0) {
       printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);

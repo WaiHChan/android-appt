@@ -15,10 +15,15 @@ public class Kata {
   }
 
   public static String compute(String arg) {
-    String temp = "";
+    String result = "";
+    while(arg.length != 0) {
+      if (arg.charAt(0)){
+
+      }
+      arg = arg.substring(1);
+    }
     //STAGE 1: Check for divisibility
     //STAGE 1a: Check divisible by 3
-    temp = temp.concat(arg);
-    return temp;
+    return result;
   }
 }

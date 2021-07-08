@@ -30,7 +30,7 @@ public class Kata {
         }
       }
       //STAGE 1b: Check divisible by 5
-      if (arg.charAt(0) % 5 == 0) {
+      if (i % 5 == 0) {
         active = true;
         result = result.concat("Bar");
         //STAGE 2b: Check if 5
@@ -39,7 +39,7 @@ public class Kata {
         }
       }
       //STAGE 1c: Check divisible by 7
-      if (arg.charAt(0) % 7 == 0) {
+      if (i % 7 == 0) {
         active = true;
         result = result.concat("Qix");
         //STAGE 2c: Check if 7

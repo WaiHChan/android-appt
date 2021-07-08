@@ -35,7 +35,7 @@ public class Kata {
         result = result.concat("Bar");
         //STAGE 2b: Check if 5
         if (arg.indexOf('5') >= 0) {
-          result = result.concat("Foo");
+          result = result.concat("Bar");
         }
       }
       //STAGE 1c: Check divisible by 7
@@ -44,7 +44,7 @@ public class Kata {
         result = result.concat("Qix");
         //STAGE 2c: Check if 7
         if (arg.indexOf('7') >= 0) {
-          result = result.concat("Foo");
+          result = result.concat("Qix");
         }
       }
       if (active != true) {

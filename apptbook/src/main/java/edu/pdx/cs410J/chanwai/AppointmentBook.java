@@ -18,6 +18,10 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
     protected String ownerName;
     List<Appointment> appointmentBook = new ArrayList<>();
 
+    AppointmentBook(){
+        this.ownerName = null;
+    }
+
     AppointmentBook(String ownerName){
         this.ownerName = ownerName;
     }
@@ -45,5 +49,6 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
     @Override
     public void addAppointment(Appointment appointment) {
         appointmentBook.add(appointment);
+        this.ownerName = appointment.owner;
     }
 }

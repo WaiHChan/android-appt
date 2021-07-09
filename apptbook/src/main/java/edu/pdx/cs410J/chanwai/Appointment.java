@@ -40,7 +40,6 @@ public class Appointment extends AbstractAppointment {
     this.endTime = endTime;
   }
 
-
   /**
    * Returns a <code>String</code> that describes the
    * <code>Appointment Begin date and time</code>

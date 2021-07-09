@@ -26,6 +26,7 @@ public class Project2 {
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
 
     public static void main(String[] args) {
+        String textfile = null;
         String print = null;
         String file = null;
         String owner = null;
@@ -38,7 +39,7 @@ public class Project2 {
 
         for (String  arg : args) {
             if ("-textFile".equals(arg)){
-                String temp = arg;
+                textfile = arg;
             }else if ("-print".equals(arg)){
                 print = arg;
             }else if ("-README".equals(arg)) {
@@ -61,6 +62,15 @@ public class Project2 {
                 endTime = isTimeCorrect(arg);
             }
         }
+
+        System.out.println("print: " + print);
+        System.out.println("file: " + file);
+        System.out.println("owner: " + owner);
+        System.out.println("Description: " + description);
+        System.out.println("begin Date: " + beginDate);
+        System.out.println("Begin Time: " + beginTime);
+        System.out.println("End Date: " + endDate);
+        System.out.println("End Time: " + endTime);
 
         if (owner == null) {
             printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
@@ -92,24 +102,32 @@ public class Project2 {
         System.exit(0);
     }
 
+    /**
+     * Pass the file name to TextParser class to read the file
+     * @param arg the name of the file that the user wants to read
+     */
     private static void readFile(String arg){
         try {
             TextParser txt = new TextParser(arg);
             AppointmentBook appointmentBookFromFile = txt.parse();
             writeFile(arg, appointmentBookFromFile);
         } catch (ParserException e) {
-            e.printStackTrace();
+            printErrorMessageAndExit("File doesn't exist." + arg);
         }
     }
 
+    /**
+     * Pass the file name and the appointment book to TextDumper to write to the file
+     * @param fileName the name of the file that the user wants to write
+     * @param appointmentBookFromFile the appointment book that need to write to the file
+     */
     private static void writeFile(String fileName, AppointmentBook appointmentBookFromFile) {
         try {
             TextDumper dumper = new TextDumper(fileName);
             dumper.dump(appointmentBookFromFile);
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            printErrorMessageAndExit("An error occurred.");
         }
-
     }
 
     /**
@@ -126,10 +144,8 @@ public class Project2 {
             }
             reader.close();
         } catch (IOException e) {
-            System.err.println("File doesn't exist.");
-            e.printStackTrace();
+            printErrorMessageAndExit("File doesn't exist.");
         }
-        System.exit(1);
     }
 
     /**
@@ -138,8 +154,8 @@ public class Project2 {
      * @return Returns true or false if the date is valid or invalid
      */
     private static String isDateCorrect(String date) {
-        StringTokenizer stHour = new StringTokenizer(date, "/");
         try {
+            StringTokenizer stHour = new StringTokenizer(date, "/");
             int month = Integer.parseInt(stHour.nextToken());
             int day = Integer.parseInt(stHour.nextToken());
             int year = Integer.parseInt(stHour.nextToken());
@@ -166,8 +182,8 @@ public class Project2 {
      * @return True or False if the time is valid or invalid
      */
     private static String isTimeCorrect(String time){
-        StringTokenizer st = new StringTokenizer(time, ":");
         try {
+            StringTokenizer st = new StringTokenizer(time, ":");
             int hour = Integer.parseInt(st.nextToken());
             int min = Integer.parseInt(st.nextToken());
 

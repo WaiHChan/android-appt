@@ -18,12 +18,12 @@ public class TextParser implements AppointmentBookParser {
     }
     @Override
     public AppointmentBook parse() throws ParserException {
-        String owner = null;
-        String description = null;
-        String begin_date = null;
-        String begin_time = null;
-        String end_date = null;
-        String end_time = null;
+        String owner;
+        String description;
+        String begin_date;
+        String begin_time;
+        String end_date;
+        String end_time;
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -43,11 +43,10 @@ public class TextParser implements AppointmentBookParser {
             }
             return newBook;
         } catch (FileNotFoundException exception) {
-            exception.printStackTrace();
+            System.err.println("File not found!" + fileName);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Can't read the file" + fileName);
         }
-
         return null;
     }
 }

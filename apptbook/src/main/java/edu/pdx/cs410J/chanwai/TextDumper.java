@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.chanwai;
 
-import edu.pdx.cs410J.AbstractAppointment;
-import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookDumper;
 
 import java.io.FileWriter;
@@ -21,9 +19,9 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
         FileWriter writeTo = new FileWriter(fileName);
         ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
 
-        writeTo.write(String.valueOf(book) + "\n");
+        writeTo.write(book + "\n");
         for(Appointment a : appointments)
-            writeTo.write(String.valueOf(a) + "\n");
+            writeTo.write(a + "\n");
         writeTo.close();
         System.out.println("Successfully wrote to the file.");
     }

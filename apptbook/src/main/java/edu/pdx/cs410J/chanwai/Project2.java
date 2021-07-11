@@ -4,6 +4,7 @@ import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
 import java.text.DecimalFormat;
+import java.util.InputMismatchException;
 import java.util.StringTokenizer;
 
 /**
@@ -173,13 +174,13 @@ public class Project2 {
             int day = Integer.parseInt(stHour.nextToken());
             int year = Integer.parseInt(stHour.nextToken());
 
-            if (year <= 0 || year >= 10000){
+            if (year <= 0 || year >= 10000) {
                 printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
             }
-            if (month <= 0 || month >= 13){
+            if (month <= 0 || month >= 13) {
                 printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
             }
-            if (day <= 0 || day >= 32){
+            if (day <= 0 || day >= 32) {
                 printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
             }
             return date;

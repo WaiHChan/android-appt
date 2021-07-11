@@ -37,6 +37,7 @@ public class Project2 {
         String beginTime = null;
         String endDate = null;
         String endTime = null;
+        String trash = null;
 
 
         for (String  arg : args) {
@@ -61,9 +62,14 @@ public class Project2 {
                 endDate = isDateCorrect(arg);
             } else if (endTime == null){
                 endTime = isTimeCorrect(arg);
+            } else if (trash == null){
+                trash = arg;
             }
         }
 
+        if (trash != null){
+            printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+        }
         if (owner == null) {
             printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
             return;
@@ -151,6 +157,7 @@ public class Project2 {
                 System.out.println(txt);
             }
             reader.close();
+            System.exit(0);
         } catch (IOException e) {
             printErrorMessageAndExit("File doesn't exist.");
         }
@@ -168,6 +175,10 @@ public class Project2 {
             int day = Integer.parseInt(stHour.nextToken());
             int year = Integer.parseInt(stHour.nextToken());
 
+            if(stHour.hasMoreTokens()){
+                printErrorMessageAndExit("Invalid Date: " + date);
+            }
+
             if (year <= 0 || year >= 10000) {
                 printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
             }
@@ -177,6 +188,7 @@ public class Project2 {
             if (day <= 0 || day >= 32) {
                 printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
             }
+
             return date;
         } catch (NumberFormatException ex){
             printErrorMessageAndExit("Invalid Date: " + date);
@@ -194,6 +206,10 @@ public class Project2 {
             StringTokenizer st = new StringTokenizer(time, ":");
             int hour = Integer.parseInt(st.nextToken());
             int min = Integer.parseInt(st.nextToken());
+
+            if(st.hasMoreTokens()){
+                printErrorMessageAndExit("Invalid time: " + time);
+            }
 
             if (hour < 0 || hour >= 24) {
                 printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);

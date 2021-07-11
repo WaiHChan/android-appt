@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 
 public class TextParser implements AppointmentBookParser {
     static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
-    static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
-    static final String TOO_MANY_COMMAND_LINE_ARGUMENTS = "Too many command line arguments";
+    static final String MISSING_DATA = "Missing file data";
+    static final String TOO_MANY_DATA = "The file has too many data";
     static final String MISSING_DESCRIPTION = "Missing Description";
     static final String MISSING_BEGIN_DATE = "Missing Begin Date";
     static final String MISSING_BEGIN_TIME = "Missing Begin Time";
@@ -51,6 +51,10 @@ public class TextParser implements AppointmentBookParser {
                 endDate = isDateCorrect(token.nextToken());
                 endTime = isTimeCorrect(token.nextToken());
 
+                if (token.hasMoreTokens()){
+                    printErrorMessageAndExit(TOO_MANY_DATA);
+                }
+
                 System.out.println("owner: " + owner);
                 System.out.println("Description: " + description);
                 System.out.println("begin Date: " + beginDate);
@@ -59,7 +63,7 @@ public class TextParser implements AppointmentBookParser {
                 System.out.println("End Time: " + endTime);
 
                 if (owner == null) {
-                    printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
+                    printErrorMessageAndExit(MISSING_DATA);
                 } else if (description == null) {
                     printErrorMessageAndExit(MISSING_DESCRIPTION);
                 } else if (beginDate == null) {
@@ -97,6 +101,10 @@ public class TextParser implements AppointmentBookParser {
             int day = Integer.parseInt(stHour.nextToken());
             int year = Integer.parseInt(stHour.nextToken());
 
+            if(stHour.hasMoreTokens()){
+                printErrorMessageAndExit("Invalid Date: " + date);
+            }
+
             if (year <= 0 || year >= 10000){
                 printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
             }
@@ -123,6 +131,9 @@ public class TextParser implements AppointmentBookParser {
             StringTokenizer st = new StringTokenizer(time, ":");
             int hour = Integer.parseInt(st.nextToken());
             int min = Integer.parseInt(st.nextToken());
+            if(st.hasMoreTokens()){
+                printErrorMessageAndExit("Invalid time: " + time);
+            }
 
             if (hour < 0 || hour >= 24) {
                 printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);

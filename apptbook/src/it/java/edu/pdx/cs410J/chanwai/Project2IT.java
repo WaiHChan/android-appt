@@ -3,10 +3,7 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 import static edu.pdx.cs410J.chanwai.Project2.TOO_MANY_COMMAND_LINE_ARGUMENTS;
 import static edu.pdx.cs410J.chanwai.Project2.YEAR_OUT_OF_BOUNDS;
@@ -42,6 +39,29 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     void testMissingPrintWithOneArgument() {
         MainMethodResult result = invokeMain(Project2.class, "-print");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+    }
+
+
+    /**
+     * Tests that invoking the main method with one argument issues an error
+     * If argument is only "-textFile", error
+     */
+    @Test
+    void testMissingTextFileWithOneArgument() {
+        MainMethodResult result = invokeMain(Project2.class, "-textFile");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+    }
+
+    /**
+     * Tests that invoking the main method with one argument issues an error
+     * If argument is only "-textFile", error
+     */
+    @Test
+    void testMissingTextFileWithTwoArgument() {
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text.txt" );
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
     }
@@ -333,6 +353,38 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 13:21a"));
     }
+
+    /**
+     * Tests that invoking the main method with file
+     * Check if file is empty, check if appointment book is null
+     */
+    @Test
+    void checkFileIsNull(){
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        Appointment appt = new Appointment("Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        AppointmentBook book = new AppointmentBook("Jimmy");
+        book.addAppointment(appt);
+
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(book.getAppointments(), hasItem(appt));
+    }
+
+    /**
+     * Tests that invoking the main method with file
+     * If the file name exists, check if appointment book is null
+     */
+    @Test
+    void fileNameNotNullFileIsNull(){
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+
+        AppointmentBook nullBook = new AppointmentBook();
+
+        assertThat(nullBook.getOwnerName(), equalTo(null));
+       // assertThat(result.getTextWrittenToStandardOut(), containsString("File not found, Creating: "));
+        assertThat(result.getExitCode(), equalTo(1));
+
+    }
+
 
     /**
      * Tests that invoking the main method with seven arguments

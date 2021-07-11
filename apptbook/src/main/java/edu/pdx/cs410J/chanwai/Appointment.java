@@ -31,7 +31,7 @@ public class Appointment extends AbstractAppointment {
    * @param endTime
    *        The end time of the appointment
    */
-  public Appointment(String owner, String description, String beginDate, String beginTime, String endDate,String endTime){
+  public Appointment(String owner, String description, String beginDate, String beginTime, String endDate, String endTime){
     this.owner = owner;
     this.description = description;
     this.beginDate = beginDate;

@@ -70,9 +70,11 @@ public class TextParser implements AppointmentBookParser {
             }
             return newBook;
         } catch (FileNotFoundException exception) {
-            System.err.println("File not found!" + fileName);
+            System.out.println("File not found, Creating: " + fileName);
+            AppointmentBook newBook = new AppointmentBook();
+            return newBook;
         } catch (IOException e) {
-            System.err.println("Can't read the file" + fileName);
+            System.err.println("Can't read the file: " + fileName);
         }
         return null;
     }

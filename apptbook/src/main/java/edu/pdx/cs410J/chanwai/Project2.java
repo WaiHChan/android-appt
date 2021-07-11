@@ -46,7 +46,7 @@ public class Project2 {
             }else if ("-README".equals(arg)) {
                 System.out.println("This is a README file!");
                 printReadme();
-            }else if (file == null){
+            }else if (textfile != null && file == null){
                 file = arg;
             } else if (owner == null) {
                 owner = arg;
@@ -96,11 +96,12 @@ public class Project2 {
 
         if (file != null){
             AppointmentBook appointmentBookFromFile = readFile(file);
-            if (!appointmentBookFromFile.getOwnerName().equals(owner)){
+            if (appointmentBookFromFile == null || appointmentBookFromFile.getOwnerName() == null){
+                appointmentBookFromFile.addAppointment(appointment);
+                writeFile(file, appointmentBookFromFile);
+            }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){
                 printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
             }
-            appointmentBookFromFile.addAppointment(appointment);
-            writeFile(file, appointmentBookFromFile);
         }else {
             AppointmentBook newBook = new AppointmentBook(owner);
             newBook.addAppointment(appointment);

@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 
-import static edu.pdx.cs410J.chanwai.Project2.TOO_MANY_COMMAND_LINE_ARGUMENTS;
-import static edu.pdx.cs410J.chanwai.Project2.YEAR_OUT_OF_BOUNDS;
+import static edu.pdx.cs410J.chanwai.Project2.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -380,11 +379,20 @@ class Project2IT extends InvokeMainTestCase {
         AppointmentBook nullBook = new AppointmentBook();
 
         assertThat(nullBook.getOwnerName(), equalTo(null));
-       // assertThat(result.getTextWrittenToStandardOut(), containsString("File not found, Creating: "));
         assertThat(result.getExitCode(), equalTo(1));
-
     }
 
+    /**
+     * Tests that invoking the main method with file
+     * If the file name exists, check if appointment book owner is same as argument owner
+     */
+    @Test
+    void fileNameDifferentThanArgName(){
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+
+        assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
+        assertThat(result.getExitCode(), equalTo(1));
+    }
 
     /**
      * Tests that invoking the main method with seven arguments

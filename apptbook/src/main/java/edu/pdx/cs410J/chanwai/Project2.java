@@ -98,8 +98,7 @@ public class Project2 {
 
         if (file != null){
             AppointmentBook appointmentBookFromFile = readFile(file);
-            if (appointmentBookFromFile.getOwnerName().equals(null)){
-                System.out.println("File not found, Creating: " + file);
+            if (appointmentBookFromFile.getOwnerName() == null){
                 appointmentBookFromFile.addAppointment(appointment);
                 writeFile(file, appointmentBookFromFile);
             }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){

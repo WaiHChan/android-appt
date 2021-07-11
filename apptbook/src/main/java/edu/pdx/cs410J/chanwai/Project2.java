@@ -26,6 +26,11 @@ public class Project2 {
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
     static final String OWNER_NAME_NOT_EQUAL = "The owner name on command line is different than the owner name in the text file.";
+    private static final String MISSING_MONTH = "Missing month";
+    private static final String MISSING_DAY = "Missing day";
+    private static final String MISSING_YEAR = "Missing year";
+    private static final String MISSING_HOUR = "Missing hour" ;
+    private static final String MISSING_MIN = "Missing minutes" ;
 
     public static void main(String[] args) {
         String textfile = null;
@@ -171,22 +176,38 @@ public class Project2 {
     private static String isDateCorrect(String date) {
         try {
             StringTokenizer stHour = new StringTokenizer(date, "/");
-            int month = Integer.parseInt(stHour.nextToken());
-            int day = Integer.parseInt(stHour.nextToken());
-            int year = Integer.parseInt(stHour.nextToken());
+            int month = -1;
+            int day = -1;
+            int year = -1;
+
+            if (stHour.hasMoreTokens()){
+                month = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(MISSING_MONTH + " " + date);
+            }
+            if (stHour.hasMoreTokens()){
+                day = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(MISSING_DAY + " " + date);
+            }
+            if (stHour.hasMoreTokens()){
+                year = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(MISSING_YEAR + " " + date);
+            }
 
             if(stHour.hasMoreTokens()){
                 printErrorMessageAndExit("Invalid Date: " + date);
             }
 
             if (year <= 0 || year >= 10000) {
-                printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS + " " + date);
             }
             if (month <= 0 || month >= 13) {
-                printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS + " " + date);
             }
             if (day <= 0 || day >= 32) {
-                printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(DAY_OUT_OF_BOUNDS + " " + date);
             }
 
             return date;
@@ -204,18 +225,29 @@ public class Project2 {
     private static String isTimeCorrect(String time){
         try {
             StringTokenizer st = new StringTokenizer(time, ":");
-            int hour = Integer.parseInt(st.nextToken());
-            int min = Integer.parseInt(st.nextToken());
 
+            int hour = -1;
+            int min = -1;
+
+            if (st.hasMoreTokens()){
+                hour = Integer.parseInt(st.nextToken());
+            }else{
+                printErrorMessageAndExit(MISSING_HOUR + " " + time);
+            }
+            if (st.hasMoreTokens()){
+                min = Integer.parseInt(st.nextToken());
+            }else{
+                printErrorMessageAndExit(MISSING_MIN + " " + time);
+            }
             if(st.hasMoreTokens()){
                 printErrorMessageAndExit("Invalid time: " + time);
             }
 
             if (hour < 0 || hour >= 24) {
-                printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS + " " + time);
             }
             if (min < 0 || min >= 60) {
-                printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(MINS_OUT_OF_BOUNDS + " " + time);
             }
             return time;
         }catch (NumberFormatException ex){

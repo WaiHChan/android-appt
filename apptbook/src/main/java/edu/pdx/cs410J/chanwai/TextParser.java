@@ -10,19 +10,23 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 public class TextParser implements AppointmentBookParser {
-    static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
-    static final String MISSING_DATA = "Missing file data";
-    static final String TOO_MANY_DATA = "The file has too many data";
-    static final String MISSING_DESCRIPTION = "Missing Description";
-    static final String MISSING_BEGIN_DATE = "Missing Begin Date";
-    static final String MISSING_BEGIN_TIME = "Missing Begin Time";
-    static final String MISSING_END_DATE = "Missing End Date";
-    static final String MISSING_END_TIME = "Missing End Time";
-    static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
-    static final String MONTH_OUT_OF_BOUNDS = "Month out of bounds" ;
-    static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
-    static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
-    static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
+    private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
+    private static final String MISSING_DATA = "Missing file data";
+    private static final String TOO_MANY_DATA = "File: Too many data";
+    private static final String MISSING_OWNER = "File: Missing Owner";
+    private static final String MISSING_DESCRIPTION = "File: Missing Description";
+    private static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
+    private static final String MISSING_BEGIN_TIME = "File: Missing Begin Time";
+    private static final String MISSING_END_DATE = "File: Missing End Date";
+    private static final String MISSING_END_TIME = "File: Missing End Time";
+    private static final String YEAR_OUT_OF_BOUNDS = "File: Year out of bounds: ";
+    private static final String MONTH_OUT_OF_BOUNDS = "File: Month out of bounds: " ;
+    private static final String DAY_OUT_OF_BOUNDS = "File: Day out of bounds: " ;
+    private static final String HOUR_OUT_OF_BOUNDS = "File: Hour out of bounds: ";
+    private static final String MINS_OUT_OF_BOUNDS = "File: Minutes out of bounds: ";
+    private static final String INVALID_DATE = "File: Invalid Date: ";
+    private static final String INVALID_TIME = "File: Invalid Time: ";
+
 
     private String fileName;
 
@@ -31,12 +35,12 @@ public class TextParser implements AppointmentBookParser {
     }
     @Override
     public AppointmentBook parse() throws ParserException {
-        String owner;
-        String description;
-        String beginDate;
-        String beginTime;
-        String endDate;
-        String endTime;
+        String owner = null;
+        String description = null;
+        String beginDate = null;
+        String beginTime = null;
+        String endDate = null;
+        String endTime = null;
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileName));
@@ -44,36 +48,42 @@ public class TextParser implements AppointmentBookParser {
             AppointmentBook newBook = new AppointmentBook();
             while ((oneTextLine = br.readLine()) != null) {
                 StringTokenizer token = new StringTokenizer(oneTextLine);
-                owner = token.nextToken();
-                description = token.nextToken();
-                beginDate = isDateCorrect(token.nextToken());
-                beginTime = isTimeCorrect(token.nextToken());
-                endDate = isDateCorrect(token.nextToken());
-                endTime = isTimeCorrect(token.nextToken());
+
+                if (token.hasMoreTokens()){
+                    owner = token.nextToken();
+                }else{
+                    printErrorMessageAndExit(MISSING_OWNER);
+                }
+
+                if (token.hasMoreTokens()){
+                    description = token.nextToken();
+                }else{
+                    printErrorMessageAndExit(MISSING_DESCRIPTION);
+                }
+
+                if (token.hasMoreTokens()){
+                    beginDate = isDateCorrect(token.nextToken());
+                }else{
+                    printErrorMessageAndExit(MISSING_BEGIN_DATE);
+                }
+                if (token.hasMoreTokens()){
+                    beginTime = isTimeCorrect(token.nextToken());
+                }else{
+                    printErrorMessageAndExit(MISSING_BEGIN_TIME);
+                }
+                if (token.hasMoreTokens()){
+                    endDate = isDateCorrect(token.nextToken());
+                }else{
+                    printErrorMessageAndExit(MISSING_END_DATE);
+                }
+                if (token.hasMoreTokens()){
+                    endTime = isTimeCorrect(token.nextToken());
+                }else{
+                    printErrorMessageAndExit(MISSING_END_TIME);
+                }
 
                 if (token.hasMoreTokens()){
                     printErrorMessageAndExit(TOO_MANY_DATA);
-                }
-
-                System.out.println("owner: " + owner);
-                System.out.println("Description: " + description);
-                System.out.println("begin Date: " + beginDate);
-                System.out.println("Begin Time: " + beginTime);
-                System.out.println("End Date: " + endDate);
-                System.out.println("End Time: " + endTime);
-
-                if (owner == null) {
-                    printErrorMessageAndExit(MISSING_DATA);
-                } else if (description == null) {
-                    printErrorMessageAndExit(MISSING_DESCRIPTION);
-                } else if (beginDate == null) {
-                    printErrorMessageAndExit(MISSING_BEGIN_DATE);
-                } else if (beginTime == null) {
-                    printErrorMessageAndExit(MISSING_BEGIN_TIME);
-                } else if (endDate == null) {
-                    printErrorMessageAndExit(MISSING_END_DATE);
-                } else if (endTime == null) {
-                    printErrorMessageAndExit(MISSING_END_TIME);
                 }
 
                 Appointment new_appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
@@ -97,26 +107,42 @@ public class TextParser implements AppointmentBookParser {
     private String isDateCorrect(String date) {
         try {
             StringTokenizer stHour = new StringTokenizer(date, "/");
-            int month = Integer.parseInt(stHour.nextToken());
-            int day = Integer.parseInt(stHour.nextToken());
-            int year = Integer.parseInt(stHour.nextToken());
+            int month = -1;
+            int day = -1;
+            int year = -1;
+
+            if (stHour.hasMoreTokens()){
+                month = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(INVALID_DATE + " " + date);
+            }
+            if (stHour.hasMoreTokens()){
+                day = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(INVALID_DATE+ date);
+            }
+            if (stHour.hasMoreTokens()){
+                year = Integer.parseInt(stHour.nextToken());
+            }else{
+                printErrorMessageAndExit(INVALID_DATE+ date);
+            }
 
             if(stHour.hasMoreTokens()){
-                printErrorMessageAndExit("Invalid Date: " + date);
+                printErrorMessageAndExit(INVALID_DATE+ date);
             }
 
             if (year <= 0 || year >= 10000){
-                printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS+ date);
             }
             if (month <= 0 || month >= 13){
-                printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS + date);
             }
             if (day <= 0 || day >= 32){
-                printErrorMessageAndExit(DAY_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(DAY_OUT_OF_BOUNDS + date);
             }
             return date;
         } catch (NumberFormatException ex){
-            printErrorMessageAndExit("Invalid Date: " + date);
+            printErrorMessageAndExit(INVALID_DATE + date);
             return null;
         }
     }
@@ -129,21 +155,33 @@ public class TextParser implements AppointmentBookParser {
     private String isTimeCorrect(String time){
         try {
             StringTokenizer st = new StringTokenizer(time, ":");
-            int hour = Integer.parseInt(st.nextToken());
-            int min = Integer.parseInt(st.nextToken());
+            int hour = -1;
+            int min = -1;
+
+            if (st.hasMoreTokens()){
+                hour = Integer.parseInt(st.nextToken());
+            }else{
+                printErrorMessageAndExit(INVALID_TIME + time);
+            }
+            if (st.hasMoreTokens()){
+                min = Integer.parseInt(st.nextToken());
+            }else{
+                printErrorMessageAndExit(INVALID_TIME + time);
+            }
+
             if(st.hasMoreTokens()){
-                printErrorMessageAndExit("Invalid time: " + time);
+                printErrorMessageAndExit(INVALID_TIME + time);
             }
 
             if (hour < 0 || hour >= 24) {
-                printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS + time);
             }
             if (min < 0 || min >= 60) {
-                printErrorMessageAndExit(MINS_OUT_OF_BOUNDS);
+                printErrorMessageAndExit(MINS_OUT_OF_BOUNDS + time);
             }
             return time;
         }catch (NumberFormatException ex){
-            printErrorMessageAndExit("Invalid Time: " + time);
+            printErrorMessageAndExit(INVALID_TIME + time);
             return null;
         }
     }

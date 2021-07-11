@@ -64,15 +64,6 @@ public class Project2 {
             }
         }
 
-        System.out.println("print: " + print);
-        System.out.println("file name: " + file);
-        System.out.println("owner: " + owner);
-        System.out.println("Description: " + description);
-        System.out.println("begin Date: " + beginDate);
-        System.out.println("Begin Time: " + beginTime);
-        System.out.println("End Date: " + endDate);
-        System.out.println("End Time: " + endTime);
-
         if (owner == null) {
             printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
             return;

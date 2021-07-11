@@ -4,7 +4,6 @@ import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
 import java.text.DecimalFormat;
-import java.util.InputMismatchException;
 import java.util.StringTokenizer;
 
 /**
@@ -26,11 +25,11 @@ public class Project2 {
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
     static final String OWNER_NAME_NOT_EQUAL = "The owner name on command line is different than the owner name in the text file.";
-    private static final String MISSING_MONTH = "Missing month";
-    private static final String MISSING_DAY = "Missing day";
-    private static final String MISSING_YEAR = "Missing year";
-    private static final String MISSING_HOUR = "Missing hour" ;
-    private static final String MISSING_MIN = "Missing minutes" ;
+    static final String MISSING_MONTH = "Missing month";
+    static final String MISSING_DAY = "Missing day";
+    static final String MISSING_YEAR = "Missing year";
+    static final String MISSING_HOUR = "Missing hour" ;
+    static final String MISSING_MIN = "Missing minutes" ;
 
     public static void main(String[] args) {
         String textfile = null;

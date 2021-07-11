@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static edu.pdx.cs410J.chanwai.Project1.YEAR_OUT_OF_BOUNDS;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -64,7 +65,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeOneArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -78,7 +79,7 @@ class Project1IT extends InvokeMainTestCase {
 
     InputStream readme = Project1.class.getResourceAsStream("README.txt");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(readme, not(nullValue()));
     BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
     String line = reader.readLine();
@@ -115,7 +116,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeTwoArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -149,7 +150,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeThreeArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -183,7 +184,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeFourArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -217,7 +218,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeFiveArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -240,7 +241,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeSixArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -340,7 +341,7 @@ class Project1IT extends InvokeMainTestCase {
   void testPrintReadmeSevenArgument() {
     MainMethodResult result = invokeMain(Project1.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221", "1:51");
 
-    assertThat(result.getExitCode(), equalTo(1));
+    assertThat(result.getExitCode(), equalTo(0));
     assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
   }
 
@@ -352,7 +353,7 @@ class Project1IT extends InvokeMainTestCase {
   void yearLessThanZero(){
     MainMethodResult result = invokeMain(Project1.class, "-print", "Jimmy", "Body Check", "1/1/0", "12:21", "11/10/1996", "13:21");
     assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.YEAR_OUT_OF_BOUNDS));
+    assertThat(result.getTextWrittenToStandardError(), containsString(YEAR_OUT_OF_BOUNDS));
   }
 
   /**
@@ -363,7 +364,7 @@ class Project1IT extends InvokeMainTestCase {
   void yearLargeThanLimit(){
     MainMethodResult result = invokeMain(Project1.class, "-print", "Jimmy", "Body Check", "1/1/10000", "12:21", "11/10/1996", "13:21");
     assertThat(result.getExitCode(), equalTo(1));
-    assertThat(result.getTextWrittenToStandardError(), containsString(Project1.YEAR_OUT_OF_BOUNDS));
+    assertThat(result.getTextWrittenToStandardError(), containsString(YEAR_OUT_OF_BOUNDS));
   }
 
   /**

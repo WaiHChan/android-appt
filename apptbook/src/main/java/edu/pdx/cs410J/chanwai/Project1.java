@@ -103,7 +103,7 @@ public class Project1 {
       System.err.println("File doesn't exist.");
       e.printStackTrace();
     }
-    System.exit(1);
+    System.exit(0);
   }
 
   /**

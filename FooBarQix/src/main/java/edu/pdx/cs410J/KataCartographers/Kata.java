@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.KataCartographers;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * A class for getting started with a code kata
  *
@@ -16,42 +18,36 @@ public class Kata {
   }
 
   public static String compute(String arg) {
+    int argAsInt = parseInt(arg);
     String result = "";
-    int i;
-    boolean active = false; //Matt's idea, not quite sure how it'll work yet
-    try {
-      i = Integer.parseInt(arg);
-      if (i % 3 == 0) {
-        active = true;
+    //STAGE 1: Check for divisibility
+    //STAGE 1a: Check divisible by 3
+    if (argAsInt % 3 == 0) {
+      result = result.concat("Foo");
+    }
+    //STAGE 1b: Check divisible by 5
+    if (argAsInt % 5 == 0) {
+      result = result.concat("Bar");
+    }
+    //STAGE 1c: Check divisible by 7
+    if (argAsInt % 7 == 0) {
+      result = result.concat("Qix");
+    }
+    //STAGE 2: Check each digit if 3, 5 or 7
+    while (arg.length() != 0) {
+      //STAGE 2a: Check if 3
+      if (arg.charAt(0) == '3') {
         result = result.concat("Foo");
-        //STAGE 2a: Check if
-        if (arg.indexOf('3') >= 0) {
-          result = result.concat("Foo");
-        }
       }
-      //STAGE 1b: Check divisible by 5
-      if (i % 5 == 0) {
-        active = true;
+      else if (arg.charAt(0) == '5') {
         result = result.concat("Bar");
-        //STAGE 2b: Check if 5
-        if (arg.indexOf('5') >= 0) {
-          result = result.concat("Bar");
-        }
       }
-      //STAGE 1c: Check divisible by 7
-      if (i % 7 == 0) {
-        active = true;
+      //STAGE 2c: Check if 7
+      else if (arg.charAt(0) == '7') {
         result = result.concat("Qix");
-        //STAGE 2c: Check if 7
-        if (arg.indexOf('7') >= 0) {
-          result = result.concat("Qix");
-        }
       }
-      if (active != true) {
-        result = result.concat(arg);
-      }
-    } catch (NumberFormatException e) {
-      System.err.println("not a number");
+      //cutting down arg by one digit
+      arg = arg.substring(1);
     }
     return result;
   }

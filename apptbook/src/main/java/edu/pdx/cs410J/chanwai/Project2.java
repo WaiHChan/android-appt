@@ -15,8 +15,8 @@ public class Project2 {
     static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
     static final String TOO_MANY_COMMAND_LINE_ARGUMENTS = "Too many command line arguments";
     static final String MISSING_DESCRIPTION = "Missing Description";
-    static final String MISSING_BEGINE_DATE = "Missing Begin Date";
-    static final String MISSING_BEGINE_TIME = "Missing Begin Time";
+    static final String MISSING_BEGIN_DATE = "Missing Begin Date";
+    static final String MISSING_BEGIN_TIME = "Missing Begin Time";
     static final String MISSING_END_DATE = "Missing End Date";
     static final String MISSING_END_TIME = "Missing End Time";
     static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
@@ -24,6 +24,7 @@ public class Project2 {
     static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
+    static final String OWNER_NAME_NOT_EQUAL = "The owner name on command line is different than the owner name in the text file.";
 
     public static void main(String[] args) {
         String textfile = null;
@@ -47,7 +48,6 @@ public class Project2 {
                 printReadme();
             }else if (file == null){
                 file = arg;
-                readFile(file);
             } else if (owner == null) {
                 owner = arg;
             } else if (description == null){
@@ -64,7 +64,7 @@ public class Project2 {
         }
 
         System.out.println("print: " + print);
-        System.out.println("file: " + file);
+        System.out.println("file name: " + file);
         System.out.println("owner: " + owner);
         System.out.println("Description: " + description);
         System.out.println("begin Date: " + beginDate);
@@ -79,10 +79,10 @@ public class Project2 {
             printErrorMessageAndExit(MISSING_DESCRIPTION);
             return;
         } else if (beginDate == null) {
-            printErrorMessageAndExit(MISSING_BEGINE_DATE);
+            printErrorMessageAndExit(MISSING_BEGIN_DATE);
             return;
         } else if (beginTime == null) {
-            printErrorMessageAndExit(MISSING_BEGINE_TIME);
+            printErrorMessageAndExit(MISSING_BEGIN_TIME);
             return;
         } else if (endDate == null) {
             printErrorMessageAndExit(MISSING_END_DATE);
@@ -93,8 +93,19 @@ public class Project2 {
         }
 
         Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
-        AppointmentBook newBook = new AppointmentBook(owner);
-        newBook.addAppointment(appointment);
+
+        if (file != null){
+            AppointmentBook appointmentBookFromFile = readFile(file);
+            if (!appointmentBookFromFile.getOwnerName().equals(owner)){
+                printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
+            }
+            appointmentBookFromFile.addAppointment(appointment);
+            writeFile(file, appointmentBookFromFile);
+        }else {
+            AppointmentBook newBook = new AppointmentBook(owner);
+            newBook.addAppointment(appointment);
+        }
+
         if (print != null) {
             System.out.println(appointment);
             System.exit(1);
@@ -104,16 +115,17 @@ public class Project2 {
 
     /**
      * Pass the file name to TextParser class to read the file
-     * @param arg the name of the file that the user wants to read
+     * @param fileName the name of the file that the user wants to read
      */
-    private static void readFile(String arg){
+    private static AppointmentBook readFile(String fileName){
         try {
-            TextParser txt = new TextParser(arg);
+            TextParser txt = new TextParser(fileName);
             AppointmentBook appointmentBookFromFile = txt.parse();
-            writeFile(arg, appointmentBookFromFile);
+            return appointmentBookFromFile;
         } catch (ParserException e) {
-            printErrorMessageAndExit("File doesn't exist." + arg);
+            printErrorMessageAndExit("File doesn't exist." + fileName);
         }
+        return null;
     }
 
     /**

@@ -51,6 +51,13 @@ public class TextParser implements AppointmentBookParser {
                 endDate = isDateCorrect(token.nextToken());
                 endTime = isTimeCorrect(token.nextToken());
 
+                System.out.println("owner: " + owner);
+                System.out.println("Description: " + description);
+                System.out.println("begin Date: " + beginDate);
+                System.out.println("Begin Time: " + beginTime);
+                System.out.println("End Date: " + endDate);
+                System.out.println("End Time: " + endTime);
+
                 if (owner == null) {
                     printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
                 } else if (description == null) {

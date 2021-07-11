@@ -102,6 +102,9 @@ public class Project2 {
                 writeFile(file, appointmentBookFromFile);
             }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){
                 printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
+            } else {
+                appointmentBookFromFile.addAppointment(appointment);
+                writeFile(file, appointmentBookFromFile);
             }
         }else {
             AppointmentBook newBook = new AppointmentBook(owner);

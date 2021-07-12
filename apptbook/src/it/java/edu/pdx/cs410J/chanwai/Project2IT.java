@@ -440,6 +440,19 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If missing month, issues an error
+     */
+    @Test
+    void monthExist(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "11/10/1996", "13:21");
+        String month = "1";
+
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(month, equalTo("1"));
+    }
+
 
     /**
      * Tests that invoking the main method with correct command line arguments

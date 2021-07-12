@@ -25,11 +25,8 @@ public class Project2 {
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
     static final String OWNER_NAME_NOT_EQUAL = "The owner name on command line is different than the owner name in the text file.";
-    static final String MISSING_MONTH = "Missing month";
-    static final String MISSING_DAY = "Missing day";
-    static final String MISSING_YEAR = "Missing year";
-    static final String MISSING_HOUR = "Missing hour" ;
-    static final String MISSING_MIN = "Missing minutes" ;
+    static final String INVALID_DATE = "Invalid Date: ";
+    static final String INVALID_TIME = "Invalid Time: ";
 
     public static void main(String[] args) {
         String textfile = null;
@@ -182,21 +179,21 @@ public class Project2 {
             if (stHour.hasMoreTokens()){
                 month = Integer.parseInt(stHour.nextToken());
             }else{
-                printErrorMessageAndExit(MISSING_MONTH + " " + date);
+                printErrorMessageAndExit(INVALID_DATE + date);
             }
             if (stHour.hasMoreTokens()){
                 day = Integer.parseInt(stHour.nextToken());
             }else{
-                printErrorMessageAndExit(MISSING_DAY + " " + date);
+                printErrorMessageAndExit(INVALID_DATE + date);
             }
             if (stHour.hasMoreTokens()){
                 year = Integer.parseInt(stHour.nextToken());
             }else{
-                printErrorMessageAndExit(MISSING_YEAR + " " + date);
+                printErrorMessageAndExit(INVALID_DATE + date);
             }
 
             if(stHour.hasMoreTokens()){
-                printErrorMessageAndExit("Invalid Date: " + date);
+                printErrorMessageAndExit(INVALID_DATE + date);
             }
 
             if (year <= 0 || year >= 10000) {
@@ -231,15 +228,15 @@ public class Project2 {
             if (st.hasMoreTokens()){
                 hour = Integer.parseInt(st.nextToken());
             }else{
-                printErrorMessageAndExit(MISSING_HOUR + " " + time);
+                printErrorMessageAndExit(INVALID_TIME + time);
             }
             if (st.hasMoreTokens()){
                 min = Integer.parseInt(st.nextToken());
             }else{
-                printErrorMessageAndExit(MISSING_MIN + " " + time);
+                printErrorMessageAndExit(INVALID_TIME + time);
             }
             if(st.hasMoreTokens()){
-                printErrorMessageAndExit("Invalid time: " + time);
+                printErrorMessageAndExit(INVALID_TIME + time);
             }
 
             if (hour < 0 || hour >= 24) {
@@ -250,7 +247,7 @@ public class Project2 {
             }
             return time;
         }catch (NumberFormatException ex){
-            printErrorMessageAndExit("Invalid Time: " + time);
+            printErrorMessageAndExit(INVALID_TIME + time);
             return null;
         }
     }

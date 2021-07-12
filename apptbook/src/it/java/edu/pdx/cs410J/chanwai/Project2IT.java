@@ -440,19 +440,6 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
-    /**
-     * Tests that invoking the main method with correct command line arguments
-     * If missing month, issues an error
-     */
-    @Test
-    void monthExist(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "11/10/1996", "13:21");
-        String month = "1";
-
-        assertThat(result.getExitCode(), equalTo(1));
-        assertThat(month, equalTo("1"));
-    }
-
 
     /**
      * Tests that invoking the main method with correct command line arguments
@@ -478,6 +465,28 @@ class Project2IT extends InvokeMainTestCase {
 
     /**
      * Tests that invoking the main method with correct command line arguments
+     * If it is too many begin date, issues an error
+     */
+    @Test
+    void tooManyBeginDate(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021/1", "12:21", "11/10/1996", "13:21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE + "1/1/2021/1"));
+    }
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If it is too many end date, issues an error
+     */
+    @Test
+    void tooManyEndDate(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "11/10/1996/1", "13:21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
+    }
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
      * If missing minutes, issues an error
      */
     @Test
@@ -496,6 +505,28 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
+    }
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If it is too many begin time, issues an error
+     */
+    @Test
+    void tooManyBeginTime(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21:2", "11/10/1996", "13:21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME + "12:21:2"));
+    }
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If it is too many end time, issues an error
+     */
+    @Test
+    void tooManyEndTime(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "11/10/1996", "13:21:23");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME + "13:21:23"));
     }
 
     /**

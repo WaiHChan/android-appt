@@ -3,10 +3,7 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class TextParser implements AppointmentBookParser {
@@ -86,8 +83,8 @@ public class TextParser implements AppointmentBookParser {
                     printErrorMessageAndExit(TOO_MANY_DATA);
                 }
 
-                Appointment new_appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
-                newBook.addAppointment(new_appt);
+                Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+                newBook.addAppointment(appt);
             }
             return newBook;
         } catch (FileNotFoundException exception) {
@@ -152,24 +149,24 @@ public class TextParser implements AppointmentBookParser {
      * @param time the appointment time needed to be checked
      * @return True or False if the time is valid or invalid
      */
-    private String isTimeCorrect(String time){
+    private String isTimeCorrect(String time) {
         try {
             StringTokenizer st = new StringTokenizer(time, ":");
             int hour = -1;
             int min = -1;
 
-            if (st.hasMoreTokens()){
+            if (st.hasMoreTokens()) {
                 hour = Integer.parseInt(st.nextToken());
-            }else{
+            } else {
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
-            if (st.hasMoreTokens()){
+            if (st.hasMoreTokens()) {
                 min = Integer.parseInt(st.nextToken());
-            }else{
+            } else {
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
 
-            if(st.hasMoreTokens()){
+            if (st.hasMoreTokens()) {
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
 
@@ -180,7 +177,7 @@ public class TextParser implements AppointmentBookParser {
                 printErrorMessageAndExit(MINS_OUT_OF_BOUNDS + time);
             }
             return time;
-        }catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             printErrorMessageAndExit(INVALID_TIME + time);
             return null;
         }

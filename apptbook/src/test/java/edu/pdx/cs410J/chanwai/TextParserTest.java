@@ -2,14 +2,14 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
-
 import java.io.*;
-
-import static edu.pdx.cs410J.chanwai.TextParser.MISSING_OWNER;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.io.TempDir;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextParserTest {
 
@@ -67,8 +67,8 @@ public class TextParserTest {
         assertThat(ParserException, containsString(MISSING_OWNER));
     }*/
 
-
- /*   @Test
+/*
+    @Test
     void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir) throws IOException, ParserException {
 
         File textFile = new File(dir, "appt.txt");

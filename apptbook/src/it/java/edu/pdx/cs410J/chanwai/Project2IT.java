@@ -669,4 +669,27 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("\"Body Check\" from 10/10/1110 22:32 until 11/10/1996 13:21"));
     }
+
+    /**
+     * Tests that invoking the toString method from appointment class
+     * Check if toString() returns the correct string
+     */
+    @Test
+    void checkAssignmentToStringTwo(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Eye", "10/10/1110", "22:32", "11/10/1996", "13:21");
+
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Eye from 10/10/1110 22:32 until 11/10/1996 13:21"));
+    }
+
+    /**
+     * Tests that invoking the toString method from appointment class
+     * if no option, do nothing
+     */
+    @Test
+    void argsWithoutPrint(){
+        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Eye", "10/10/1110", "22:32", "11/10/1996", "13:21");
+
+        assertThat(result.getExitCode(), equalTo(0));
+    }
 }

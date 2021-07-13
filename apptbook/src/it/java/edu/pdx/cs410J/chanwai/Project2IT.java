@@ -477,7 +477,7 @@ class Project2IT extends InvokeMainTestCase {
      * If missing day, issues an error
      */
     @Test
-    void missingendDay(){
+    void missingEndDay(){
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "11//1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));

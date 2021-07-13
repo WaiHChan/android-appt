@@ -230,18 +230,22 @@ public class Project2 {
 
             int hour = -1;
             int min = -1;
+            int trash = 0;
 
-            if (st.hasMoreTokens()){
-                hour = Integer.parseInt(st.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_TIME + time);
+            while (st.hasMoreTokens()) {
+                if (hour == -1){
+                    hour = Integer.parseInt(st.nextToken());
+                }else if (min == -1){
+                    min = Integer.parseInt(st.nextToken());
+                }else if (trash == 0){
+                    trash = Integer.parseInt(st.nextToken());
+                }
             }
-            if (st.hasMoreTokens()){
-                min = Integer.parseInt(st.nextToken());
-            }else{
+            if (trash != 0){
                 printErrorMessageAndExit(INVALID_TIME + time);
-            }
-            if(st.hasMoreTokens()){
+            }else if (hour == -1){
+                printErrorMessageAndExit(INVALID_TIME + time);
+            }else if (min == -1){
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
 

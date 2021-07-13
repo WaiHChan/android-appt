@@ -5,6 +5,8 @@ import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The main class for the CS410J appointment book Project
@@ -24,14 +26,14 @@ public class Project2 {
     static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
-    static final String OWNER_NAME_NOT_EQUAL = "The owner name on command line is different than the owner name in the text file.";
+    static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file.";
     static final String INVALID_DATE = "Invalid Date: ";
     static final String INVALID_TIME = "Invalid Time: ";
 
     public static void main(String[] args) {
         String textfile = null;
         String print = null;
-        String file = null;
+        String fileName = null;
         String owner = null;
         String description = null;
         String beginDate = null;
@@ -39,7 +41,6 @@ public class Project2 {
         String endDate = null;
         String endTime = null;
         String trash = null;
-
 
         for (String  arg : args) {
             if ("-textFile".equals(arg)){
@@ -49,12 +50,16 @@ public class Project2 {
             }else if ("-README".equals(arg)) {
                 System.out.println("This is a README file!");
                 printReadme();
-            }else if (textfile != null && file == null){
-                file = arg;
+            }else if (textfile != null && fileName == null){
+                fileName = arg;
             } else if (owner == null) {
                 owner = arg;
             } else if (description == null){
-                description = arg;
+                if (arg.contains(" ")){
+                    description = "\"" + arg + "\"";
+                }else{
+                    description = arg;
+                }
             } else if (beginDate == null){
                 beginDate = isDateCorrect(arg);
             } else if (beginTime == null){
@@ -93,16 +98,17 @@ public class Project2 {
 
         Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
 
-        if (file != null){
-            AppointmentBook appointmentBookFromFile = readFile(file);
+        if (fileName != null){
+            AppointmentBook appointmentBookFromFile = readFile(fileName);
             if (appointmentBookFromFile.getOwnerName() == null){
+                System.out.println("File not found, Creating: " + fileName);
                 appointmentBookFromFile.addAppointment(appointment);
-                writeFile(file, appointmentBookFromFile);
+                writeFile(fileName, appointmentBookFromFile);
             }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){
                 printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
             } else {
                 appointmentBookFromFile.addAppointment(appointment);
-                writeFile(file, appointmentBookFromFile);
+                writeFile(fileName, appointmentBookFromFile);
             }
         }else {
             AppointmentBook newBook = new AppointmentBook(owner);
@@ -122,11 +128,14 @@ public class Project2 {
      */
     private static AppointmentBook readFile(String fileName){
         try {
-            TextParser txt = new TextParser(fileName);
+            TextParser txt = new TextParser(new FileReader(fileName));
             AppointmentBook appointmentBookFromFile = txt.parse();
             return appointmentBookFromFile;
-        } catch (ParserException e) {
-            printErrorMessageAndExit("File doesn't exist." + fileName);
+        }catch (FileNotFoundException exception) {
+            AppointmentBook newBook = new AppointmentBook();
+            return newBook;
+        } catch (ParserException ex){
+            printErrorMessageAndExit("AppointmentBook can not be read.");
         }
         return null;
     }
@@ -138,7 +147,7 @@ public class Project2 {
      */
     private static void writeFile(String fileName, AppointmentBook appointmentBookFromFile) {
         try {
-            TextDumper dumper = new TextDumper(fileName);
+            TextDumper dumper = new TextDumper(new FileWriter(fileName));
             dumper.dump(appointmentBookFromFile);
         } catch (IOException e) {
             printErrorMessageAndExit("An error occurred.");

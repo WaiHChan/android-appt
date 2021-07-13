@@ -5,6 +5,8 @@ import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TextParser implements AppointmentBookParser {
     private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
@@ -24,12 +26,12 @@ public class TextParser implements AppointmentBookParser {
     private static final String INVALID_DATE = "File: Invalid Date: ";
     private static final String INVALID_TIME = "File: Invalid Time: ";
 
+    private final BufferedReader reader;
 
-    private String fileName;
-
-    TextParser(String name){
-        this.fileName = name;
+    public TextParser(Reader reader){
+        this.reader = new BufferedReader(reader);
     }
+
     @Override
     public AppointmentBook parse() throws ParserException {
         String owner = null;
@@ -40,61 +42,70 @@ public class TextParser implements AppointmentBookParser {
         String endTime = null;
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
             String oneTextLine;
-            AppointmentBook newBook = new AppointmentBook();
-            while ((oneTextLine = br.readLine()) != null) {
-                StringTokenizer token = new StringTokenizer(oneTextLine);
+            String regex = "\"([^\"]*)\"|(\\S+)";
 
-                if (token.hasMoreTokens()){
-                    owner = token.nextToken();
+            AppointmentBook newBook = new AppointmentBook();
+            while ((oneTextLine = reader.readLine()) != null) {
+                Matcher m = Pattern.compile(regex).matcher(oneTextLine);
+
+                if (m.find()){
+                    if (m.group(1) != null) {
+                        owner = "\"" + m.group(1) + "\"";
+                    } else {
+                        owner = m.group(2);
+                    }
                 }else{
                     printErrorMessageAndExit(MISSING_OWNER);
                 }
 
-                if (token.hasMoreTokens()){
-                    description = token.nextToken();
+                if (m.find()){
+                    if (m.group(1) != null) {
+                        description = "\"" + m.group(1) + "\"";
+                    } else {
+                        description = m.group(2);
+                    }
                 }else{
                     printErrorMessageAndExit(MISSING_DESCRIPTION);
                 }
 
-                if (token.hasMoreTokens()){
-                    beginDate = isDateCorrect(token.nextToken());
+                if (m.find()){
+                    beginDate = isDateCorrect(m.group(2));
                 }else{
                     printErrorMessageAndExit(MISSING_BEGIN_DATE);
                 }
-                if (token.hasMoreTokens()){
-                    beginTime = isTimeCorrect(token.nextToken());
+
+                if (m.find()){
+                    beginTime = isTimeCorrect(m.group(2));
                 }else{
                     printErrorMessageAndExit(MISSING_BEGIN_TIME);
                 }
-                if (token.hasMoreTokens()){
-                    endDate = isDateCorrect(token.nextToken());
+
+                if (m.find()){
+                    endDate = isDateCorrect(m.group(2));
                 }else{
                     printErrorMessageAndExit(MISSING_END_DATE);
                 }
-                if (token.hasMoreTokens()){
-                    endTime = isTimeCorrect(token.nextToken());
+
+                if (m.find()){
+                    endTime = isTimeCorrect(m.group(2));
                 }else{
                     printErrorMessageAndExit(MISSING_END_TIME);
                 }
 
-                if (token.hasMoreTokens()){
+                if (m.find()){
                     printErrorMessageAndExit(TOO_MANY_DATA);
                 }
 
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);
+
             }
             return newBook;
-        } catch (FileNotFoundException exception) {
-            System.out.println("File not found, Creating: " + fileName);
+        } catch (IOException e) {
             AppointmentBook newBook = new AppointmentBook();
             return newBook;
-        } catch (IOException e) {
-            System.err.println("Can't read the file: " + fileName);
         }
-        return null;
     }
     /**
      * Returns true or false if the date is correct

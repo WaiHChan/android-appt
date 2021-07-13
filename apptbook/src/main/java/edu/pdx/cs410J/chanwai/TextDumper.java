@@ -1,30 +1,33 @@
 package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
-
-import java.io.FileWriter;
 import java.io.IOException;
-
+import java.io.Writer;
 import java.util.ArrayList;
 
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
-    private String fileName;
+    private final Writer writer;
 
-    TextDumper(String name) {
-        this.fileName = name;
+    public TextDumper(Writer writer){
+        this.writer = writer;
     }
 
     @Override
     public void dump(AppointmentBook book) throws IOException {
 
-        FileWriter writeTo = new FileWriter(fileName);
         ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
 
-        writeTo.write(book + "\n");
-        for(Appointment a : appointments)
-            writeTo.write(a + "\n");
-        writeTo.close();
+        for(Appointment a : appointments) {
+            writer.write(a.owner + " ");
+            writer.write(a.description + " ");
+            writer.write(a.beginDate + " ");
+            writer.write(a.beginTime + " ");
+            writer.write(a.endDate + " ");
+            writer.write(a.endTime + "\n");
+        }
+
+        writer.close();
         System.out.println("Successfully wrote to the file.");
     }
 }

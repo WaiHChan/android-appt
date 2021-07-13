@@ -5,8 +5,6 @@ import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The main class for the CS410J appointment book Project
@@ -97,27 +95,23 @@ public class Project2 {
         }
 
         Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
-
+        AppointmentBook appointmentBookFromFile;
         if (fileName != null){
-            AppointmentBook appointmentBookFromFile = readFile(fileName);
+            appointmentBookFromFile = readFile(fileName);
             if (appointmentBookFromFile.getOwnerName() == null){
                 System.out.println("File not found, Creating: " + fileName);
-                appointmentBookFromFile.addAppointment(appointment);
-                writeFile(fileName, appointmentBookFromFile);
             }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){
                 printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
-            } else {
-                appointmentBookFromFile.addAppointment(appointment);
-                writeFile(fileName, appointmentBookFromFile);
             }
-        }else {
-            AppointmentBook newBook = new AppointmentBook(owner);
-            newBook.addAppointment(appointment);
+            appointmentBookFromFile.addAppointment(appointment);
+            writeFile(fileName, appointmentBookFromFile);
         }
+
+        appointmentBookFromFile = new AppointmentBook(owner);
+        appointmentBookFromFile.addAppointment(appointment);
 
         if (print != null) {
             System.out.println(appointment);
-            System.exit(1);
         }
         System.exit(0);
     }

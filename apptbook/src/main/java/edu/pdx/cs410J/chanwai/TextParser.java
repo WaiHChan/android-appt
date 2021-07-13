@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class TextParser implements AppointmentBookParser {
     private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
     private static final String TOO_MANY_DATA = "File: Too many data";
-    private static final String MISSING_OWNER = "File: Missing Owner";
+    static final String MISSING_OWNER = "File: Missing Owner";
     private static final String MISSING_DESCRIPTION = "File: Missing Description";
     private static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
     private static final String MISSING_BEGIN_TIME = "File: Missing Begin Time";

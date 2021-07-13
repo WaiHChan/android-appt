@@ -447,7 +447,7 @@ class Project2IT extends InvokeMainTestCase {
     void missingBeginMonth(){
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
+        assertThat(result.getTextWrittenToStandardError(), equalTo(INVALID_DATE + "/1/2010\r\nusage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time\r\n"));
     }
 
     /**

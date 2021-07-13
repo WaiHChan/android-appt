@@ -665,7 +665,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void hourLessThanZero() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "-1:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "-12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project2.HOUR_OUT_OF_BOUNDS));
     }
@@ -687,7 +687,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void minsLessThanZero() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "1:-1", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "1:-12", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MINS_OUT_OF_BOUNDS));
     }

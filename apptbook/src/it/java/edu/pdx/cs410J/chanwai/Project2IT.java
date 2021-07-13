@@ -442,16 +442,16 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString(TOO_MANY_COMMAND_LINE_ARGUMENTS));
     }
 
-    /**
+/*    *//**
      * Tests that invoking the main method with correct command line arguments
      * If missing month, issues an error
-     */
+     *//*
     @Test
     void missingMonth(){
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
-    }
+    }*/
 
     /**
      * Tests that invoking the main method with correct command line arguments

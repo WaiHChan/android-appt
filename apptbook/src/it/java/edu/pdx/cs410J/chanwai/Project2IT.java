@@ -402,7 +402,7 @@ class Project2IT extends InvokeMainTestCase {
     void printFileNotFoundIfGetOwnerNameIsNull(){
         MainMethodResult result = invokeMain(Project2.class, "-textFile", "fileNotFound.txt", "Jim", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
 
-        assertThat(result.getTextWrittenToStandardOut(), containsString("File not found, Creating:"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Successfully wrote to the file."));
         assertThat(result.getExitCode(), equalTo(0));
     }
 

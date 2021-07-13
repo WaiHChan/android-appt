@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 public class TextParser implements AppointmentBookParser {
     private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
-    private static final String MISSING_DATA = "Missing file data";
     private static final String TOO_MANY_DATA = "File: Too many data";
     private static final String MISSING_OWNER = "File: Missing Owner";
     private static final String MISSING_DESCRIPTION = "File: Missing Description";
@@ -48,7 +47,6 @@ public class TextParser implements AppointmentBookParser {
             AppointmentBook newBook = new AppointmentBook();
             while ((oneTextLine = reader.readLine()) != null) {
                 Matcher m = Pattern.compile(regex).matcher(oneTextLine);
-
                 if (m.find()){
                     if (m.group(1) != null) {
                         owner = "\"" + m.group(1) + "\"";

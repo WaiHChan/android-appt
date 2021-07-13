@@ -66,7 +66,7 @@ public class Project2 {
                 endDate = isDateCorrect(arg);
             } else if (endTime == null){
                 endTime = isTimeCorrect(arg);
-            } else if (trash == null){
+            } else{// if (trash == null){
                 trash = arg;
             }
         }

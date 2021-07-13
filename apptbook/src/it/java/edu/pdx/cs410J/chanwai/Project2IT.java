@@ -394,10 +394,7 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
     }
 
-/*    *//**
-     * Tests that invoking the main method with file
-     * If the owner's name in the file is null, print "File not found, Creating: file_name"
-     *//*
+/*
     @Test
     void printFileNotFoundIfGetOwnerNameIsNull(){
         MainMethodResult result = invokeMain(Project2.class, "-textFile", "fileNotFound.txt", "Jim", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");

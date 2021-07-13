@@ -50,6 +50,36 @@ public class TextParserTest {
      * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
      * @throws ParserException Throw an Parser exception if the appointment book cannot be read
      */
+    @Test
+    void appointmentBookParsed() throws IOException, ParserException {
+        String owner = "\"Owner One\"";
+        String description = "Eyes";
+        String begin_Date = "1/2/1554";
+        String begin_Time = "12:42";
+        String end_Date = "1/2/2005";
+        String end_Time = "12:42";
+
+        Appointment appt = new Appointment(owner, description, begin_Date, begin_Time, end_Date, end_Time);
+        AppointmentBook book = new AppointmentBook(owner);
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+        book = parser.parse();
+
+        assertThat(book.getOwnerName(), equalTo(owner));
+    }
+
+    /**
+     * Tests that invoking the dump() and parse() method from TestDump class and TestParser class
+     * Check if an appointment book is created and saved in StringWriter and
+     * Check if an appointment book can be parsed after the dump
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     * @throws ParserException Throw an Parser exception if the appointment book cannot be read
+     */
    /* @Test
     void ifOwnerIsMissing() throws IOException, ParserException {
 

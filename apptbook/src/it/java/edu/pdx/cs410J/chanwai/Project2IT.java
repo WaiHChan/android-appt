@@ -388,7 +388,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void fileNameDifferentThanArgName(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jim", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
         assertThat(result.getExitCode(), equalTo(1));

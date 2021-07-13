@@ -237,7 +237,7 @@ public class Project2 {
                     hour = Integer.parseInt(st.nextToken());
                 }else if (min == -1){
                     min = Integer.parseInt(st.nextToken());
-                }else if (trash == 0){
+                }else{
                     trash = Integer.parseInt(st.nextToken());
                 }
             }

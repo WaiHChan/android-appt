@@ -178,24 +178,27 @@ public class Project2 {
             int month = -1;
             int day = -1;
             int year = -1;
+            int trash = 0;
 
-            if (stHour.hasMoreTokens()){
-                month = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE + date);
-            }
-            if (stHour.hasMoreTokens()){
-                day = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE + date);
-            }
-            if (stHour.hasMoreTokens()){
-                year = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE + date);
+            while (stHour.hasMoreTokens()) {
+                if (month == -1){
+                    month = Integer.parseInt(stHour.nextToken());
+                }else if (day == -1){
+                    day = Integer.parseInt(stHour.nextToken());
+                }else if (year == -1){
+                    year = Integer.parseInt(stHour.nextToken());
+                }else{
+                    trash = Integer.parseInt(stHour.nextToken());
+                }
             }
 
-            if(stHour.hasMoreTokens()){
+            if (trash != 0){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (month == -1){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (day == -1){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (year == -1){
                 printErrorMessageAndExit(INVALID_DATE + date);
             }
 

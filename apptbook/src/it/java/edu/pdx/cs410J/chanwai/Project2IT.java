@@ -658,6 +658,6 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "22:32", "11/10/1996", "13:21");
 
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Body Check from 10/10/1110 22:32 until 11/10/1996 13:21"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("\"Body Check\" from 10/10/1110 22:32 until 11/10/1996 13:21"));
     }
 }

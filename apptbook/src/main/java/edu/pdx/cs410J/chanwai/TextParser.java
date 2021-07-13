@@ -96,10 +96,8 @@ public class TextParser implements AppointmentBookParser {
                 if (m.find()){
                     printErrorMessageAndExit(TOO_MANY_DATA);
                 }
-
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);
-
             }
             return newBook;
         } catch (IOException e) {

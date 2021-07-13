@@ -150,7 +150,7 @@ public class Project2 {
             TextDumper dumper = new TextDumper(new FileWriter(fileName));
             dumper.dump(appointmentBookFromFile);
         } catch (IOException e) {
-            printErrorMessageAndExit("An error occurred.");
+            printErrorMessageAndExit("Cannot write appointments to " + fileName);
         }
     }
 

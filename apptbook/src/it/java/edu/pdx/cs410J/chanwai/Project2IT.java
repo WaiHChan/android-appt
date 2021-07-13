@@ -455,8 +455,30 @@ class Project2IT extends InvokeMainTestCase {
      * If missing month, issues an error
      */
     @Test
+    void missingBeginMonthTwo(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/", "12:21", "11/10/1996", "13:21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
+    }
+
+/*    *//**
+     * Tests that invoking the main method with correct command line arguments
+     * If missing month, issues an error
+     *//*
+    @Test
     void missingEndMonth(){
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "/10/1996", "13:21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
+    }*/
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If missing day, issues an error
+     */
+    @Test
+    void missingBeginDay(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1//2010", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -466,8 +488,8 @@ class Project2IT extends InvokeMainTestCase {
      * If missing day, issues an error
      */
     @Test
-    void missingBeginDay(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1//2010", "12:21", "11/10/1996", "13:21");
+    void missingBeginDayTwo(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1//", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -545,6 +567,18 @@ class Project2IT extends InvokeMainTestCase {
     @Test
     void missingEndHour(){
         MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "11/10/1996", ":21");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
+    }
+
+
+    /**
+     * Tests that invoking the main method with correct command line arguments
+     * If missing minutes, issues an error
+     */
+    @Test
+    void missingHourTwo(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "11/10/1996", ":");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }

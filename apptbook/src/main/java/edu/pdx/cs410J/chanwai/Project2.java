@@ -124,17 +124,21 @@ public class Project2 {
      * @param fileName the name of the file that the user wants to read
      */
     private static AppointmentBook readFile(String fileName){
+
+        AppointmentBook appointmentBookFromFile;
         try {
             TextParser txt = new TextParser(new FileReader(fileName));
-            AppointmentBook appointmentBookFromFile = txt.parse();
+            appointmentBookFromFile = txt.parse();
             return appointmentBookFromFile;
         }catch (FileNotFoundException exception) {
             AppointmentBook newBook = new AppointmentBook();
             return newBook;
         } catch (ParserException e) {
             System.err.println(e);
+            System.exit(1);
         }
-        return null;
+        appointmentBookFromFile = new AppointmentBook();
+        return appointmentBookFromFile;
     }
 
     /**

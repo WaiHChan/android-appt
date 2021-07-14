@@ -71,36 +71,46 @@ public class TextParserTest {
     }
 
     /**
-     * Tests that invoking the dump() and parse() method from TestDump class and TestParser class
-     * Check if an appointment book is created and saved in StringWriter and
-     * Check if an appointment book can be parsed after the dump
+     * Tests that invoking the dump() and parse() method
+     * If there is only owner's name, throw exception
      * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
-     * @throws ParserException Throw an Parser exception if the appointment book cannot be read
      */
     @Test
-    void ifOwnerIsMissing() throws IOException, ParserException {
+    void missingOwner() throws IOException{
 
-        //Appointment appt = new Appointment(null, null, null, null, null, null);
+        Appointment appt = new Appointment("", "", "", "", "", "");
         AppointmentBook book = new AppointmentBook();
-        //book.addAppointment(appt);
+        book.addAppointment(appt);
 
         StringWriter sw = new StringWriter();
         TextDumper dumper = new TextDumper(sw);
         dumper.dump(book);
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
-/*
-       try {
-            book = parser.parse();
-            fail("expected exception was not occured.");
-        } catch(ParserException e) {
-           assertThat(e.getMessage(), is(TextParser.MISSING_DESCRIPTION));
-            //if execution reaches here,
-            //it indicates this exception was occured.
-            //so we need not handle it.
-        }*/
-        /*Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
-        assertEquals(TextParser.MISSING_DESCRIPTION, exception.getMessage());*/
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_OWNER, exception.getMessage());
     }
 
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is only owner's name, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void missingDescription() throws IOException{
+
+        Appointment appt = new Appointment("Jim", "", "", "", "", "");
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_DESCRIPTION, exception.getMessage());
+    }
 }

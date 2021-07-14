@@ -2,14 +2,12 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.*;
-import java.nio.file.Files;
-
 import static edu.pdx.cs410J.chanwai.Project2.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Files;
 
 /**
  * Integration tests for the {@link Project2} main class.
@@ -453,17 +451,6 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
-
-/*    *//**
-     * Tests that invoking the main method with correct command line arguments
-     * If missing month, issues an error
-     *//*
-    @Test
-    void missingEndMonth(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "/10/1996", "13:21");
-        assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
-    }*/
 
     /**
      * Tests that invoking the main method with correct command line arguments

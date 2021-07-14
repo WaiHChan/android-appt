@@ -130,7 +130,7 @@ public class TextParser implements AppointmentBookParser {
      * @param date a date needed to be check if it is within the range
      * @return Returns true or false if the date is valid or invalid
      */
-    private String isDateCorrect(String date) {
+    private String isDateCorrect(String date) throws ParserException {
         try {
             StringTokenizer stHour = new StringTokenizer(date, "/");
             int month = -1;
@@ -150,15 +150,38 @@ public class TextParser implements AppointmentBookParser {
                 }
             }
 
-            if (trash != 0){
-                printErrorMessageAndExit(INVALID_DATE + date);
-            }else if (month == -1){
-                printErrorMessageAndExit(INVALID_DATE + date);
-            }else if (day == -1){
-                printErrorMessageAndExit(INVALID_DATE + date);
-            }else if (year == -1){
-                printErrorMessageAndExit(INVALID_DATE + date);
+            try {
+                if (trash != 0) {
+                    throw new ParserException(INVALID_DATE);
+                }
+            }catch (ParserException e){
+                throw new ParserException(INVALID_DATE);
             }
+
+            try {
+                if (month == -1){
+                    throw new ParserException(INVALID_DATE);
+                }
+            }catch (ParserException e){
+                throw new ParserException(INVALID_DATE);
+            }
+
+            try {
+                if (day == -1){
+                    throw new ParserException(INVALID_DATE);
+                }
+            }catch (ParserException e){
+                throw new ParserException(INVALID_DATE);
+            }
+
+            try {
+                if (year == -1){
+                    throw new ParserException(INVALID_DATE);
+                }
+            }catch (ParserException e){
+                throw new ParserException(INVALID_DATE);
+            }
+
 
             if (year <= 0 || year >= 10000){
                 printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS+ date);

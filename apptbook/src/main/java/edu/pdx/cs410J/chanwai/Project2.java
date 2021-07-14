@@ -126,12 +126,10 @@ public class Project2 {
         File file = new File(fileName);
         if (!file.exists()) {
             return new AppointmentBook();
-
         } else {
             try {
                 TextParser txt = new TextParser(new FileReader(file));
                 return txt.parse();
-
             } catch (FileNotFoundException | ParserException e) {
                 printErrorMessageAndExit("Cannot parse \"" + fileName + "\": " + e.getMessage());
                 return null;

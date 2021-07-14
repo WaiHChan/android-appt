@@ -775,7 +775,7 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(0));
     }
 
-    @Test
+/*    @Test
     void canAddMultipleAppointmentsToAnAppointmentBook(@TempDir File dir) throws IOException {
         File textFile = new File(dir, "appointments.txt");
 
@@ -792,5 +792,5 @@ class Project2IT extends InvokeMainTestCase {
         String textFileContents = Files.readString(textFile.toPath());
         assertThat(textFileContents, containsString(description1));
         assertThat(textFileContents, containsString(description2));
-    }
+    }*/
 }

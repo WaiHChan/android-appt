@@ -30,8 +30,5 @@ public class TextDumperTest {
 
         String dumpedText = sw.toString();
         assertThat(dumpedText, containsString(owner));
-
     }
-
-
 }

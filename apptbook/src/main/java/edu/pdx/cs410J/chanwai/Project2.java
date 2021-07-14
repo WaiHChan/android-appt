@@ -109,10 +109,8 @@ public class Project2 {
                 writeFile(fileName, appointmentBookFromFile);
             }
         }
-
-        appointmentBookFromFile = new AppointmentBook(owner);
-        appointmentBookFromFile.addAppointment(appointment);
-
+            appointmentBookFromFile = new AppointmentBook(owner);
+            appointmentBookFromFile.addAppointment(appointment);
         if (print != null) {
             System.out.println(appointment);
         }

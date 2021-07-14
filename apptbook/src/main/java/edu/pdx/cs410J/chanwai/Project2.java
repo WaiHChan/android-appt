@@ -109,10 +109,8 @@ public class Project2 {
                 writeFile(fileName, appointmentBookFromFile);
             }
         }
-
-        appointmentBookFromFile = new AppointmentBook(owner);
-        appointmentBookFromFile.addAppointment(appointment);
-
+            appointmentBookFromFile = new AppointmentBook(owner);
+            appointmentBookFromFile.addAppointment(appointment);
         if (print != null) {
             System.out.println(appointment);
         }
@@ -125,10 +123,9 @@ public class Project2 {
      */
     private static AppointmentBook readFile(String fileName){
 
-        AppointmentBook appointmentBookFromFile;
         try {
             TextParser txt = new TextParser(new FileReader(fileName));
-            appointmentBookFromFile = txt.parse();
+            AppointmentBook appointmentBookFromFile = txt.parse();
             return appointmentBookFromFile;
         }catch (FileNotFoundException exception) {
             AppointmentBook newBook = new AppointmentBook();
@@ -137,8 +134,7 @@ public class Project2 {
             System.err.println(e);
             System.exit(1);
         }
-        appointmentBookFromFile = new AppointmentBook();
-        return appointmentBookFromFile;
+        return null;
     }
 
     /**

@@ -86,33 +86,54 @@ public class TextParser implements AppointmentBookParser {
                     printErrorMessageAndExit(MISSING_DESCRIPTION);
                 }*/
 
-                if (m.find()){
-                    beginDate = isDateCorrect(m.group(2));
-                }else{
-                    printErrorMessageAndExit(MISSING_BEGIN_DATE);
+                try{
+                    if (m.find()){
+                        beginDate = isDateCorrect(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_BEGIN_DATE);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_BEGIN_DATE);
                 }
 
-                if (m.find()){
-                    beginTime = isTimeCorrect(m.group(2));
-                }else{
-                    printErrorMessageAndExit(MISSING_BEGIN_TIME);
+                try{
+                    if (m.find()){
+                        beginTime = isTimeCorrect(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_BEGIN_TIME);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_BEGIN_TIME);
                 }
 
-                if (m.find()){
-                    endDate = isDateCorrect(m.group(2));
-                }else{
-                    printErrorMessageAndExit(MISSING_END_DATE);
+                try{
+                    if (m.find()){
+                        endDate = isDateCorrect(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_END_DATE);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_END_DATE);
                 }
 
-                if (m.find()){
-                    endTime = isTimeCorrect(m.group(2));
-                }else{
-                    printErrorMessageAndExit(MISSING_END_TIME);
+                try{
+                    if (m.find()){
+                        endTime = isTimeCorrect(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_END_TIME);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_END_TIME);
                 }
 
-                if (m.find()){
-                    printErrorMessageAndExit(TOO_MANY_DATA);
-                }
+   /*             try{
+                    if (m.find()){
+                        throw new ParserException(TOO_MANY_DATA);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(TOO_MANY_DATA);
+                }*/
+
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);
             }

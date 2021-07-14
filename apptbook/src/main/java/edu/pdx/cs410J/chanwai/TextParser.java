@@ -9,8 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextParser implements AppointmentBookParser {
-    private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
-    private static final String TOO_MANY_DATA = "File: Too many data";
+    static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
     static final String MISSING_OWNER = "File: Missing Owner";
     static final String MISSING_DESCRIPTION = "File: Missing Description";
     static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
@@ -24,22 +23,29 @@ public class TextParser implements AppointmentBookParser {
     static final String MINS_OUT_OF_BOUNDS = "File: Minutes out of bounds: ";
     static final String INVALID_DATE = "File: Invalid Date: ";
     static final String INVALID_TIME = "File: Invalid Time: ";
-
     private final BufferedReader reader;
 
+    /**
+     * Create a bufferedReader
+     * @param reader Create a bufferedReader for reading file
+     */
     public TextParser(Reader reader){
         this.reader = new BufferedReader(reader);
     }
 
+    /**
+     * Read a file and return an appointment book
+     * @return it returns an appointment book
+     * @throws ParserException if it can't read the data, raise exception
+     */
     @Override
     public AppointmentBook parse() throws ParserException {
-        String owner = null;
-        String description = null;
-        String beginDate = null;
-        String beginTime = null;
-        String endDate = null;
-        String endTime = null;
-        String trash = null;
+        String owner;
+        String description;
+        String beginDate;
+        String beginTime;
+        String endDate;
+        String endTime;
 
         try {
             String oneTextLine;
@@ -119,10 +125,10 @@ public class TextParser implements AppointmentBookParser {
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);
             }
+            reader.close();
             return newBook;
         } catch (IOException e) {
-            AppointmentBook newBook = new AppointmentBook();
-            return newBook;
+            return new AppointmentBook();
         }
     }
     /**

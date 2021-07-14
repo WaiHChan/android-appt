@@ -87,7 +87,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_OWNER, exception.getMessage());
     }
 
@@ -109,7 +109,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_DESCRIPTION, exception.getMessage());
     }
 
@@ -131,7 +131,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_BEGIN_DATE, exception.getMessage());
     }
 
@@ -153,7 +153,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_BEGIN_TIME, exception.getMessage());
     }
 
@@ -175,7 +175,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_END_DATE, exception.getMessage());
     }
 
@@ -197,9 +197,7 @@ public class TextParserTest {
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
 
-        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
         assertEquals(TextParser.MISSING_END_TIME, exception.getMessage());
     }
-
-
 }

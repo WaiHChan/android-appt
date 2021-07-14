@@ -2,14 +2,12 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.*;
-import java.nio.file.Files;
-
 import static edu.pdx.cs410J.chanwai.Project2.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Files;
 
 /**
  * Integration tests for the {@link Project2} main class.
@@ -357,21 +355,6 @@ class Project2IT extends InvokeMainTestCase {
 
     /**
      * Tests that invoking the main method with file
-     * Check if file is empty, check if appointment book is null
-     */
-    @Test
-    void checkFileIsNull(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
-        Appointment appt = new Appointment("Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
-        AppointmentBook book = new AppointmentBook("Jimmy");
-        book.addAppointment(appt);
-
-        assertThat(result.getExitCode(), equalTo(0));
-        assertThat(book.getAppointments(), hasItem(appt));
-    }
-
-    /**
-     * Tests that invoking the main method with file
      * If the file name exists, check if appointment book is null
      */
     @Test
@@ -453,17 +436,6 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
-
-/*    *//**
-     * Tests that invoking the main method with correct command line arguments
-     * If missing month, issues an error
-     *//*
-    @Test
-    void missingEndMonth(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "/10/1996", "13:21");
-        assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
-    }*/
 
     /**
      * Tests that invoking the main method with correct command line arguments
@@ -775,7 +747,30 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(0));
     }
 
-/*    @Test
+    /**
+     * Tests that invoking the main method with file
+     * Check if file is empty, check if appointment book is null
+     */
+    @Test
+    void addAnAppointmentBook(@TempDir File dir) throws IOException {
+
+        File textFile = new File(dir, "appointments.txt");
+
+        String description1 = "Appointment 1";
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "7/7/2021", "13:00");
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
+        String textFileContents = Files.readString(textFile.toPath());
+        assertThat(textFileContents, containsString(description1));
+    }
+
+    /**
+     * Test if it can add two appointments
+     * @param dir A temp file for storing appointments
+     * @throws IOException Raise exception if there are errors
+     */
+    @Test
     void canAddMultipleAppointmentsToAnAppointmentBook(@TempDir File dir) throws IOException {
         File textFile = new File(dir, "appointments.txt");
 
@@ -792,5 +787,5 @@ class Project2IT extends InvokeMainTestCase {
         String textFileContents = Files.readString(textFile.toPath());
         assertThat(textFileContents, containsString(description1));
         assertThat(textFileContents, containsString(description2));
-    }*/
+    }
 }

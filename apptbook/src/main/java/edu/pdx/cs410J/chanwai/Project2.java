@@ -3,13 +3,12 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
-import java.text.DecimalFormat;
-import java.util.Optional;
 import java.util.StringTokenizer;
 
 /**
  * The main class for the CS410J appointment book Project
  */
+
 public class Project2 {
 
     static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";

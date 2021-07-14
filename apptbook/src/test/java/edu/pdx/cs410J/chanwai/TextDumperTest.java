@@ -9,6 +9,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 public class TextDumperTest {
+    /**
+     * Tests that invoking the dump() and parse() method
+     * It shows that both methods run correctly
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
     @Test
     void dumperDumpsAppointmentBookOwner() throws IOException {
         String owner = "Owner";

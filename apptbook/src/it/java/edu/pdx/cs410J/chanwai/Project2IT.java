@@ -2,8 +2,10 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.*;
+import java.nio.file.Files;
 
 import static edu.pdx.cs410J.chanwai.Project2.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -771,5 +773,24 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Eye", "10/10/1110", "22:32", "11/10/1996", "13:21");
 
         assertThat(result.getExitCode(), equalTo(0));
+    }
+
+    @Test
+    void canAddMultipleAppointmentsToAnAppointmentBook(@TempDir File dir) throws IOException {
+        File textFile = new File(dir, "appointments.txt");
+
+        String description1 = "Appointment 1";
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "7/7/2021", "13:00");
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
+        String description2 = "Appointment 2";
+        result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description2, "7/7/2021", "12:00", "7/7/2021", "13:00");
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
+        String textFileContents = Files.readString(textFile.toPath());
+        assertThat(textFileContents, containsString(description1));
+        assertThat(textFileContents, containsString(description2));
     }
 }

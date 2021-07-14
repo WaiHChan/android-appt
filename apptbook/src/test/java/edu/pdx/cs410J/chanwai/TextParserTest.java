@@ -3,7 +3,6 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 import java.io.*;
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,7 +71,7 @@ public class TextParserTest {
 
     /**
      * Tests that invoking the dump() and parse() method
-     * If there is only owner's name, throw exception
+     * If there is missing owner, throw exception
      * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
      */
     @Test
@@ -94,7 +93,7 @@ public class TextParserTest {
 
     /**
      * Tests that invoking the dump() and parse() method
-     * If there is only owner's name, throw exception
+     * If there is missing description, throw exception
      * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
      */
     @Test
@@ -113,4 +112,94 @@ public class TextParserTest {
         Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
         assertEquals(TextParser.MISSING_DESCRIPTION, exception.getMessage());
     }
+
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is missing begin date, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void missingBeginDate() throws IOException{
+
+        Appointment appt = new Appointment("Jim", "Temp", "", "", "", "");
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_BEGIN_DATE, exception.getMessage());
+    }
+
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is missing begin time, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void missingBeginTime() throws IOException{
+
+        Appointment appt = new Appointment("Jim", "Temp", "12/2/1493", "", "", "");
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_BEGIN_TIME, exception.getMessage());
+    }
+
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is missing end date, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void missingEndDate() throws IOException{
+
+        Appointment appt = new Appointment("Jim", "Temp", "12/2/1493", "12:22", "", "");
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_END_DATE, exception.getMessage());
+    }
+
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is missing end time, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void missingEndTime() throws IOException{
+
+        Appointment appt = new Appointment("Jim", "Temp", "12/2/1493", "12:22", "1/2/1995", "");
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(appt);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_END_TIME, exception.getMessage());
+    }
+
+
 }

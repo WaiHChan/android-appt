@@ -382,17 +382,17 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(0));
     }
 
-/*    *//**
+    /**
      * Tests that invoking the main method with file
      * If the file name exists, check if appointment book owner is same as argument owner
-     *//*
+     */
     @Test
     void fileNameDifferentThanArgName(){
         MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
         assertThat(result.getExitCode(), equalTo(1));
-    }*/
+    }
 
     /**
      * Tests that invoking the main method with seven arguments

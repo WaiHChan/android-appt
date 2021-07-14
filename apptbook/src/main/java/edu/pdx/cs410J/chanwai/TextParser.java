@@ -75,16 +75,6 @@ public class TextParser implements AppointmentBookParser {
                     throw new ParserException(MISSING_DESCRIPTION);
                 }
 
-               /* if (m.find()){
-                    if (m.group(1) != null) {
-                        description = "\"" + m.group(1) + "\"";
-                    } else {
-                        description = m.group(2);
-                    }
-                }else{
-                    printErrorMessageAndExit(MISSING_DESCRIPTION);
-                }*/
-
                 try{
                     if (m.find()){
                         beginDate = isDateCorrect(m.group(2));

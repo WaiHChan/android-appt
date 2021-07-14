@@ -39,6 +39,7 @@ public class TextParser implements AppointmentBookParser {
         String beginTime = null;
         String endDate = null;
         String endTime = null;
+        String trash = null;
 
         try {
             String oneTextLine;
@@ -114,14 +115,6 @@ public class TextParser implements AppointmentBookParser {
                 }catch (ParserException e){
                     throw new ParserException(MISSING_END_TIME);
                 }
-
-   /*             try{
-                    if (m.find()){
-                        throw new ParserException(TOO_MANY_DATA);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(TOO_MANY_DATA);
-                }*/
 
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);

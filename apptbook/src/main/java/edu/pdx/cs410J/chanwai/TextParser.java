@@ -4,6 +4,7 @@ import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,18 +13,18 @@ public class TextParser implements AppointmentBookParser {
     private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
     private static final String TOO_MANY_DATA = "File: Too many data";
     static final String MISSING_OWNER = "File: Missing Owner";
-    private static final String MISSING_DESCRIPTION = "File: Missing Description";
-    private static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
-    private static final String MISSING_BEGIN_TIME = "File: Missing Begin Time";
-    private static final String MISSING_END_DATE = "File: Missing End Date";
-    private static final String MISSING_END_TIME = "File: Missing End Time";
-    private static final String YEAR_OUT_OF_BOUNDS = "File: Year out of bounds: ";
-    private static final String MONTH_OUT_OF_BOUNDS = "File: Month out of bounds: " ;
-    private static final String DAY_OUT_OF_BOUNDS = "File: Day out of bounds: " ;
-    private static final String HOUR_OUT_OF_BOUNDS = "File: Hour out of bounds: ";
-    private static final String MINS_OUT_OF_BOUNDS = "File: Minutes out of bounds: ";
-    private static final String INVALID_DATE = "File: Invalid Date: ";
-    private static final String INVALID_TIME = "File: Invalid Time: ";
+    static final String MISSING_DESCRIPTION = "File: Missing Description";
+    static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
+    static final String MISSING_BEGIN_TIME = "File: Missing Begin Time";
+    static final String MISSING_END_DATE = "File: Missing End Date";
+    static final String MISSING_END_TIME = "File: Missing End Time";
+    static final String YEAR_OUT_OF_BOUNDS = "File: Year out of bounds: ";
+    static final String MONTH_OUT_OF_BOUNDS = "File: Month out of bounds: " ;
+    static final String DAY_OUT_OF_BOUNDS = "File: Day out of bounds: " ;
+    static final String HOUR_OUT_OF_BOUNDS = "File: Hour out of bounds: ";
+    static final String MINS_OUT_OF_BOUNDS = "File: Minutes out of bounds: ";
+    static final String INVALID_DATE = "File: Invalid Date: ";
+    static final String INVALID_TIME = "File: Invalid Time: ";
 
     private final BufferedReader reader;
 
@@ -47,17 +48,35 @@ public class TextParser implements AppointmentBookParser {
             AppointmentBook newBook = new AppointmentBook();
             while ((oneTextLine = reader.readLine()) != null) {
                 Matcher m = Pattern.compile(regex).matcher(oneTextLine);
-                if (m.find()){
-                    if (m.group(1) != null) {
-                        owner = "\"" + m.group(1) + "\"";
-                    } else {
-                        owner = m.group(2);
+                try{
+                    if (m.find()) {
+                        if (m.group(1) != null) {
+                            owner = "\"" + m.group(1) + "\"";
+                        } else {
+                            owner = m.group(2);
+                        }
+                    }else {
+                        throw new ParserException(MISSING_OWNER);
                     }
-                }else{
-                    printErrorMessageAndExit(MISSING_OWNER);
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_OWNER);
                 }
 
-                if (m.find()){
+                try{
+                    if (m.find()){
+                        if (m.group(1) != null) {
+                            description = "\"" + m.group(1) + "\"";
+                        } else {
+                            description = m.group(2);
+                        }
+                    }else {
+                        throw new ParserException(MISSING_DESCRIPTION);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_DESCRIPTION);
+                }
+
+               /* if (m.find()){
                     if (m.group(1) != null) {
                         description = "\"" + m.group(1) + "\"";
                     } else {
@@ -65,7 +84,7 @@ public class TextParser implements AppointmentBookParser {
                     }
                 }else{
                     printErrorMessageAndExit(MISSING_DESCRIPTION);
-                }
+                }*/
 
                 if (m.find()){
                     beginDate = isDateCorrect(m.group(2));
@@ -114,25 +133,28 @@ public class TextParser implements AppointmentBookParser {
             int month = -1;
             int day = -1;
             int year = -1;
+            int trash = 0;
 
-            if (stHour.hasMoreTokens()){
-                month = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE + " " + date);
-            }
-            if (stHour.hasMoreTokens()){
-                day = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE+ date);
-            }
-            if (stHour.hasMoreTokens()){
-                year = Integer.parseInt(stHour.nextToken());
-            }else{
-                printErrorMessageAndExit(INVALID_DATE+ date);
+            while (stHour.hasMoreTokens()) {
+                if (month == -1){
+                    month = Integer.parseInt(stHour.nextToken());
+                }else if (day == -1){
+                    day = Integer.parseInt(stHour.nextToken());
+                }else if (year == -1){
+                    year = Integer.parseInt(stHour.nextToken());
+                }else{
+                    trash = Integer.parseInt(stHour.nextToken());
+                }
             }
 
-            if(stHour.hasMoreTokens()){
-                printErrorMessageAndExit(INVALID_DATE+ date);
+            if (trash != 0){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (month == -1){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (day == -1){
+                printErrorMessageAndExit(INVALID_DATE + date);
+            }else if (year == -1){
+                printErrorMessageAndExit(INVALID_DATE + date);
             }
 
             if (year <= 0 || year >= 10000){
@@ -161,19 +183,23 @@ public class TextParser implements AppointmentBookParser {
             StringTokenizer st = new StringTokenizer(time, ":");
             int hour = -1;
             int min = -1;
+            int trash = 0;
 
-            if (st.hasMoreTokens()) {
-                hour = Integer.parseInt(st.nextToken());
-            } else {
-                printErrorMessageAndExit(INVALID_TIME + time);
-            }
-            if (st.hasMoreTokens()) {
-                min = Integer.parseInt(st.nextToken());
-            } else {
-                printErrorMessageAndExit(INVALID_TIME + time);
+            while (st.hasMoreTokens()) {
+                if (hour == -1){
+                    hour = Integer.parseInt(st.nextToken());
+                }else if (min == -1){
+                    min = Integer.parseInt(st.nextToken());
+                }else{
+                    trash = Integer.parseInt(st.nextToken());
+                }
             }
 
-            if (st.hasMoreTokens()) {
+            if (trash != 0){
+                printErrorMessageAndExit(INVALID_TIME + time);
+            }else if (hour == -1){
+                printErrorMessageAndExit(INVALID_TIME + time);
+            }else if (min == -1){
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
 

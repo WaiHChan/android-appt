@@ -4,6 +4,7 @@ import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
 import java.text.DecimalFormat;
+import java.util.Optional;
 import java.util.StringTokenizer;
 
 /**
@@ -96,7 +97,7 @@ public class Project2 {
 
         Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
         AppointmentBook appointmentBookFromFile;
-        if (fileName != null){
+        if (fileName != null) {
             appointmentBookFromFile = readFile(fileName);
             if (appointmentBookFromFile.getOwnerName() == null){
                 appointmentBookFromFile.addAppointment(appointment);
@@ -130,8 +131,8 @@ public class Project2 {
         }catch (FileNotFoundException exception) {
             AppointmentBook newBook = new AppointmentBook();
             return newBook;
-        } catch (ParserException ex){
-            printErrorMessageAndExit("AppointmentBook can not be read.");
+        } catch (ParserException e) {
+            System.err.println(e);
         }
         return null;
     }
@@ -229,7 +230,6 @@ public class Project2 {
     private static String isTimeCorrect(String time){
         try {
             StringTokenizer st = new StringTokenizer(time, ":");
-
             int hour = -1;
             int min = -1;
             int trash = 0;
@@ -243,6 +243,7 @@ public class Project2 {
                     trash = Integer.parseInt(st.nextToken());
                 }
             }
+
             if (trash != 0){
                 printErrorMessageAndExit(INVALID_TIME + time);
             }else if (hour == -1){

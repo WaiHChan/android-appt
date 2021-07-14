@@ -359,12 +359,12 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void checkFileIsNull(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
         Appointment appt = new Appointment("Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
         AppointmentBook book = new AppointmentBook("Jimmy");
         book.addAppointment(appt);
 
-        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getExitCode(), equalTo(0));
         assertThat(book.getAppointments(), hasItem(appt));
     }
 
@@ -374,12 +374,12 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void fileNameNotNullFileIsNull(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
 
         AppointmentBook nullBook = new AppointmentBook();
 
         assertThat(nullBook.getOwnerName(), equalTo(null));
-        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getExitCode(), equalTo(0));
     }
 
     /**

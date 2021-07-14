@@ -5,11 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.junit.jupiter.api.io.TempDir;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TextParserTest {
 
@@ -80,46 +77,30 @@ public class TextParserTest {
      * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
      * @throws ParserException Throw an Parser exception if the appointment book cannot be read
      */
-   /* @Test
+    @Test
     void ifOwnerIsMissing() throws IOException, ParserException {
 
         //Appointment appt = new Appointment(null, null, null, null, null, null);
         AppointmentBook book = new AppointmentBook();
-       // book.addAppointment(appt);
+        //book.addAppointment(appt);
 
         StringWriter sw = new StringWriter();
         TextDumper dumper = new TextDumper(sw);
         dumper.dump(book);
 
         TextParser parser = new TextParser(new StringReader(sw.toString()));
-        book = parser.parse();
-
-        assertThat(ParserException, containsString(MISSING_OWNER));
-    }*/
-
 /*
-    @Test
-    void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir) throws IOException, ParserException {
+       try {
+            book = parser.parse();
+            fail("expected exception was not occured.");
+        } catch(ParserException e) {
+           assertThat(e.getMessage(), is(TextParser.MISSING_DESCRIPTION));
+            //if execution reaches here,
+            //it indicates this exception was occured.
+            //so we need not handle it.
+        }*/
+        /*Throwable exception = assertThrows(ParserException.class, () -> parser.parse());
+        assertEquals(TextParser.MISSING_DESCRIPTION, exception.getMessage());*/
+    }
 
-        File textFile = new File(dir, "appt.txt");
-
-        String owner = "Owner";
-        String description = "Eyes";
-        String begin_Date = "1/2/1554";
-        String begin_Time = "12:42";
-        String end_Date = "1/2/2005";
-        String end_Time = "12:42";
-
-        Appointment appt = new Appointment(owner, description, begin_Date, begin_Time, end_Date, end_Time);
-        AppointmentBook book = new AppointmentBook(owner);
-        book.addAppointment(appt);
-
-        TextDumper dumper = new TextDumper(new FileWriter(textFile));
-        dumper.dump(book);
-
-        TextParser parser = new TextParser(new FileReader(textFile));
-        book = parser.parse();
-
-        assertThat(book.getOwnerName(), equalTo(owner));
-    }*/
 }

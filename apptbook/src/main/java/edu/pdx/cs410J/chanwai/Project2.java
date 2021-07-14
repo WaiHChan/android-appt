@@ -123,18 +123,18 @@ public class Project2 {
      */
     private static AppointmentBook readFile(String fileName){
 
-        try {
-            TextParser txt = new TextParser(new FileReader(fileName));
-            AppointmentBook appointmentBookFromFile = txt.parse();
-            return appointmentBookFromFile;
-        }catch (FileNotFoundException exception) {
-            AppointmentBook newBook = new AppointmentBook();
-            return newBook;
-        } catch (ParserException e) {
-            System.err.println(e);
-            System.exit(1);
+        File file = new File(fileName);
+        if (!file.exists()) {
+            return new AppointmentBook();
+        } else {
+            try {
+                TextParser txt = new TextParser(new FileReader(file));
+                return txt.parse();
+            } catch (FileNotFoundException | ParserException e) {
+                printErrorMessageAndExit("Cannot parse \"" + fileName + "\": " + e.getMessage());
+                return null;
+            }
         }
-        return null;
     }
 
     /**
@@ -275,19 +275,4 @@ public class Project2 {
         System.exit(1);
     }
 
-    /**
-     * Convert a string to two decimal
-     * @param arg an string representing the minutes of the appointment
-     * @return a converted two decimal string
-     */
-    private static String formatToTwoDecimal(String arg){
-        StringTokenizer time = new StringTokenizer(arg, ":");
-        String hour = time.nextToken();
-        int temp_mins = Integer.parseInt(time.nextToken());
-
-        DecimalFormat formatter = new DecimalFormat("00");
-        String mins = formatter.format(temp_mins);
-
-        return hour + ":" + mins;
-    }
 }

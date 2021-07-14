@@ -72,17 +72,13 @@ public class TextParser implements AppointmentBookParser {
 
     private String extractValue(Matcher m, String missingValueMessage) throws ParserException {
         String owner;
-        try{
-            if (m.find()) {
-                if (m.group(1) != null) {
-                    owner = "\"" + m.group(1) + "\"";
-                } else {
-                    owner = m.group(2);
-                }
-            }else {
-                throw new ParserException(missingValueMessage);
+        if (m.find()) {
+            if (m.group(1) != null) {
+                owner = "\"" + m.group(1) + "\"";
+            } else {
+                owner = m.group(2);
             }
-        }catch (ParserException e){
+        }else {
             throw new ParserException(missingValueMessage);
         }
         return owner;
@@ -90,13 +86,9 @@ public class TextParser implements AppointmentBookParser {
 
     private String extractDate(Matcher m, String missingValueMessage) throws ParserException {
         String endDate;
-        try{
-            if (m.find()){
-                endDate = isDateCorrect(m.group(2));
-            }else {
-                throw new ParserException(missingValueMessage);
-            }
-        }catch (ParserException e){
+        if (m.find()){
+            endDate = isDateCorrect(m.group(2));
+        }else {
             throw new ParserException(missingValueMessage);
         }
         return endDate;
@@ -104,13 +96,9 @@ public class TextParser implements AppointmentBookParser {
 
     private String extractTime(Matcher m, String missingValueMessage) throws ParserException {
         String endTime;
-        try{
-            if (m.find()){
-                endTime = isTimeCorrect(m.group(2));
-            }else {
-                throw new ParserException(missingValueMessage);
-            }
-        }catch (ParserException e){
+        if (m.find()){
+            endTime = isTimeCorrect(m.group(2));
+        }else {
             throw new ParserException(missingValueMessage);
         }
         return endTime;

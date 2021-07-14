@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TextParser implements AppointmentBookParser {
-    private static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
+    static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
     static final String MISSING_OWNER = "File: Missing Owner";
     static final String MISSING_DESCRIPTION = "File: Missing Description";
     static final String MISSING_BEGIN_DATE = "File: Missing Begin Date";
@@ -125,6 +125,7 @@ public class TextParser implements AppointmentBookParser {
                 Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
                 newBook.addAppointment(appt);
             }
+            reader.close();
             return newBook;
         } catch (IOException e) {
             return new AppointmentBook();

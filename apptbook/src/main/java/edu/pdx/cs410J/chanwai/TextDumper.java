@@ -36,8 +36,8 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
             writer.write(a.endDate + " ");
             writer.write(a.endTime + "\n");
         }
-
         writer.close();
+
         System.out.println("Successfully wrote to the file.");
     }
 }

@@ -33,12 +33,6 @@ public class TextParser implements AppointmentBookParser {
 
     @Override
     public AppointmentBook parse() throws ParserException {
-        String owner = null;
-        String description = null;
-        String beginDate = null;
-        String beginTime = null;
-        String endDate = null;
-        String endTime = null;
 
         try {
             String oneTextLine;
@@ -47,73 +41,17 @@ public class TextParser implements AppointmentBookParser {
             AppointmentBook newBook = new AppointmentBook();
             while ((oneTextLine = reader.readLine()) != null) {
                 Matcher m = Pattern.compile(regex).matcher(oneTextLine);
-                try{
-                    if (m.find()) {
-                        if (m.group(1) != null) {
-                            owner = "\"" + m.group(1) + "\"";
-                        } else {
-                            owner = m.group(2);
-                        }
-                    }else {
-                        throw new ParserException(MISSING_OWNER);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_OWNER);
-                }
+                String owner = extractValue(m, MISSING_OWNER);
 
-                try{
-                    if (m.find()){
-                        if (m.group(1) != null) {
-                            description = "\"" + m.group(1) + "\"";
-                        } else {
-                            description = m.group(2);
-                        }
-                    }else {
-                        throw new ParserException(MISSING_DESCRIPTION);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_DESCRIPTION);
-                }
+                String description = extractValue(m, MISSING_DESCRIPTION);
 
-                try{
-                    if (m.find()){
-                        beginDate = isDateCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_BEGIN_DATE);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_BEGIN_DATE);
-                }
+                String beginDate = extractDate(m, MISSING_BEGIN_DATE);
 
-                try{
-                    if (m.find()){
-                        beginTime = isTimeCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_BEGIN_TIME);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_BEGIN_TIME);
-                }
+                String beginTime = extractTime(m, MISSING_BEGIN_TIME);
 
-                try{
-                    if (m.find()){
-                        endDate = isDateCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_END_DATE);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_END_DATE);
-                }
+                String endDate = extractDate(m, MISSING_END_DATE);
 
-                try{
-                    if (m.find()){
-                        endTime = isTimeCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_END_TIME);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_END_TIME);
-                }
+                String endTime = extractTime(m, MISSING_END_TIME);
 
    /*             try{
                     if (m.find()){
@@ -128,10 +66,56 @@ public class TextParser implements AppointmentBookParser {
             }
             return newBook;
         } catch (IOException e) {
-            AppointmentBook newBook = new AppointmentBook();
-            return newBook;
+            throw new ParserException("Could not parse appointment book", e);
         }
     }
+
+    private String extractValue(Matcher m, String missingValueMessage) throws ParserException {
+        String owner;
+        try{
+            if (m.find()) {
+                if (m.group(1) != null) {
+                    owner = "\"" + m.group(1) + "\"";
+                } else {
+                    owner = m.group(2);
+                }
+            }else {
+                throw new ParserException(missingValueMessage);
+            }
+        }catch (ParserException e){
+            throw new ParserException(missingValueMessage);
+        }
+        return owner;
+    }
+
+    private String extractDate(Matcher m, String missingValueMessage) throws ParserException {
+        String endDate;
+        try{
+            if (m.find()){
+                endDate = isDateCorrect(m.group(2));
+            }else {
+                throw new ParserException(missingValueMessage);
+            }
+        }catch (ParserException e){
+            throw new ParserException(missingValueMessage);
+        }
+        return endDate;
+    }
+
+    private String extractTime(Matcher m, String missingValueMessage) throws ParserException {
+        String endTime;
+        try{
+            if (m.find()){
+                endTime = isTimeCorrect(m.group(2));
+            }else {
+                throw new ParserException(missingValueMessage);
+            }
+        }catch (ParserException e){
+            throw new ParserException(missingValueMessage);
+        }
+        return endTime;
+    }
+
     /**
      * Returns true or false if the date is correct
      * @param date a date needed to be check if it is within the range

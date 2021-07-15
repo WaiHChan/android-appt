@@ -2,6 +2,8 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.AbstractAppointment;
 
+import java.util.Date;
+
 /**
  * This class is represents a <code>Appointment</code>
  */
@@ -56,6 +58,16 @@ public class Appointment extends AbstractAppointment {
   @Override
   public String getEndTimeString() {
     return this.endDate + " " + this.endTime;
+  }
+
+  @Override
+  public Date getBeginTime(){
+    return null;
+  }
+
+  @Override
+  public Date getEndTime(){
+    return null;
   }
 
   /**

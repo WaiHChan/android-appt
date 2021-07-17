@@ -3,6 +3,9 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 import java.util.Date;
 
@@ -28,6 +31,8 @@ public class Project2 {
     static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file.";
     static final String INVALID_DATE = "Invalid Date: ";
     static final String INVALID_TIME = "Invalid Time: ";
+    static final String MISSING_AMPM = "Missing AM or PM";
+    static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
 
     public static void main(String[] args) {
         String textfile = null;
@@ -37,9 +42,14 @@ public class Project2 {
         String description = null;
         String beginDate = null;
         String beginTime = null;
+        String beginAmPm = null;
         String endDate = null;
         String endTime = null;
+        String endAmPm = null;
         String trash = null;
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         for (String  arg : args) {
             if ("-textFile".equals(arg)){
@@ -63,11 +73,15 @@ public class Project2 {
                 beginDate = isDateCorrect(arg);
             } else if (beginTime == null){
                 beginTime = isTimeCorrect(arg);
+            } else if (beginAmPm == null){
+                beginAmPm = isAmPm(arg);
             } else if (endDate == null){
                 endDate = isDateCorrect(arg);
             } else if (endTime == null){
                 endTime = isTimeCorrect(arg);
-            } else{
+            } else if (endAmPm == null) {
+                endAmPm = isAmPm(arg);
+            }else{
                 trash = arg;
             }
         }
@@ -87,15 +101,31 @@ public class Project2 {
         } else if (beginTime == null) {
             printErrorMessageAndExit(MISSING_BEGIN_TIME);
             return;
-        } else if (endDate == null) {
+        } else if (beginAmPm == null) {
+            printErrorMessageAndExit(MISSING_AMPM);
+            return;
+        }else if (endDate == null) {
             printErrorMessageAndExit(MISSING_END_DATE);
             return;
         } else if (endTime == null) {
             printErrorMessageAndExit(MISSING_END_TIME);
             return;
+        } else if (endAmPm == null) {
+            printErrorMessageAndExit(MISSING_AMPM);
+            return;
         }
 
-        Appointment appointment = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+        try {
+            begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+            end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+            if (begin_date.compareTo(end_date) > 0){
+                printErrorMessageAndExit(BEGIN_DATE_AFTER_END_DATE);
+            }
+        }catch (ParseException e){
+            printErrorMessageAndExit("Can not parse the date.");
+        }
+
+        Appointment appointment = new Appointment(owner, description, begin_date, end_date);
         AppointmentBook appointmentBookFromFile;
         if (fileName != null) {
             appointmentBookFromFile = readFile(fileName);
@@ -109,8 +139,10 @@ public class Project2 {
                 writeFile(fileName, appointmentBookFromFile);
             }
         }
-            appointmentBookFromFile = new AppointmentBook(owner);
-            appointmentBookFromFile.addAppointment(appointment);
+
+        appointmentBookFromFile = new AppointmentBook(owner);
+        appointmentBookFromFile.addAppointment(appointment);
+
         if (print != null) {
             System.out.println(appointment);
         }
@@ -265,6 +297,15 @@ public class Project2 {
         }
     }
 
+    private static String isAmPm(String amPm){
+        if ("am".equalsIgnoreCase(amPm)) {
+            return "AM";
+        }else if ("pm".equalsIgnoreCase(amPm)){
+            return "PM";
+        }else {
+            return null;
+        }
+    }
     /**
      * Print error message and exit the program
      * @param message an error message that needed to be printed

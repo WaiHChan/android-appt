@@ -2,20 +2,21 @@ package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.AbstractAppointment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * This class is represents a <code>Appointment</code>
  */
 
-public class Appointment extends AbstractAppointment {
+public class Appointment extends AbstractAppointment implements Comparable<Appointment> {
 
   protected String owner;
   protected String description;
-  protected String beginDate;
-  protected String beginTime;
-  protected String endDate;
-  protected String endTime;
+  protected Date beginDate;
+  protected Date endDate;
+  DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
   /**
    * Creates a new <code>Appointment</code>
@@ -26,20 +27,15 @@ public class Appointment extends AbstractAppointment {
    *        A description about the appointment
    * @param beginDate
    *        The begin date of the appointment
-   * @param beginTime
-   *        The begin time of the appointment
    * @param endDate
    *        The end date of the appointment
-   * @param endTime
-   *        The end time of the appointment
    */
-  public Appointment(String owner, String description, String beginDate, String beginTime, String endDate, String endTime){
+  public Appointment(String owner, String description, Date beginDate, Date endDate){
     this.owner = owner;
     this.description = description;
     this.beginDate = beginDate;
-    this.beginTime = beginTime;
     this.endDate = endDate;
-    this.endTime = endTime;
+
   }
 
   /**
@@ -48,7 +44,7 @@ public class Appointment extends AbstractAppointment {
    */
   @Override
   public String getBeginTimeString() {
-    return this.beginDate + " " + this.beginTime;
+    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(beginDate);
   }
 
   /**
@@ -57,17 +53,25 @@ public class Appointment extends AbstractAppointment {
    */
   @Override
   public String getEndTimeString() {
-    return this.endDate + " " + this.endTime;
+    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(endDate);
+  }
+
+  public String getBDateString() {
+    return df.format(beginDate);
+  }
+
+  public String getEDateString() {
+    return df.format(endDate);
   }
 
   @Override
   public Date getBeginTime(){
-    return null;
+    return beginDate;
   }
 
   @Override
   public Date getEndTime(){
-    return null;
+    return endDate;
   }
 
   /**
@@ -77,5 +81,28 @@ public class Appointment extends AbstractAppointment {
   @Override
   public String getDescription() {
     return this.description;
+  }
+
+  @Override
+  public int compareTo(Appointment o) {
+    if (getBeginTime().compareTo(o.getBeginTime()) < 0){
+      return -1;
+    } else if (getBeginTime().compareTo(o.getBeginTime()) > 0){
+      return 1;
+    } else { // begin = end
+      if (getEndTime().compareTo(o.getEndTime()) < 0){
+        return -1;
+      }else if (getEndTime().compareTo(o.getEndTime()) > 0){
+        return 1;
+      }else { // sort by description
+        if (getDescription().compareTo(o.description) < 0){
+          return -1;
+        }else if (getDescription().compareTo(o.description) > 0){
+          return 1;
+        }else {
+          return 0;
+        }
+      }
+    }
   }
 }

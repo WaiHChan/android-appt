@@ -4,6 +4,10 @@ import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +27,8 @@ public class TextParser implements AppointmentBookParser {
     static final String MINS_OUT_OF_BOUNDS = "File: Minutes out of bounds: ";
     static final String INVALID_DATE = "File: Invalid Date: ";
     static final String INVALID_TIME = "File: Invalid Time: ";
+    static final String MISSING_AMPM = "Missing AM or PM";
+    static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
     private final BufferedReader reader;
 
     /**
@@ -44,8 +50,13 @@ public class TextParser implements AppointmentBookParser {
         String description;
         String beginDate;
         String beginTime;
+        String beginAmPm;
         String endDate;
         String endTime;
+        String endAmPm;
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         try {
             String oneTextLine;
@@ -104,6 +115,16 @@ public class TextParser implements AppointmentBookParser {
 
                 try{
                     if (m.find()){
+                        beginAmPm = isAmPm(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_AMPM);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_BEGIN_TIME);
+                }
+
+                try{
+                    if (m.find()){
                         endDate = isDateCorrect(m.group(2));
                     }else {
                         throw new ParserException(MISSING_END_DATE);
@@ -122,7 +143,27 @@ public class TextParser implements AppointmentBookParser {
                     throw new ParserException(MISSING_END_TIME);
                 }
 
-                Appointment appt = new Appointment(owner, description, beginDate, beginTime, endDate, endTime);
+                try{
+                    if (m.find()){
+                        endAmPm = isAmPm(m.group(2));
+                    }else {
+                        throw new ParserException(MISSING_AMPM);
+                    }
+                }catch (ParserException e){
+                    throw new ParserException(MISSING_AMPM);
+                }
+
+                try {
+                    begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+                    end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+                    if (begin_date.compareTo(end_date) > 0){
+                        throw new ParserException(BEGIN_DATE_AFTER_END_DATE);
+                    }
+                }catch (ParseException e){
+                    printErrorMessageAndExit("Can not parse the date.");
+                }
+
+                Appointment appt = new Appointment(owner, description, begin_date, end_date);
                 newBook.addAppointment(appt);
             }
             reader.close();
@@ -256,5 +297,15 @@ public class TextParser implements AppointmentBookParser {
         System.err.println(message);
         System.err.println(USAGE_MESSAGE);
         System.exit(1);
+    }
+
+    private String isAmPm(String amPm){
+        if ("am".equalsIgnoreCase(amPm)) {
+            return "AM";
+        }else if ("pm".equalsIgnoreCase(amPm)){
+            return "PM";
+        }else {
+            return null;
+        }
     }
 }

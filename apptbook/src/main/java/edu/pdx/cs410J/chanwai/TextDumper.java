@@ -3,6 +3,7 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
@@ -31,10 +32,8 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
         for(Appointment a : appointments) {
             writer.write(a.owner + " ");
             writer.write(a.description + " ");
-            writer.write(a.beginDate + " ");
-            writer.write(a.beginTime + " ");
-            writer.write(a.endDate + " ");
-            writer.write(a.endTime + "\n");
+            writer.write(a.getBDateString() + " ");
+            writer.write(a.getEDateString() + "\n");
         }
         writer.close();
 

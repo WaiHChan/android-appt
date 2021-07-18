@@ -137,13 +137,59 @@ public class AppointmentTest {
    * Check if toString() contains the correct string of description begin time
    */
   @Test
-  void checkCompareTo() throws ParseException {
+  void checkCompareToOne() throws ParseException {
     String description = "Eyes Check";
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
     Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
     Date end_date = df.parse("11/12/2019 " + "10:00 " + "am");
+
+    String description2 = "Eyes Check";
+    Date begin_date2 = df.parse("11/12/2019 " + "11:00 " + "am");
+    Date end_date2 = df.parse("11/12/2019 " + "12:00 " + "am");
+
+    var app = new Appointment("Jim", description, begin_date, end_date);
+    var app2 = new Appointment("Jim", description2, begin_date2, end_date2);
+
+    assertThat(app2.compareTo(app), equalTo(1));
+    assertThat(app.toString(), equalTo("Eyes Check from 11/12/19, 10:00 AM until 11/12/19, 10:00 AM"));
+  }
+
+  /**
+   * Tests that invoking the toString method from appointment class
+   * Check if toString() contains the correct string of description begin time
+   */
+  @Test
+  void checkCompareToNOne() throws ParseException {
+    String description = "Eyes Check";
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+    Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
+    Date end_date = df.parse("11/12/2019 " + "10:00 " + "am");
+
+    String description2 = "Eyes Check";
+    Date begin_date2 = df.parse("11/12/2019 " + "11:00 " + "am");
+    Date end_date2 = df.parse("11/12/2019 " + "12:00 " + "am");
+
+    var app = new Appointment("Jim", description, begin_date, end_date);
+    var app2 = new Appointment("Jim", description2, begin_date2, end_date2);
+
+    assertThat(app.compareTo(app2), equalTo(-1));
+    assertThat(app.toString(), equalTo("Eyes Check from 11/12/19, 10:00 AM until 11/12/19, 10:00 AM"));
+  }
+
+  /**
+   * Tests that invoking the toString method from appointment class
+   * Check if toString() contains the correct string of description begin time
+   */
+  @Test
+  void checkCompareToEqual() throws ParseException {
+    String description = "Eyes Check";
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+    Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
+    Date end_date = df.parse("11/12/2019 " + "10:00 " + "am");
+
     var app = new Appointment("Jim", description, begin_date, end_date);
 
+    assertThat(app.compareTo(app), equalTo(0));
     assertThat(app.toString(), equalTo("Eyes Check from 11/12/19, 10:00 AM until 11/12/19, 10:00 AM"));
   }
 }

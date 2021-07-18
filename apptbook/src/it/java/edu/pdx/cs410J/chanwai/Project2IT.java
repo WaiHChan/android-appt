@@ -376,6 +376,17 @@ class Project2IT extends InvokeMainTestCase {
     }
 
     /**
+     * Tests that invoking the main method with seven command line arguments
+     * If the end date contains any alphabet, issues an error
+     */
+    @Test
+    void invalidEndDateForArgumentEight(){
+        MainMethodResult result = invokeMain(Project2.class, "-print", "-pretty", "text6.txt", "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: 10/26a/1242"));
+    }
+
+    /**
      * Tests that invoking the main method with file
      * If the file name exists, check if appointment book is null
      */
@@ -398,6 +409,18 @@ class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
+        assertThat(result.getExitCode(), equalTo(1));
+    }
+
+    /**
+     * Tests that invoking the main method with file
+     * If the file name exists, check if appointment book owner is same as argument owner
+     */
+    @Test
+    void canNotBeSameFileName(){
+        MainMethodResult result = invokeMain(Project2.class, "-pretty", "text1.txt", "-textFile", "text1.txt", "Owner1", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
+
+        assertThat(result.getTextWrittenToStandardError(), containsString(PRETT_FILE_CANNOT_BE_THE_SAME_AS_TEXT_FILE));
         assertThat(result.getExitCode(), equalTo(1));
     }
 

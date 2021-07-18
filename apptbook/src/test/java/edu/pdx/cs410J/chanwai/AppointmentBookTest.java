@@ -1,6 +1,13 @@
 package edu.pdx.cs410J.chanwai;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,37 +30,31 @@ public class AppointmentBookTest {
         assertThat(jim.getOwnerName(), equalTo(name));
     }
 
-/*    *//**
+    /**
      * Tests that invoking the toString method from AbstractAppointmentBook
      * Check if the toString method displays the correct string
-     *//*
+     */
     @Test
-    void checkAddAppointment(){
-        String name = "Jim";
+    void checkAddAppointment() throws ParseException {
         String description = "Eyes Check";
-        String begin_Date = "1/2/1554";
-        String begin_Time = "12:42";
-        String end_Date = "1/2/2005";
-        String end_Time = "12:42";
-
-        var app = new Appointment(name, description, begin_Date, begin_Time, end_Date, end_Time);
-        AppointmentBook newBook = new AppointmentBook(name);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
+        Date end_date = df.parse("11/12/2019 " + "10:30 " + "am");
+        var app = new Appointment("Jim", description, begin_date, end_date);
+        AppointmentBook newBook = new AppointmentBook("Jim");
         newBook.addAppointment(app);
         assertThat(newBook.toString(), containsString("Jim's appointment book with 1 appointments"));
     }
 
     @Test
-    void addingAnAppointmentAddsTheAppointment() {
-        String name = "Jim";
+    void addingAnAppointmentAddsTheAppointment() throws ParseException {
         String description = "Eyes Check";
-        String begin_Date = "1/2/1554";
-        String begin_Time = "12:42";
-        String end_Date = "1/2/2005";
-        String end_Time = "12:42";
-
-        var app = new Appointment(name, description, begin_Date, begin_Time, end_Date, end_Time);
-        AppointmentBook newBook = new AppointmentBook(name);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
+        Date end_date = df.parse("11/12/2019 " + "10:30 " + "am");
+        var app = new Appointment("Jim", description, begin_date, end_date);
+        AppointmentBook newBook = new AppointmentBook("Jim");
         newBook.addAppointment(app);
         assertThat(newBook.getAppointments(), hasItem(app));
-    }*/
+    }
 }

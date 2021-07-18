@@ -839,28 +839,4 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(textFileContents, containsString(description1));
         assertThat(prettyFileContents, containsString("Appointment Book: Owner\tTotal Appointments: 1"));
     }
-
-//    /**
-//     * Test if it can add two appointments
-//     * @param dir A temp file for storing appointments
-//     * @throws IOException Raise exception if there are errors
-//     */
-//    @Test
-//    void canAddMultipleAppointmentsToAnAppointmentBook(@TempDir File dir) throws IOException {
-//        File textFile = new File(dir, "appointments.txt");
-//
-//        String description1 = "Appointment 1";
-//        MainMethodResult result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "PM", "7/7/2021", "13:00", "AM");
-//        assertThat(result.getExitCode(), equalTo(0));
-//        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-//
-//        String description2 = "Appointment 2";
-//        result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description2, "7/7/2021", "12:00", "AM", "7/7/2021", "13:00", "AM");
-//        assertThat(result.getExitCode(), equalTo(0));
-//        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-//
-//        String textFileContents = Files.readString(textFile.toPath());
-//        assertThat(textFileContents, containsString(description1));
-//        assertThat(textFileContents, containsString(description2));
-//    }
 }

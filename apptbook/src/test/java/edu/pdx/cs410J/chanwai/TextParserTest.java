@@ -52,7 +52,7 @@ public class TextParserTest {
     @Test
     void appointmentBookParsed() throws IOException, ParserException, ParseException {
         String owner = "Jim";
-        String description = "Eyes Check";
+        String description = "\"Eyes Check\"";
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
         Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
         Date end_date = df.parse("11/12/2019 " + "10:30 " + "am");

@@ -10,7 +10,6 @@ import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class TextParserTest {
 
@@ -23,7 +22,7 @@ public class TextParserTest {
      */
     @Test
     void appointmentBookOwnerCanBeDumpedAndParsed() throws IOException, ParserException, ParseException {
-        String description = "Eyes Check";
+        String description = "Eyes";
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
         Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
         Date end_date = df.parse("11/12/2019 " + "10:30 " + "am");

@@ -35,7 +35,6 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
     this.description = description;
     this.beginDate = beginDate;
     this.endDate = endDate;
-
   }
 
   /**

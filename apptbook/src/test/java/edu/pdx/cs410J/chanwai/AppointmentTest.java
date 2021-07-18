@@ -131,4 +131,19 @@ public class AppointmentTest {
 
     assertThat(app.toString(), equalTo("Eyes Check from 11/12/19, 10:00 AM until 11/12/19, 10:30 AM"));
   }
+
+  /**
+   * Tests that invoking the toString method from appointment class
+   * Check if toString() contains the correct string of description begin time
+   */
+  @Test
+  void checkCompareTo() throws ParseException {
+    String description = "Eyes Check";
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+    Date begin_date = df.parse("11/12/2019 " + "10:00 " + "am");
+    Date end_date = df.parse("11/12/2019 " + "10:00 " + "am");
+    var app = new Appointment("Jim", description, begin_date, end_date);
+
+    assertThat(app.toString(), equalTo("Eyes Check from 11/12/19, 10:00 AM until 11/12/19, 10:00 AM"));
+  }
 }

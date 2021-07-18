@@ -28,16 +28,19 @@ public class Project2 {
     static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
-    static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file.";
+    static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file";
     static final String INVALID_DATE = "Invalid Date: ";
     static final String INVALID_TIME = "Invalid Time: ";
     static final String MISSING_AMPM = "Missing AM or PM";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
+    static final String PRETT_FILE_CANNOT_BE_THE_SAME_AS_TEXT_FILE = "Pretty print file can not be the same as textFile file";
 
     public static void main(String[] args) {
         String textfile = null;
         String print = null;
+        String pPrint = null;
         String fileName = null;
+        String pFileName = null;
         String owner = null;
         String description = null;
         String beginDate = null;
@@ -52,14 +55,18 @@ public class Project2 {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         for (String  arg : args) {
-            if ("-textFile".equals(arg)){
+            if ("-pretty".equals(arg)) {
+                pPrint = arg;
+            } else if ("-textFile".equals(arg)) {
                 textfile = arg;
-            }else if ("-print".equals(arg)){
+            } else if ("-print".equals(arg)) {
                 print = arg;
-            }else if ("-README".equals(arg)) {
+            } else if ("-README".equals(arg)) {
                 System.out.println("This is a README file!");
                 printReadme();
-            }else if (textfile != null && fileName == null){
+            }else if (pPrint != null && pFileName == null){
+                pFileName = arg;
+            } else if (textfile != null && fileName == null){
                 fileName = arg;
             } else if (owner == null) {
                 owner = arg;
@@ -88,6 +95,7 @@ public class Project2 {
 
         if (trash != null){
             printErrorMessageAndExit(TOO_MANY_COMMAND_LINE_ARGUMENTS);
+            return;
         }
         if (owner == null) {
             printErrorMessageAndExit(MISSING_COMMAND_LINE_ARGUMENTS);
@@ -125,26 +133,35 @@ public class Project2 {
             printErrorMessageAndExit("Can not parse the date.");
         }
 
-        Appointment appointment = new Appointment(owner, description, begin_date, end_date);
+        Appointment appointmentFromArgs = new Appointment(owner, description, begin_date, end_date);
         AppointmentBook appointmentBookFromFile;
-        if (fileName != null) {
+
+        if(fileName != null){
             appointmentBookFromFile = readFile(fileName);
             if (appointmentBookFromFile.getOwnerName() == null){
-                appointmentBookFromFile.addAppointment(appointment);
+                appointmentBookFromFile.addAppointment(appointmentFromArgs);
                 writeFile(fileName, appointmentBookFromFile);
             }else if (!appointmentBookFromFile.getOwnerName().equals(owner)){
                 printErrorMessageAndExit(OWNER_NAME_NOT_EQUAL);
             }else {
-                appointmentBookFromFile.addAppointment(appointment);
+                appointmentBookFromFile.addAppointment(appointmentFromArgs);
                 writeFile(fileName, appointmentBookFromFile);
             }
+        }else {
+            appointmentBookFromFile = new AppointmentBook(owner);
+            appointmentBookFromFile.addAppointment(appointmentFromArgs);
         }
 
-        appointmentBookFromFile = new AppointmentBook(owner);
-        appointmentBookFromFile.addAppointment(appointment);
+        if(pFileName != null){
+            if (pFileName.equals(fileName)){
+                printErrorMessageAndExit(PRETT_FILE_CANNOT_BE_THE_SAME_AS_TEXT_FILE);
+                return;
+            }
+            writePretty(pFileName, appointmentBookFromFile);
+        }
 
         if (print != null) {
-            System.out.println(appointment);
+            System.out.println(appointmentFromArgs);
         }
         System.exit(0);
     }
@@ -183,6 +200,19 @@ public class Project2 {
         }
     }
 
+    /**
+     * Calling this in main, and invoke the dump() from pretty print class to dump the appointments to the pFileName
+     * @param pFileName a file that will contain the pretty print of the appointment book
+     * @param appointmentBook the information of appointments that will be dumped to pFileName
+     */
+    private static void writePretty(String pFileName, AppointmentBook appointmentBook){
+        try {
+            PrettyPrinter print = new PrettyPrinter((new FileWriter(pFileName)));
+            print.dump(appointmentBook);
+        } catch (IOException e) {
+            printErrorMessageAndExit("Cannot pretty print to " + pFileName);
+        }
+    }
     /**
      * Open the README.txt file
      */

@@ -37,6 +37,6 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
         }
         writer.close();
 
-        System.out.println("Successfully wrote to the file.");
+        System.out.println("Successfully read/wrote to the text file.");
     }
 }

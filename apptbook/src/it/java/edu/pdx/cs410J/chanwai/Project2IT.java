@@ -351,15 +351,13 @@ class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_END_TIME));
     }
 
-
-
     /**
      * Tests that invoking the main method with six command line arguments
      * If the minutes of begin time contains any alphabet, issues an error
      */
     @Test
     void invalidBeginTimeForArgumentSeven(){
-        MainMethodResult result = invokeMain(Project2.class,  "-print", "Jimmy", "Body Check", "5/20/2019", "14:1e", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project2.class,  "-print", "Jimmy", "Body Check", "5/20/2019", "14:1e", "am", "10/26/1242", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 14:1e"));
     }
@@ -392,7 +390,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void fileNameNotNullFileIsNull(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "am", "10/26/1242", "13:21");
 
         AppointmentBook nullBook = new AppointmentBook();
 
@@ -442,7 +440,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeSevenArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221", "1:51");
+        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -454,7 +452,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyArgumentWithReadme() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221", "1:51", "a", "12");
+        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51", "am", "12");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -478,7 +476,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginMonth(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "am", "11/10/1996", "13:21", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE + "/1/2010"));
     }
@@ -489,7 +487,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginMonthTwo(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/", "12:21", "am", "11/10/1996", "13:21", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -820,6 +818,26 @@ class Project2IT extends InvokeMainTestCase {
 
         String textFileContents = Files.readString(textFile.toPath());
         assertThat(textFileContents, containsString(description1));
+    }
+
+    /**
+     * Tests that invoking the main method with file
+     * Check if file is empty, check if appointment book is null
+     */
+    @Test
+    void addAnAppointmentBookToPretty(@TempDir File dir) throws IOException {
+
+        File textFile = new File(dir, "appointments.txt");
+        File prettyFile = new File(dir, "pretty.txt");
+        String description1 = "Appointment 1";
+        MainMethodResult result = invokeMain(Project2.class, "-pretty", prettyFile.getAbsolutePath(), "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "aM", "7/7/2021", "01:00", "PM");
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+
+        String textFileContents = Files.readString(textFile.toPath());
+        String prettyFileContents = Files.readString(prettyFile.toPath());
+        assertThat(textFileContents, containsString(description1));
+        assertThat(prettyFileContents, containsString("Appointment Book: Owner\tTotal Appointments: 1"));
     }
 
 //    /**

@@ -4,6 +4,7 @@ import edu.pdx.cs410J.AbstractAppointmentBook;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,6 +41,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
      */
     @Override
     public Collection<Appointment> getAppointments() {
+        Collections.sort(appointmentBook);
         return this.appointmentBook;
     }
 

@@ -81,13 +81,13 @@ public class Project2 {
             } else if (beginTime == null){
                 beginTime = isTimeCorrect(arg);
             } else if (beginAmPm == null){
-                beginAmPm = isAmPm(arg);
+                beginAmPm = arg;
             } else if (endDate == null){
                 endDate = isDateCorrect(arg);
             } else if (endTime == null){
                 endTime = isTimeCorrect(arg);
             } else if (endAmPm == null) {
-                endAmPm = isAmPm(arg);
+                endAmPm = arg;
             }else{
                 trash = arg;
             }
@@ -327,15 +327,6 @@ public class Project2 {
         }
     }
 
-    private static String isAmPm(String amPm){
-        if ("am".equalsIgnoreCase(amPm)) {
-            return "AM";
-        }else if ("pm".equalsIgnoreCase(amPm)){
-            return "PM";
-        }else {
-            return null;
-        }
-    }
     /**
      * Print error message and exit the program
      * @param message an error message that needed to be printed

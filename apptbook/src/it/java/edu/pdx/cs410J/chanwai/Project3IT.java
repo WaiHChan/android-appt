@@ -3,22 +3,22 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 import java.io.*;
-import static edu.pdx.cs410J.chanwai.Project2.*;
+import static edu.pdx.cs410J.chanwai.Project3.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 
 /**
- * Integration tests for the {@link Project2} main class.
+ * Integration tests for the {@link Project3} main class.
  */
-class Project2IT extends InvokeMainTestCase {
+class Project3IT extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project2} with the given arguments.
+     * Invokes the main method of {@link Project3} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project2.class, args );
+        return invokeMain( Project3.class, args );
     }
 
     /**
@@ -26,9 +26,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testNoCommandLineArguments() {
-        MainMethodResult result = invokeMain(Project2.class);
+        MainMethodResult result = invokeMain(Project3.class);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_COMMAND_LINE_ARGUMENTS));
     }
 
     /**
@@ -37,10 +37,10 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissSpellingPrintWithOneArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-prit");
+        MainMethodResult result = invokeMain(Project3.class, "-prit");
 
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_DESCRIPTION));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_DESCRIPTION));
     }
 
     /**
@@ -49,9 +49,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithOneArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-print");
+        MainMethodResult result = invokeMain(Project3.class, "-print");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_COMMAND_LINE_ARGUMENTS));
     }
 
     /**
@@ -60,9 +60,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithTwoArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_DESCRIPTION));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_DESCRIPTION));
     }
 
     /**
@@ -71,9 +71,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithThreeArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_BEGIN_DATE));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_BEGIN_DATE));
     }
 
     /**
@@ -82,9 +82,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithFourArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_BEGIN_TIME));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_BEGIN_TIME));
     }
 
     /**
@@ -93,7 +93,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithFiveArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_AMPM));
     }
@@ -104,7 +104,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithSixArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_END_DATE));
     }
@@ -115,7 +115,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithSevenArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM", "1/1/2021");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM", "1/1/2021");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_END_TIME));
     }
@@ -127,7 +127,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingPrintWithEightArguments(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM", "1/1/2021", "11:20");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "AM", "1/1/2021", "11:20");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_AMPM));
     }
@@ -137,7 +137,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidBeginDateForArgumentSeven(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "abc", "12:21", "10/26/1995", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "abc", "12:21", "10/26/1995", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: abc"));
     }
@@ -149,9 +149,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingTextFileWithOneArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-textFile");
+        MainMethodResult result = invokeMain(Project3.class, "-textFile");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_COMMAND_LINE_ARGUMENTS));
     }
 
     /**
@@ -160,9 +160,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingTextFileWithTwoArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text.txt" );
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", "text.txt" );
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_COMMAND_LINE_ARGUMENTS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_COMMAND_LINE_ARGUMENTS));
     }
 
     /**
@@ -171,7 +171,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeOneArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README");
+        MainMethodResult result = invokeMain(Project3.class, "-README");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -183,9 +183,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testReadmeOneArgument() throws IOException {
-        MainMethodResult result = invokeMain(Project2.class, "-README");
+        MainMethodResult result = invokeMain(Project3.class, "-README");
 
-        InputStream readme = Project2.class.getResourceAsStream("README.txt");
+        InputStream readme = Project3.class.getResourceAsStream("README.txt");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(readme, not(nullValue()));
@@ -201,9 +201,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingBeginDate(){
-        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Body Check");
+        MainMethodResult result = invokeMain(Project3.class,"Jimmy", "Body Check");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_BEGIN_DATE));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_BEGIN_DATE));
     }
 
     /**
@@ -212,7 +212,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeTwoArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -226,9 +226,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingBeginTime(){
-        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Body Check", "1/1/2021");
+        MainMethodResult result = invokeMain(Project3.class,"Jimmy", "Body Check", "1/1/2021");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MISSING_BEGIN_TIME));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MISSING_BEGIN_TIME));
     }
 
     /**
@@ -237,7 +237,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeThreeArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -251,7 +251,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingEndDate(){
-        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Body Check", "1/2/2013", "4:10");
+        MainMethodResult result = invokeMain(Project3.class,"Jimmy", "Body Check", "1/2/2013", "4:10");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_AMPM));
     }
@@ -262,7 +262,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeFourArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description", "1/1/2112");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -276,7 +276,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testMissingEndTime(){
-        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Body Check", "1/2/2013", "4:10", "AM");
+        MainMethodResult result = invokeMain(Project3.class,"Jimmy", "Body Check", "1/2/2013", "4:10", "AM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_END_DATE));
     }
@@ -287,7 +287,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeFiveArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description", "1/1/2112", "12:46");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -301,7 +301,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeSixArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "1/2/2221");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -313,7 +313,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidBeginDateForArgumentSix(){
-        MainMethodResult result = invokeMain(Project2.class, "Jimmy", "Body Check", "abc", "12:21", "10/26/1995", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "Jimmy", "Body Check", "abc", "12:21", "10/26/1995", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: abc"));
     }
@@ -324,7 +324,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidBeginTimeForArgumentSix(){
-        MainMethodResult result = invokeMain(Project2.class, "Jimmy", "Body Check", "5/20/2019", "14:1e", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "Jimmy", "Body Check", "5/20/2019", "14:1e", "10/26/1242", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 14:1e"));
     }
@@ -335,7 +335,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidEndDateForArgumentSix(){
-        MainMethodResult result = invokeMain(Project2.class,  "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
+        MainMethodResult result = invokeMain(Project3.class,  "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: 10/26a/1242"));
     }
@@ -346,7 +346,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidEndTimeForArgumentSix(){
-        MainMethodResult result = invokeMain(Project2.class, "Jimmy", "Body Check", "5/20/2019", "14:1", "am", "5/20/2020");
+        MainMethodResult result = invokeMain(Project3.class, "Jimmy", "Body Check", "5/20/2019", "14:1", "am", "5/20/2020");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_END_TIME));
     }
@@ -357,7 +357,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidBeginTimeForArgumentSeven(){
-        MainMethodResult result = invokeMain(Project2.class,  "-print", "Jimmy", "Body Check", "5/20/2019", "14:1e", "am", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project3.class,  "-print", "Jimmy", "Body Check", "5/20/2019", "14:1e", "am", "10/26/1242", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Time: 14:1e"));
     }
@@ -368,7 +368,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidEndDateForArgumentSeven(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: 10/26a/1242"));
     }
@@ -379,7 +379,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void invalidEndDateForArgumentEight(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "-pretty", "text6.txt", "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "-pretty", "text6.txt", "-textFile", "text1.txt", "Jimmy", "Body Check", "5/20/2019", "12:21", "AM", "10/26a/1242");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date: 10/26a/1242"));
     }
@@ -390,7 +390,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void fileNameNotNullFileIsNull(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "am", "10/26/1242", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", "text2.txt", "Jimmy", "Body Check", "5/20/2019", "14:1", "am", "10/26/1242", "13:21");
 
         AppointmentBook nullBook = new AppointmentBook();
 
@@ -404,7 +404,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void fileNameDifferentThanArgName(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
         assertThat(result.getExitCode(), equalTo(1));
@@ -416,7 +416,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void canNotBeSameFileName(){
-        MainMethodResult result = invokeMain(Project2.class, "-pretty", "text1.txt", "-textFile", "text1.txt", "Owner1", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-pretty", "text1.txt", "-textFile", "text1.txt", "Owner1", "Body Check", "5/20/2019", "14:1", "PM", "10/26/2019", "13:21", "PM");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(PRETT_FILE_CANNOT_BE_THE_SAME_AS_TEXT_FILE));
         assertThat(result.getExitCode(), equalTo(1));
@@ -428,7 +428,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void beginDateAfterEndDate(){
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "PM", "10/26/1242", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "14:1", "PM", "10/26/1242", "13:21", "PM");
 
         assertThat(result.getTextWrittenToStandardError(), containsString(BEGIN_DATE_AFTER_END_DATE));
         assertThat(result.getExitCode(), equalTo(1));
@@ -440,7 +440,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void testPrintReadmeSevenArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -452,7 +452,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyArgumentWithReadme() {
-        MainMethodResult result = invokeMain(Project2.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51", "am", "12");
+        MainMethodResult result = invokeMain(Project3.class, "-README", "Jim", "Description", "1/1/2112", "12:46", "am", "1/2/2221", "1:51", "am", "12");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
@@ -464,7 +464,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyArgument() {
-        MainMethodResult result = invokeMain(Project2.class, "Jim", "Description", "1/1/2112", "12:46", "PM", "1/2/2221", "1:51", "PM", "a");
+        MainMethodResult result = invokeMain(Project3.class, "Jim", "Description", "1/1/2112", "12:46", "PM", "1/2/2221", "1:51", "PM", "a");
 
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(TOO_MANY_COMMAND_LINE_ARGUMENTS));
@@ -476,7 +476,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginMonth(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "am", "11/10/1996", "13:21", "am");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "/1/2010", "12:21", "am", "11/10/1996", "13:21", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE + "/1/2010"));
     }
@@ -487,7 +487,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginMonthTwo(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "/", "12:21", "am", "11/10/1996", "13:21", "am");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "/", "12:21", "am", "11/10/1996", "13:21", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -498,7 +498,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginDay(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1//2010", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1//2010", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -509,7 +509,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginDayTwo(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1//", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1//", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -520,7 +520,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingEndDay(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "PM", "11//1996", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2010", "12:21", "PM", "11//1996", "13:21", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -531,7 +531,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginYear(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -542,7 +542,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingEndYear(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/1995", "12:21", "PM", "11/10/", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/1995", "12:21", "PM", "11/10/", "13:21", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -553,7 +553,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyBeginDate(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021/1", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021/1", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE + "1/1/2021/1"));
     }
@@ -564,7 +564,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyEndDate(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "PM", "11/10/1996/1", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "PM", "11/10/1996/1", "13:21", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_DATE));
     }
@@ -575,7 +575,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginHour(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", ":21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", ":21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }
@@ -586,7 +586,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingEndHour(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "AM", "11/10/1996", ":21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "AM", "11/10/1996", ":21", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }
@@ -598,7 +598,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingHourTwo(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "PM", "11/10/1996", ":", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:21", "PM", "11/10/1996", ":", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }
@@ -609,7 +609,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingBeginMin(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }
@@ -620,7 +620,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void missingEndMin(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:23", "PM", "11/10/1996", "13:", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "11:23", "PM", "11/10/1996", "13:", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME));
     }
@@ -631,7 +631,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyBeginTime(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21:2", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21:2", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME + "12:21:2"));
     }
@@ -642,7 +642,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void tooManyEndTime(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "PM", "11/10/1996", "13:21:23", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/2021", "12:21", "PM", "11/10/1996", "13:21:23", "PM");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(INVALID_TIME + "13:21:23"));
     }
@@ -653,7 +653,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void yearLessThanZero(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/0", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/0", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(YEAR_OUT_OF_BOUNDS));
     }
@@ -664,7 +664,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void yearLargeThanLimit(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "1/1/10000", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "1/1/10000", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(YEAR_OUT_OF_BOUNDS));
     }
@@ -675,9 +675,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void monthLessThanZero(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "0/1/1110", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "0/1/1110", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MONTH_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MONTH_OUT_OF_BOUNDS));
     }
 
     /**
@@ -686,9 +686,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void monthLargeThanLimit(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "13/1/1110", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "13/1/1110", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MONTH_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MONTH_OUT_OF_BOUNDS));
     }
 
     /**
@@ -697,9 +697,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void dayLessThanZero(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/0/1110", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/0/1110", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.DAY_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.DAY_OUT_OF_BOUNDS));
     }
 
     /**
@@ -708,9 +708,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void dayLargeThanLimit(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "12/33/1110", "12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "12/33/1110", "12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.DAY_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.DAY_OUT_OF_BOUNDS));
     }
 
     /**
@@ -719,9 +719,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void hourLessThanZero() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "-12:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/10/1110", "-12:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.HOUR_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.HOUR_OUT_OF_BOUNDS));
     }
 
     /**
@@ -730,9 +730,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void hourLargeThanLimit() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "25:21", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/10/1110", "25:21", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.HOUR_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.HOUR_OUT_OF_BOUNDS));
     }
 
     /**
@@ -741,9 +741,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void minsLessThanZero() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "1:-12", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/10/1110", "1:-12", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MINS_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MINS_OUT_OF_BOUNDS));
     }
 
     /**
@@ -752,9 +752,9 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void minsLargeThanLimit() {
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "22:67", "11/10/1996", "13:21");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/10/1110", "22:67", "11/10/1996", "13:21");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project2.MINS_OUT_OF_BOUNDS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project3.MINS_OUT_OF_BOUNDS));
     }
 
     /**
@@ -763,7 +763,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void readmeCanBeReadAsResource() {
-        InputStream readme = Project2.class.getResourceAsStream("READM.txt");
+        InputStream readme = Project3.class.getResourceAsStream("READM.txt");
         assertThat(readme, nullValue());
     }
 
@@ -773,7 +773,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void checkAssignmentToString(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Body Check", "10/10/1110", "10:32", "PM", "11/10/1996", "9:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Body Check", "10/10/1110", "10:32", "PM", "11/10/1996", "9:21", "PM");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("\"Body Check\" from 10/10/10, 10:32 PM until 11/10/96, 9:21 PM"));
@@ -785,7 +785,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void checkAssignmentToStringTwo(){
-        MainMethodResult result = invokeMain(Project2.class, "-print", "Jimmy", "Eye", "10/10/1110", "22:32", "AM", "11/10/1996", "13:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-print", "Jimmy", "Eye", "10/10/1110", "22:32", "AM", "11/10/1996", "13:21", "PM");
 
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("Eye from 10/10/10, 10:32 PM until 11/11/96, 1:21 AM"));
@@ -797,7 +797,7 @@ class Project2IT extends InvokeMainTestCase {
      */
     @Test
     void argsWithoutPrint(){
-        MainMethodResult result = invokeMain(Project2.class,"Jimmy", "Eye", "10/10/1110", "10:32", "AM", "11/10/1996", "1:21", "PM");
+        MainMethodResult result = invokeMain(Project3.class,"Jimmy", "Eye", "10/10/1110", "10:32", "AM", "11/10/1996", "1:21", "PM");
 
         assertThat(result.getExitCode(), equalTo(0));
     }
@@ -812,7 +812,7 @@ class Project2IT extends InvokeMainTestCase {
         File textFile = new File(dir, "appointments.txt");
 
         String description1 = "Appointment 1";
-        MainMethodResult result = invokeMain(Project2.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "PM", "7/7/2021", "13:00", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "PM", "7/7/2021", "13:00", "PM");
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 
@@ -830,7 +830,7 @@ class Project2IT extends InvokeMainTestCase {
         File textFile = new File(dir, "appointments.txt");
         File prettyFile = new File(dir, "pretty.txt");
         String description1 = "Appointment 1";
-        MainMethodResult result = invokeMain(Project2.class, "-pretty", prettyFile.getAbsolutePath(), "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "aM", "7/7/2021", "01:00", "PM");
+        MainMethodResult result = invokeMain(Project3.class, "-pretty", prettyFile.getAbsolutePath(), "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "12:00", "aM", "7/7/2021", "01:00", "PM");
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 

@@ -403,18 +403,6 @@ class Project3IT extends InvokeMainTestCase {
      * If the file name exists, check if appointment book owner is same as argument owner
      */
     @Test
-    void fileNameDifferentThanArgName(){
-        MainMethodResult result = invokeMain(Project3.class, "-textFile", "text1.txt", "Jimmy Chan", "Body Check", "5/20/2019", "11:1", "PM", "10/26/2019", "12:21", "PM");
-
-        assertThat(result.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
-        assertThat(result.getExitCode(), equalTo(1));
-    }
-
-    /**
-     * Tests that invoking the main method with file
-     * If the file name exists, check if appointment book owner is same as argument owner
-     */
-    @Test
     void canNotBeSameFileName(){
         MainMethodResult result = invokeMain(Project3.class, "-pretty", "text1.txt", "-textFile", "text1.txt", "Owner1", "Body Check", "5/20/2019", "11:1", "PM", "10/26/2019", "12:21", "PM");
 
@@ -818,6 +806,23 @@ class Project3IT extends InvokeMainTestCase {
 
         String textFileContents = Files.readString(textFile.toPath());
         assertThat(textFileContents, containsString(description1));
+    }
+
+
+    /**
+     * Tests that invoking the main method with file
+     * If the file name exists, check if appointment book owner is same as argument owner
+     */
+    @Test
+    void fileNameDifferentThanArgName(@TempDir File dir) throws IOException {
+        File textFile = new File(dir, "appointments.txt");
+
+        String description1 = "Appointment 1";
+        MainMethodResult result = invokeMain(Project3.class, "-textFile", textFile.getAbsolutePath(), "Owner", description1, "7/7/2021", "10:00", "PM", "7/7/2021", "11:00", "PM");
+        MainMethodResult re = invokeMain(Project3.class, "-textFile", textFile.getAbsolutePath(), "Jimmy Chan", "Body Check", "5/20/2019", "11:1", "PM", "10/26/2019", "12:21", "PM");
+
+        assertThat(re.getTextWrittenToStandardError(), containsString(OWNER_NAME_NOT_EQUAL));
+        assertThat(re.getExitCode(), equalTo(1));
     }
 
     /**

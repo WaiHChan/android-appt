@@ -314,7 +314,7 @@ public class Project3 {
                 printErrorMessageAndExit(INVALID_TIME + time);
             }
 
-            if (hour < 0 || hour >= 24) {
+            if (hour < 0 || hour >= 13) {
                 printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS + " " + time);
             }
             if (min < 0 || min >= 60) {

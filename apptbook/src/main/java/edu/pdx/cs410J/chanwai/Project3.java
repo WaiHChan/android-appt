@@ -13,7 +13,7 @@ import java.util.Date;
  * The main class for the CS410J appointment book Project
  */
 
-public class Project2 {
+public class Project3 {
 
     static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
     static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
@@ -218,7 +218,7 @@ public class Project2 {
      */
     private static void printReadme() {
         try (
-                InputStream readme = Project2.class.getResourceAsStream("README.txt")
+                InputStream readme = Project3.class.getResourceAsStream("README.txt")
         ) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
             String txt;

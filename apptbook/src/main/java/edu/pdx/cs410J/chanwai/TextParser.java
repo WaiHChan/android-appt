@@ -299,6 +299,11 @@ public class TextParser implements AppointmentBookParser {
         System.exit(1);
     }
 
+    /**
+     * Check if the string is lowercase, convert the uppercase.
+     * @param amPm String of "am"/ "pm"
+     * @return return uppercase of "am"/ "pm"
+     */
     private String isAmPm(String amPm){
         if ("am".equalsIgnoreCase(amPm)) {
             return "AM";

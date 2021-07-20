@@ -3,7 +3,6 @@ package edu.pdx.cs410J.chanwai;
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.IOException;
 import java.io.Writer;
-import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {

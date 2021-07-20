@@ -82,6 +82,11 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
     return this.description;
   }
 
+  /**
+   * Return 1,0,-1 according to the string compare
+   * @param o appointment oject
+   * @return return 1 if the begin time is bigger than the begin time of the object passed in.
+   */
   @Override
   public int compareTo(Appointment o) {
     if (getBeginTime().compareTo(o.getBeginTime()) < 0){

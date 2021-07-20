@@ -4,10 +4,7 @@ import edu.pdx.cs410J.AppointmentBookDumper;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
@@ -20,6 +17,12 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
     public PrettyPrinter(Writer writer){
         this.writer = writer;
     }
+
+    /**
+     * Pass in an appointment book that will be loaded to a file
+     * @param book An appointment book that will be load to a file
+     * @throws IOException Raise an exception if the appointment book cannot be loaded
+     */
 
     @Override
     public void dump(AppointmentBook book) throws IOException {
@@ -54,19 +57,39 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
         System.out.println("Successfully pretty print to the file.");
     }
 
+    /**
+     * return the duration of an appointment
+     * @param a an appointment
+     * @return the duration of an appointment
+     */
     public long duration(Appointment a){
         long diff = a.getEndTime().getTime() - a.getBeginTime().getTime();
         return diff / 60000;
     }
 
+    /**
+     * calculate the duration of an appointment to days
+     * @param time the duration time in minutes
+     * @return return the duration of an appointment to days
+     */
     public long day(long time){
         return time / 60 / 24;
     }
 
+    /**
+     * calculate the duration of an appointment to hours
+     * @param time the duration time in minutes
+     * @return return the duration of an appointment to hours
+     */
     public long hour(long time){
         return time / 60 % 24;
     }
 
+    /**
+     * calculate the duration of an appointment to minutes
+     * @param time the duration time in minutes
+     * @return return the duration of an appointment to minutes
+     */
     public long min(long time) {
         return time % 60;
     }

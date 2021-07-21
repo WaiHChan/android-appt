@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 
+/**
+ * This class represent a writer to a file in a nicer format
+ */
 public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
     private final Writer writer;

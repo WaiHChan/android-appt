@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 
+/**
+ * The class represent a writer to a file
+ */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
     private final Writer writer;

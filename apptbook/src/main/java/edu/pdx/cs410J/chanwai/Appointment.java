@@ -18,6 +18,12 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
   protected Date endDate;
   DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
+  public Appointment(){
+    this.owner = "";
+    this.description = "";
+    this.beginDate = new Date(0);
+    this.endDate = new Date(0);
+  }
   /**
    * Creates a new <code>Appointment</code>
    *

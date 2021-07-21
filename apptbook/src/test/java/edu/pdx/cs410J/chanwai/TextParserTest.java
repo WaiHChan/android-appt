@@ -10,6 +10,8 @@ import java.util.Date;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TextParserTest {
 
@@ -49,7 +51,7 @@ public class TextParserTest {
      * @throws ParserException Throw an Parser exception if the appointment book cannot be read
      */
     @Test
-    void appointmentBookOwnerCanAddQ() throws IOException, ParserException, ParseException {
+    void checkNameIsQuoted() throws IOException, ParserException, ParseException {
         String name = "\"Jim Chan\"";
         String description = "Eyes";
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
@@ -97,7 +99,7 @@ public class TextParserTest {
 
         assertThat(book.getOwnerName(), equalTo(owner));
     }
-//
+
 //    /**
 //     * Tests that invoking the dump() and parse() method
 //     * If there is missing owner, throw exception
@@ -108,11 +110,13 @@ public class TextParserTest {
 //        String owner = "Jim";
 //        String description = "Eyes Check";
 //        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-//        Date begin_date = df.parse("" + "" + "");
+//        //Date begin_date = df.parse("" + "" + "");
 //        //Date begin_date = new Date(0,0,0,0,0);
-//        //Date end_date = df.parse("11/12/2019 " + "10:30 " + "am");
-//        Date end_date = new Date(0,0,0,0,0);
-//        var app = new Appointment("", "", begin_date, end_date);
+//        Date begin_date = df.parse("11/12/2019 " + "10:30 " + "am");
+//        Date end_date = df.parse("11/12/2019 " + "11:30 " + "am");
+//        //Date end_date = new Date(0,0,0,0,0);
+//        var app = new Appointment("~", "~" , begin_date, end_date);
+//        //var app = new Appointment();
 //        AppointmentBook book = new AppointmentBook();
 //        book.addAppointment(app);
 //
@@ -125,6 +129,32 @@ public class TextParserTest {
 //        Throwable exception = assertThrows(ParserException.class, parser::parse);
 //        assertEquals(TextParser.MISSING_OWNER, exception.getMessage());
 //    }
+
+    /**
+     * Tests that invoking the dump() and parse() method
+     * If there is missing owner, throw exception
+     * @throws IOException Throw an IO exception if the appointment cannot be dumped to a file
+     */
+    @Test
+    void beginDateAfterEndDate() throws IOException, ParseException {
+        String owner = "Jim";
+        String description = "Eyes";
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date = df.parse("11/12/2021 " + "10:30 " + "am");
+        Date end_date = df.parse("11/12/2019 " + "1:30 " + "am");
+        var app = new Appointment(owner,  description, begin_date, end_date);
+        AppointmentBook book = new AppointmentBook();
+        book.addAppointment(app);
+
+        StringWriter sw = new StringWriter();
+        TextDumper dumper = new TextDumper(sw);
+        dumper.dump(book);
+
+        TextParser parser = new TextParser(new StringReader(sw.toString()));
+
+        Throwable exception = assertThrows(ParserException.class, parser::parse);
+        assertEquals(TextParser.BEGIN_DATE_AFTER_END_DATE, exception.getMessage());
+    }
 //
 //    /**
 //     * Tests that invoking the dump() and parse() method

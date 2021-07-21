@@ -46,14 +46,14 @@ public class TextParser implements AppointmentBookParser {
      */
     @Override
     public AppointmentBook parse() throws ParserException {
-        String owner;
-        String description;
-        String beginDate;
-        String beginTime;
-        String beginAmPm;
-        String endDate;
-        String endTime;
-        String endAmPm;
+        String owner = null;
+        String description = null;
+        String beginDate = null;
+        String beginTime = null;
+        String beginAmPm = null;
+        String endDate = null;
+        String endTime = null;
+        String endAmPm = null;
         Date begin_date = null;
         Date end_date = null;
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
@@ -65,93 +65,127 @@ public class TextParser implements AppointmentBookParser {
             AppointmentBook newBook = new AppointmentBook();
             while ((oneTextLine = reader.readLine()) != null) {
                 Matcher m = Pattern.compile(regex).matcher(oneTextLine);
-                try{
-                    if (m.find()) {
-                        if (m.group(1) != null) {
-                            owner = "\"" + m.group(1) + "\"";
-                        } else {
-                            owner = m.group(2);
-                        }
-                    }else {
-                        throw new ParserException(MISSING_OWNER);
+
+                if (m.find()) {
+                    if (m.group(1) != null) {
+                        owner = "\"" + m.group(1) + "\"";
+                    } else {
+                        owner = m.group(2);
                     }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_OWNER);
+                }
+                if (m.find()){
+                    if (m.group(1) != null) {
+                        description = "\"" + m.group(1) + "\"";
+                    } else {
+                        description = m.group(2);
+                    }
+                }
+                if (m.find()){
+                    beginDate = isDateCorrect(m.group(2));
+                }
+                if (m.find()){
+                    beginTime = isTimeCorrect(m.group(2));
+                }
+                if (m.find()){
+                    beginAmPm = m.group(2);
+                }
+                if (m.find()){
+                    endDate = isDateCorrect(m.group(2));
+                }
+                if (m.find()){
+                    endTime = isTimeCorrect(m.group(2));
+                }
+                if (m.find()){
+                    endAmPm = m.group(2);
                 }
 
-                try{
-                    if (m.find()){
-                        if (m.group(1) != null) {
-                            description = "\"" + m.group(1) + "\"";
-                        } else {
-                            description = m.group(2);
-                        }
-                    }else {
-                        throw new ParserException(MISSING_DESCRIPTION);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_DESCRIPTION);
-                }
-
-                try{
-                    if (m.find()){
-                        beginDate = isDateCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_BEGIN_DATE);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_BEGIN_DATE);
-                }
-
-                try{
-                    if (m.find()){
-                        beginTime = isTimeCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_BEGIN_TIME);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_BEGIN_TIME);
-                }
-
-                try{
-                    if (m.find()){
-                        beginAmPm = isAmPm(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_AMPM);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_BEGIN_TIME);
-                }
-
-                try{
-                    if (m.find()){
-                        endDate = isDateCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_END_DATE);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_END_DATE);
-                }
-
-                try{
-                    if (m.find()){
-                        endTime = isTimeCorrect(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_END_TIME);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_END_TIME);
-                }
-
-                try{
-                    if (m.find()){
-                        endAmPm = isAmPm(m.group(2));
-                    }else {
-                        throw new ParserException(MISSING_AMPM);
-                    }
-                }catch (ParserException e){
-                    throw new ParserException(MISSING_AMPM);
-                }
+//                try{
+//                    if (m.find()) {
+//                        if (m.group(1) != null) {
+//                            owner = "\"" + m.group(1) + "\"";
+//                        } else {
+//                            owner = m.group(2);
+//                        }
+//                    }else {
+//                        throw new ParserException(MISSING_OWNER);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_OWNER);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        if (m.group(1) != null) {
+//                            description = "\"" + m.group(1) + "\"";
+//                        } else {
+//                            description = m.group(2);
+//                        }
+//                    }else {
+//                        throw new ParserException(MISSING_DESCRIPTION);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_DESCRIPTION);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        beginDate = isDateCorrect(m.group(2));
+//                    }else {
+//                        throw new ParserException(MISSING_BEGIN_DATE);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_BEGIN_DATE);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        beginTime = isTimeCorrect(m.group(2));
+//                    }else {
+//                        throw new ParserException(MISSING_BEGIN_TIME);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_BEGIN_TIME);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        beginAmPm = m.group(2);
+//                    }else {
+//                        throw new ParserException(MISSING_AMPM);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_BEGIN_TIME);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        endDate = isDateCorrect(m.group(2));
+//                    }else {
+//                        throw new ParserException(MISSING_END_DATE);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_END_DATE);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        endTime = isTimeCorrect(m.group(2));
+//                    }else {
+//                        throw new ParserException(MISSING_END_TIME);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_END_TIME);
+//                }
+//
+//                try{
+//                    if (m.find()){
+//                        endAmPm = m.group(2);
+//                    }else {
+//                        throw new ParserException(MISSING_AMPM);
+//                    }
+//                }catch (ParserException e){
+//                    throw new ParserException(MISSING_AMPM);
+//                }
 
                 try {
                     begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
@@ -183,7 +217,6 @@ public class TextParser implements AppointmentBookParser {
             int month = -1;
             int day = -1;
             int year = -1;
-            int trash = 0;
 
             while (stHour.hasMoreTokens()) {
                 if (month == -1){
@@ -192,17 +225,7 @@ public class TextParser implements AppointmentBookParser {
                     day = Integer.parseInt(stHour.nextToken());
                 }else if (year == -1){
                     year = Integer.parseInt(stHour.nextToken());
-                }else{
-                    trash = Integer.parseInt(stHour.nextToken());
                 }
-            }
-
-            try {
-                if (trash != 0) {
-                    throw new ParserException(INVALID_DATE);
-                }
-            }catch (ParserException e){
-                throw new ParserException(INVALID_DATE);
             }
 
             try {
@@ -231,13 +254,13 @@ public class TextParser implements AppointmentBookParser {
 
 
             if (year <= 0 || year >= 10000){
-                printErrorMessageAndExit(YEAR_OUT_OF_BOUNDS+ date);
+                throw new ParserException(YEAR_OUT_OF_BOUNDS+ date);
             }
             if (month <= 0 || month >= 13){
-                printErrorMessageAndExit(MONTH_OUT_OF_BOUNDS + date);
+                throw new ParserException(MONTH_OUT_OF_BOUNDS + date);
             }
             if (day <= 0 || day >= 32){
-                printErrorMessageAndExit(DAY_OUT_OF_BOUNDS + date);
+                throw new ParserException(DAY_OUT_OF_BOUNDS + date);
             }
             return date;
         } catch (NumberFormatException ex){
@@ -269,21 +292,21 @@ public class TextParser implements AppointmentBookParser {
             }
 
             if (trash != 0){
-                printErrorMessageAndExit(INVALID_TIME + time);
+                throw new ParserException(INVALID_TIME + time);
             }else if (hour == -1){
-                printErrorMessageAndExit(INVALID_TIME + time);
+                throw new ParserException(INVALID_TIME + time);
             }else if (min == -1){
-                printErrorMessageAndExit(INVALID_TIME + time);
+                throw new ParserException(INVALID_TIME + time);
             }
 
             if (hour < 0 || hour >= 24) {
-                printErrorMessageAndExit(HOUR_OUT_OF_BOUNDS + time);
+                throw new ParserException(HOUR_OUT_OF_BOUNDS + time);
             }
             if (min < 0 || min >= 60) {
-                printErrorMessageAndExit(MINS_OUT_OF_BOUNDS + time);
+                throw new ParserException(MINS_OUT_OF_BOUNDS + time);
             }
             return time;
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException | ParserException ex) {
             printErrorMessageAndExit(INVALID_TIME + time);
             return null;
         }
@@ -297,20 +320,5 @@ public class TextParser implements AppointmentBookParser {
         System.err.println(message);
         System.err.println(USAGE_MESSAGE);
         System.exit(1);
-    }
-
-    /**
-     * Check if the string is lowercase, convert the uppercase.
-     * @param amPm String of "am"/ "pm"
-     * @return return uppercase of "am"/ "pm"
-     */
-    private String isAmPm(String amPm){
-        if ("am".equalsIgnoreCase(amPm)) {
-            return "AM";
-        }else if ("pm".equalsIgnoreCase(amPm)){
-            return "PM";
-        }else {
-            return null;
-        }
     }
 }

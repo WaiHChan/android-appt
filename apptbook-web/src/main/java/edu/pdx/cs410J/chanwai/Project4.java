@@ -48,7 +48,6 @@ public class Project4 {
         int port;
         try {
             port = Integer.parseInt( portString );
-
         } catch (NumberFormatException ex) {
             usage("Port \"" + portString + "\" must be an integer");
             return;

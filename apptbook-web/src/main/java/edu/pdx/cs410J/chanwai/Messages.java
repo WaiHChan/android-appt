@@ -83,7 +83,6 @@ public class Messages
             Map.Entry<String, String> entry = parseDictionaryEntry(line);
             map.put(entry.getKey(), entry.getValue());
         }
-
         return map;
     }
 }

@@ -17,9 +17,9 @@ public class Messages
         return String.format( "Dictionary on server contains %d words", count );
     }
 
-    public static String formatDictionaryEntry(String word, String definition )
+    public static String formatDictionaryEntry(String owner, String description )
     {
-        return String.format("  %s : %s", word, definition);
+        return String.format("  %s : %s", owner, description);
     }
 
     public static String missingRequiredParameter( String parameterName )
@@ -27,9 +27,9 @@ public class Messages
         return String.format("The required parameter \"%s\" is missing", parameterName);
     }
 
-    public static String definedWordAs(String word, String definition )
+    public static String definedWordAs(String owner, String description )
     {
-        return String.format( "Defined %s as %s", word, definition );
+        return String.format( "Defined %s as %s", owner, description );
     }
 
     public static String allDictionaryEntriesDeleted() {

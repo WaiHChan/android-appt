@@ -1,8 +1,12 @@
 package edu.pdx.cs410J.chanwai;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Date;
 
 /**
  * The main class that parses the command line and communicates with the
@@ -10,6 +14,7 @@ import java.util.StringTokenizer;
  */
 public class Project4 {
 
+    static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
     static final String MISSING_DESCRIPTION = "Missing Description";
     static final String MISSING_BEGIN_DATE = "Missing Begin Date";
     static final String MISSING_BEGIN_TIME = "Missing Begin Time";
@@ -20,7 +25,6 @@ public class Project4 {
     static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
-    static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file";
     static final String INVALID_DATE = "Invalid Date: ";
     static final String INVALID_TIME = "Invalid Time: ";
     static final String MISSING_AMPM = "Missing AM or PM";
@@ -42,6 +46,11 @@ public class Project4 {
         String endDate = null;
         String endTime = null;
         String endAmPm = null;
+        String beginDateString = null;
+        String endDateString = null;
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         for (String arg : args) {
             if ("-host".equals(arg)){
@@ -81,9 +90,32 @@ public class Project4 {
 
         if (hostName == null) {
             usage( MISSING_ARGS );
-
         } else if ( portString == null) {
             usage( "Missing port" );
+        } else if (owner == null) {
+            usage(MISSING_COMMAND_LINE_ARGUMENTS);
+            return;
+        } else if (description == null) {
+            usage(MISSING_DESCRIPTION);
+            return;
+        } else if (beginDate == null) {
+            usage(MISSING_BEGIN_DATE);
+            return;
+        } else if (beginTime == null) {
+            usage(MISSING_BEGIN_TIME);
+            return;
+        } else if (beginAmPm == null) {
+            usage(MISSING_AMPM);
+            return;
+        }else if (endDate == null) {
+            usage(MISSING_END_DATE);
+            return;
+        } else if (endTime == null) {
+            usage(MISSING_END_TIME);
+            return;
+        } else if (endAmPm == null) {
+            usage(MISSING_AMPM);
+            return;
         }
 
         int port;
@@ -94,7 +126,28 @@ public class Project4 {
             return;
         }
 
+        beginDateString = beginDate + " " + beginTime + " " + beginAmPm;
+        endDateString = endDate + " " + endTime + " " + endAmPm;
+        if (beginDateString.compareTo(endDateString) > 0){
+            usage(BEGIN_DATE_AFTER_END_DATE);
+        }
+//        try {
+//            begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+//            end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+//            if (begin_date.compareTo(end_date) > 0){
+//                usage(BEGIN_DATE_AFTER_END_DATE);
+//            }
+//        }catch (ParseException e){
+//            usage("Can not parse the date.");
+//        }
+
         AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);
+        try {
+            client.createAppointment(owner, description, beginDateString, endDateString);
+        } catch (IOException e) {
+            error("While contacting server: " + e);
+            return;
+        }
 
         String message;
         try {
@@ -111,7 +164,7 @@ public class Project4 {
 
             } else {
                 // Post the owner/description pair
-                client.createAppointment(owner, description);
+                //client.createAppointment(owner, description);
                 message = Messages.definedWordAs(owner, description);
             }
 
@@ -142,17 +195,18 @@ public class Project4 {
         PrintStream err = System.err;
         err.println("** " + message);
         err.println();
-        err.println("usage: java Project4 host port [word] [definition]");
-        err.println("  host         Host of web server");
-        err.println("  port         Port of web server");
-        err.println("  word         Word in dictionary");
-        err.println("  definition   Definition of word");
-        err.println();
-        err.println("This simple program posts words and their definitions");
-        err.println("to the server.");
-        err.println("If no definition is specified, then the word's definition");
-        err.println("is printed.");
-        err.println("If no word is specified, all dictionary entries are printed");
+        err.println("usage: java edu.pdx.cs410J..<login-id>.Project4 [options] <args>");
+        err.println("  options are (options may appear in any order):");
+        err.println("  -host hostname   Host of web server");
+        err.println("  -port port       Port of web server");
+        err.println("  -search          Appointments should be searched for");
+        err.println("  -print           Prints a description of the new appointment");
+        err.println("  -README          Prints a README for this project and exits");
+        err.println("  args are (in this order):");
+        err.println("  owner        the person who owns the appt book");
+        err.println("  description  A description of the appointment");
+        err.println("  begin        When the appt begins");
+        err.println("  end          When the appt ends");
         err.println();
 
         System.exit(1);

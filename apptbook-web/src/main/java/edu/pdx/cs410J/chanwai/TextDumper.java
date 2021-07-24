@@ -38,7 +38,7 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
         write.println(book.getOwnerName());
         for (Appointment appointment : book.getAppointments()){
-            write.println(appointment.getDescription());
+            write.println("This is dumper: " + appointment.getDescription());
         }
         //        ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
 //

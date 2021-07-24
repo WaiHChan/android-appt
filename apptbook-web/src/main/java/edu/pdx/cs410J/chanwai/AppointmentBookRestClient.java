@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 import static java.net.HttpURLConnection.HTTP_OK;
@@ -46,8 +47,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
     return response.getContent();
   }
 
-  public void createAppointment(String owner, String description) throws IOException {
-    Response response = postToMyURL(Map.of("owner", owner, "description", description));
+  public void createAppointment(String owner, String description, String begin, String end) throws IOException {
+    Response response = postToMyURL(Map.of("owner", owner, "description", description, "start", begin, "end", end));
     throwExceptionIfNotOkayHttpStatus(response);
   }
 

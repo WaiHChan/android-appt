@@ -60,8 +60,10 @@ public class AppointmentBookServletTest {
 
     String owner = "Jim";
     String description = "Eyes Check";
+    String begin = "1/1/2019 12:30 PM";
+    String end = "1/1/2019 1:00 PM";
 
-    invokeServletMethod(Map.of("owner", owner, "description", description), servlet::doPost);
+    invokeServletMethod(Map.of("owner", owner, "description", description, "start", begin, "end", end), servlet::doPost);
 
     AppointmentBook book = servlet.getAppointmentBook(owner);
     assertThat(book, notNullValue());

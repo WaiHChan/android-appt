@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +25,8 @@ public class AppointmentBookServlet extends HttpServlet
 {
     static final String OWNER_PARAMETER = "owner";
     static final String DESCRIPTION_PARAMETER = "description";
+    static final String BEGIN_PARAMETER = "start";
+    static final String END_PARAMETER = "end";
 
     private final Map<String, AppointmentBook> books = new HashMap<>();
 
@@ -52,6 +58,9 @@ public class AppointmentBookServlet extends HttpServlet
     protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         String owner = getParameter(OWNER_PARAMETER, request );
         if (owner == null) {
@@ -65,11 +74,30 @@ public class AppointmentBookServlet extends HttpServlet
             return;
         }
 
+        String beginDateString = getParameter(BEGIN_PARAMETER, request );
+        if ( beginDateString == null) {
+            missingRequiredParameter( response, BEGIN_PARAMETER );
+            return;
+        }
+
+        String endDateString = getParameter(END_PARAMETER, request );
+        if ( endDateString == null) {
+            missingRequiredParameter( response, END_PARAMETER );
+            return;
+        }
+
         AppointmentBook book = this.books.get(owner);
         if (book == null) {
             book = createAppointmentBook(owner);
         }
-        Appointment appointment = new Appointment(description);
+
+        try {
+            begin_date = df.parse(beginDateString);
+            end_date = df.parse(endDateString);
+        }catch (ParseException e){
+        }
+
+        Appointment appointment = new Appointment(owner, description, begin_date, end_date);
         book.addAppointment(appointment);
 
         response.setStatus( HttpServletResponse.SC_OK);
@@ -91,7 +119,6 @@ public class AppointmentBookServlet extends HttpServlet
         pw.flush();
 
         response.setStatus(HttpServletResponse.SC_OK);
-
     }
 
     /**

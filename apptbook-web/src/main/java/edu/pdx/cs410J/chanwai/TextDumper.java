@@ -31,17 +31,6 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
         for (Appointment a : book.getAppointments()){
             pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
         }
-        //        ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
-//
-//        for(Appointment a : appointments) {
-//            writer.write(a.owner + " ");
-//            writer.write(a.description + " ");
-//            writer.write(a.getBDateString() + " ");
-//            writer.write(a.getEDateString() + "\n");
-//        }
-//        writer.close();
-//
-//        System.out.println("Successfully read/wrote to the text file.");
     }
 
     public void dumpByDate(AppointmentBook book, Date start, Date end) throws IOException {

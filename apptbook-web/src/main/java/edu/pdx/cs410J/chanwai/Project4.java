@@ -95,17 +95,6 @@ public class Project4 {
             }
         }
 
-//        System.out.println("-host: " + hostName);
-//        System.out.println("-port: " + portString);
-//        System.out.println("Owner: " + owner);
-//        System.out.println("Description: " + description);
-//        System.out.println("Begin Date: " + beginDate);
-//        System.out.println("Begin Time: " + beginTime);
-//        System.out.println("Begin Am: " + beginAmPm);
-//        System.out.println("End Date: " + endDate);
-//        System.out.println("End Time: " + endTime);
-//        System.out.println("End AM: " + endAmPm);
-
         if (hostName == null) {
             usage( MISSING_HOST );
         } else if ( portString == null) {
@@ -128,9 +117,24 @@ public class Project4 {
                     AppointmentBook book = client.getAppointments(owner);
                     PrettyPrinter pretty = new PrettyPrinter(new OutputStreamWriter(System.out));
                     pretty.dump(book);
-                } else if (owner != null && description != null &&
-                        beginDate != null && beginTime != null && beginAmPm != null &&
-                        endDate != null && endTime != null && endAmPm != null) {
+                } else {
+                    if (owner == null){
+                        usage(MISSING_OWNER);
+                    } else if (description == null) {
+                        usage(MISSING_DESCRIPTION);
+                    }else if (beginDate == null){
+                        usage(MISSING_BEGIN_DATE);
+                    } else if (beginTime == null){
+                        usage(MISSING_BEGIN_TIME);
+                    } else if (beginAmPm == null){
+                        usage(MISSING_AMPM);
+                    } else if (endDate == null){
+                        usage(MISSING_END_DATE);
+                    } else if (endTime == null){
+                        usage(MISSING_END_TIME);
+                    } else if (endAmPm == null){
+                        usage(MISSING_AMPM);
+                    }
                     try {
                         try {
                             beginDateString = beginDate + " " + beginTime + " " + beginAmPm;
@@ -147,6 +151,7 @@ public class Project4 {
                         System.out.println("Appointment added.");
                         if (printFlag != null){
                             Appointment appointmentFromArgs = new Appointment(owner, description, begin_date, end_date);
+                            System.out.println("New added appointment:");
                             System.out.println(appointmentFromArgs);
                         }
                     } catch (IOException e) {

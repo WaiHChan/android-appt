@@ -77,12 +77,12 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
 
   @Override
   public Date getBeginTime(){
-    return beginDate;
+    return this.beginDate;
   }
 
   @Override
   public Date getEndTime(){
-    return endDate;
+    return this.endDate;
   }
 
   /**

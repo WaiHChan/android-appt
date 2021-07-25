@@ -51,6 +51,6 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
     @Override
     public void addAppointment(Appointment appointment) {
         this.appointmentBook.add(appointment);
-        //this.ownerName = appointment.owner;
+        this.ownerName = appointment.owner;
     }
 }

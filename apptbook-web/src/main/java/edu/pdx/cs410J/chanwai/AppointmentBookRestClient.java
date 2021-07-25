@@ -1,9 +1,11 @@
 package edu.pdx.cs410J.chanwai;
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Date;
 import java.util.Map;
 
@@ -39,12 +41,22 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   /**
-   * Returns the definition for the given owner
+   * Returns the appointment for the given owner
    */
-  public String getAppointments(String owner) throws IOException {
+  public AppointmentBook getAppointments(String owner) throws IOException, ParserException {
     Response response = get(this.url, Map.of("owner", owner));
     throwExceptionIfNotOkayHttpStatus(response);
-    return response.getContent();
+    String text = response.getContent();
+    TextParser parser = new TextParser(new StringReader(text));
+    return parser.parse();
+  }
+
+  public AppointmentBook getAppointmentsBasedOnDate(String owner, String begin, String end) throws IOException, ParserException {
+    Response response = get(this.url, Map.of("owner", owner, "start", begin, "end", end));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String text = response.getContent();
+    TextParser parser = new TextParser(new StringReader(text));
+    return parser.parse();
   }
 
   public void createAppointment(String owner, String description, String begin, String end) throws IOException {

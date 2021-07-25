@@ -34,7 +34,7 @@ class Project4IT extends InvokeMainTestCase {
     void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
     }
 
 //    @Test

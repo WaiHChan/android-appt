@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.chanwai;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,6 +17,8 @@ import java.util.Date;
 public class Project4 {
 
     static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
+    public static final String TOO_MANY_ARGUMENTS = "Too many command line arguments";
+    public static final String MISSING_OWNER = "Missing Owner";
     static final String MISSING_DESCRIPTION = "Missing Description";
     static final String MISSING_BEGIN_DATE = "Missing Begin Date";
     static final String MISSING_BEGIN_TIME = "Missing Begin Time";
@@ -29,7 +33,7 @@ public class Project4 {
     static final String INVALID_TIME = "Invalid Time: ";
     static final String MISSING_AMPM = "Missing AM or PM";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
-    public static final String MISSING_ARGS = "Missing command line arguments";
+    public static final String MISSING_HOST = "Missing host";
 
     public static void main(String... args) {
         String hostFlag = null;
@@ -69,7 +73,10 @@ public class Project4 {
                 portString = arg;
             } else if (owner == null) {
                 owner = arg;
-            } else if (description == null) {
+            } else if (searchFlag != null && description == null) {
+                description = "Invalid";
+                beginDate = isDateCorrect(arg);
+            } else if (searchFlag == null && description == null){
                 description = arg;
             } else if (beginDate == null) {
                 beginDate = isDateCorrect(arg);
@@ -83,39 +90,26 @@ public class Project4 {
                 endTime = isTimeCorrect(arg);
             } else if (endAmPm == null) {
                 endAmPm = arg;
-            }else {
+            } else {
                 usage("Extraneous command line argument: " + arg);
             }
         }
 
+//        System.out.println("-host: " + hostName);
+//        System.out.println("-port: " + portString);
+//        System.out.println("Owner: " + owner);
+//        System.out.println("Description: " + description);
+//        System.out.println("Begin Date: " + beginDate);
+//        System.out.println("Begin Time: " + beginTime);
+//        System.out.println("Begin Am: " + beginAmPm);
+//        System.out.println("End Date: " + endDate);
+//        System.out.println("End Time: " + endTime);
+//        System.out.println("End AM: " + endAmPm);
+
         if (hostName == null) {
-            usage( MISSING_ARGS );
+            usage( MISSING_HOST );
         } else if ( portString == null) {
             usage( "Missing port" );
-        } else if (owner == null) {
-            usage(MISSING_COMMAND_LINE_ARGUMENTS);
-            return;
-        } else if (description == null) {
-            usage(MISSING_DESCRIPTION);
-            return;
-        } else if (beginDate == null) {
-            usage(MISSING_BEGIN_DATE);
-            return;
-        } else if (beginTime == null) {
-            usage(MISSING_BEGIN_TIME);
-            return;
-        } else if (beginAmPm == null) {
-            usage(MISSING_AMPM);
-            return;
-        }else if (endDate == null) {
-            usage(MISSING_END_DATE);
-            return;
-        } else if (endTime == null) {
-            usage(MISSING_END_TIME);
-            return;
-        } else if (endAmPm == null) {
-            usage(MISSING_AMPM);
-            return;
         }
 
         int port;
@@ -126,55 +120,77 @@ public class Project4 {
             return;
         }
 
-        beginDateString = beginDate + " " + beginTime + " " + beginAmPm;
-        endDateString = endDate + " " + endTime + " " + endAmPm;
-        if (beginDateString.compareTo(endDateString) > 0){
-            usage(BEGIN_DATE_AFTER_END_DATE);
-        }
-//        try {
-//            begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
-//            end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
-//            if (begin_date.compareTo(end_date) > 0){
-//                usage(BEGIN_DATE_AFTER_END_DATE);
-//            }
-//        }catch (ParseException e){
-//            usage("Can not parse the date.");
-//        }
-
         AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);
+
         try {
-            client.createAppointment(owner, description, beginDateString, endDateString);
-        } catch (IOException e) {
-            error("While contacting server: " + e);
-            return;
-        }
+            if (searchFlag == null) { //No -search
+                if (owner != null && description == null) { // Only Owner provided
+                    AppointmentBook book = client.getAppointments(owner);
+                    PrettyPrinter pretty = new PrettyPrinter(new OutputStreamWriter(System.out));
+                    pretty.dump(book);
+                } else if (owner != null && description != null &&
+                        beginDate != null && beginTime != null && beginAmPm != null &&
+                        endDate != null && endTime != null && endAmPm != null) {
+                    try {
+                        try {
+                            beginDateString = beginDate + " " + beginTime + " " + beginAmPm;
+                            endDateString = endDate + " " + endTime + " " + endAmPm;
+                            begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+                            end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+                            if (begin_date.compareTo(end_date) > 0){
+                                usage(BEGIN_DATE_AFTER_END_DATE);
+                            }
+                        }catch (ParseException e){
+                            usage("Can not parse the date.");
+                        }
+                        client.createAppointment(owner, description, beginDateString, endDateString);
+                        System.out.println("Appointment added.");
+                        if (printFlag != null){
+                            Appointment appointmentFromArgs = new Appointment(owner, description, begin_date, end_date);
+                            System.out.println(appointmentFromArgs);
+                        }
+                    } catch (IOException e) {
+                        error("While contacting server: " + e);
+                        return;
+                    }
+                }
+            } else { // Yes, -search
+                if (owner == null){
+                    usage(MISSING_OWNER);
+                } else if (beginDate == null){
+                    usage(MISSING_BEGIN_DATE);
+                } else if (beginTime == null){
+                    usage(MISSING_BEGIN_TIME);
+                } else if (beginAmPm == null){
+                    usage(MISSING_AMPM);
+                } else if (endDate == null){
+                    usage(MISSING_END_DATE);
+                } else if (endTime == null){
+                    usage(MISSING_END_TIME);
+                } else if (endAmPm == null){
+                    usage(MISSING_AMPM);
+                }
 
-        String message;
-        try {
-            if (owner == null) {
-                // Print all owner/description pairs
-                Map<String, String> dictionary = client.getAllDictionaryEntries();
-                StringWriter sw = new StringWriter();
-                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
-                message = sw.toString();
-
-            } else if (description == null) {
-                // Print all dictionary entries
-                message = Messages.formatDictionaryEntry(owner, client.getAppointments(owner));
-
-            } else {
-                // Post the owner/description pair
-                //client.createAppointment(owner, description);
-                message = Messages.definedWordAs(owner, description);
+                try {
+                    beginDateString = beginDate + " " + beginTime + " " + beginAmPm;
+                    endDateString = endDate + " " + endTime + " " + endAmPm;
+                    begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+                    end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+                    if (begin_date.compareTo(end_date) > 0){
+                        usage(BEGIN_DATE_AFTER_END_DATE);
+                    }
+                }catch (ParseException e){
+                    usage("Can not parse the date.");
+                }
+                AppointmentBook book = client.getAppointmentsBasedOnDate(owner, beginDateString, endDateString);
+                PrettyPrinter pretty = new PrettyPrinter(new OutputStreamWriter(System.out));
+                pretty.dump(book);
             }
-
-        } catch ( IOException ex ) {
+        }catch (IOException | ParserException ex ) {
             error("While contacting server: " + ex);
+            System.exit(1);
             return;
         }
-
-        System.out.println(message);
-
         System.exit(0);
     }
 

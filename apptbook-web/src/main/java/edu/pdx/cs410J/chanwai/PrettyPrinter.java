@@ -1,10 +1,13 @@
 package edu.pdx.cs410J.chanwai;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
+import groovyjarjarantlr4.v4.runtime.atn.PredicateEvalInfo;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * This class represent a writer to a file in a nicer format
@@ -29,35 +32,64 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
     @Override
     public void dump(AppointmentBook book) throws IOException {
+        PrintWriter pw = new PrintWriter(this.writer);
+        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
 
-        ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
-
-        writer.write("Appointment Book: " + book.ownerName + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
-        for (Appointment a : appointments){
+        for (Appointment a : book.getAppointments()){
             long duration_In_Min = duration(a);
             long diff_Hour = hour(duration_In_Min);
             long diff_Min = min(duration_In_Min);
             long diff_Day = day(duration_In_Min);
 
-            writer.write("\n");
-            writer.write(a.description + "\n");
-            writer.write("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
-            writer.write("Duration: ");
+            pw.println("\n");
+            pw.println("Description: " + a.description + "\n");
+            pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
+            pw.println("Duration: ");
 
             if (diff_Day > 0){
-                writer.write(diff_Day + " days ");
+                pw.println(diff_Day + " days ");
             }
             if (diff_Hour > 0){
-                writer.write(diff_Hour + " hours ");
+                pw.println(diff_Hour + " hours ");
             }
             if (diff_Min > 0){
-                writer.write(diff_Min + " minutes");
+                pw.println(diff_Min + " minutes");
             }
 
-            writer.write("\n");
+            pw.println("\n");
         }
-        writer.close();
-        System.out.println("Successfully pretty print to the file.");
+        pw.flush();
+    }
+
+    public void dumpByDate(AppointmentBook book, Date start, Date end) throws IOException {
+        PrintWriter pw = new PrintWriter(this.writer);
+        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
+
+        for (Appointment a : book.getAppointments()) {
+            if (a.beginDate.after(start) && a.endDate.before(end)) {
+                long duration_In_Min = duration(a);
+                long diff_Hour = hour(duration_In_Min);
+                long diff_Min = min(duration_In_Min);
+                long diff_Day = day(duration_In_Min);
+
+                pw.println("\n");
+                pw.println("Description: " + a.description + "\n");
+                pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
+                pw.println("Duration: ");
+
+                if (diff_Day > 0) {
+                    pw.println(diff_Day + " days ");
+                }
+                if (diff_Hour > 0) {
+                    pw.println(diff_Hour + " hours ");
+                }
+                if (diff_Min > 0) {
+                    pw.println(diff_Min + " minutes");
+                }
+                pw.println("\n");
+            }
+        }
+        pw.flush();
     }
 
     /**

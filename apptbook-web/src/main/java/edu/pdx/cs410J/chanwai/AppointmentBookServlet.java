@@ -40,13 +40,29 @@ public class AppointmentBookServlet extends HttpServlet
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
     {
         response.setContentType( "text/plain" );
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         String owner = getParameter(OWNER_PARAMETER, request);
+        String start = getParameter(BEGIN_PARAMETER, request);
+        String end = getParameter(END_PARAMETER, request);
+
         if (owner == null) {
             missingRequiredParameter(response, OWNER_PARAMETER);
         } else {
-            writeAppointmentBook(owner, response);
+            if(start != null && end != null){
+                try {
+                    begin_date = df.parse(start);
+                    end_date = df.parse(end);
+                }catch (ParseException e){
+                }
+                writeAppointmentBookByDate(owner, begin_date, end_date, response);
+            }else {
+                writeAppointmentBook(owner, response);
+            }
         }
+
     }
 
     /**
@@ -135,13 +151,31 @@ public class AppointmentBookServlet extends HttpServlet
 
     private void writeAppointmentBook(String owner, HttpServletResponse response) throws IOException {
         AppointmentBook book = this.books.get(owner);
-
         if (book == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             PrintWriter pw = response.getWriter();
             TextDumper dumper = new TextDumper(pw);
             dumper.dump(book);
+//            PrettyPrinter dumper = new PrettyPrinter(pw);
+//            dumper.dump(book);
+
+            pw.flush();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+    }
+
+    private void writeAppointmentBookByDate(String owner, Date start, Date end, HttpServletResponse response) throws IOException {
+        AppointmentBook book = this.books.get(owner);
+        if (book == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            PrintWriter pw = response.getWriter();
+            TextDumper dumper = new TextDumper(pw);
+            dumper.dumpByDate(book, start, end);
+//            PrettyPrinter dumper = new PrettyPrinter(pw);
+//            dumper.dumpByDate(book, start, end);
 
             pw.flush();
 

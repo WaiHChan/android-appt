@@ -33,7 +33,8 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
     @Override
     public void dump(AppointmentBook book) throws IOException {
         PrintWriter pw = new PrintWriter(this.writer);
-        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
+        pw.println("");
+        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size());
 
         for (Appointment a : book.getAppointments()){
             long duration_In_Min = duration(a);
@@ -44,16 +45,16 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
             pw.println("\n");
             pw.println("Description: " + a.description + "\n");
             pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
-            pw.println("Duration: ");
+            pw.print("Duration: ");
 
             if (diff_Day > 0){
-                pw.println(diff_Day + " days ");
+                pw.print(diff_Day + " days ");
             }
             if (diff_Hour > 0){
-                pw.println(diff_Hour + " hours ");
+                pw.print(diff_Hour + " hours ");
             }
             if (diff_Min > 0){
-                pw.println(diff_Min + " minutes");
+                pw.print(diff_Min + " minutes\n");
             }
 
             pw.println("\n");
@@ -75,7 +76,7 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
                 pw.println("\n");
                 pw.println("Description: " + a.description + "\n");
                 pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
-                pw.println("Duration: ");
+                pw.print("Duration: ");
 
                 if (diff_Day > 0) {
                     pw.println(diff_Day + " days ");

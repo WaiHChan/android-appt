@@ -34,6 +34,7 @@ public class Project4 {
     static final String MISSING_AMPM = "Missing AM or PM";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
     public static final String MISSING_HOST = "Missing host";
+    public static final String MISSING_PORT = "Missing port";
 
     public static void main(String... args) {
         String hostFlag = null;
@@ -109,18 +110,20 @@ public class Project4 {
             return;
         }
 
+        if (owner == null){
+            usage(MISSING_OWNER);
+        }
+
         AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);
 
         try {
             if (searchFlag == null) { //No -search
-                if (owner != null && description == null) { // Only Owner provided
+                if (printFlag == null && description == null) { // Only Owner provided
                     AppointmentBook book = client.getAppointments(owner);
                     PrettyPrinter pretty = new PrettyPrinter(new OutputStreamWriter(System.out));
                     pretty.dump(book);
                 } else {
-                    if (owner == null){
-                        usage(MISSING_OWNER);
-                    } else if (description == null) {
+                    if(description == null){
                         usage(MISSING_DESCRIPTION);
                     }else if (beginDate == null){
                         usage(MISSING_BEGIN_DATE);
@@ -160,9 +163,7 @@ public class Project4 {
                     }
                 }
             } else { // Yes, -search
-                if (owner == null){
-                    usage(MISSING_OWNER);
-                } else if (beginDate == null){
+                if (beginDate == null){
                     usage(MISSING_BEGIN_DATE);
                 } else if (beginTime == null){
                     usage(MISSING_BEGIN_TIME);

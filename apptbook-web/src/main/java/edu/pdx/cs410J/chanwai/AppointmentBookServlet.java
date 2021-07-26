@@ -111,6 +111,7 @@ public class AppointmentBookServlet extends HttpServlet
             begin_date = df.parse(beginDateString);
             end_date = df.parse(endDateString);
         }catch (ParseException e){
+            missingRequiredParameter(response, "Can not parse the date.");
         }
 
         Appointment appointment = new Appointment(owner, description, begin_date, end_date);
@@ -157,8 +158,6 @@ public class AppointmentBookServlet extends HttpServlet
             PrintWriter pw = response.getWriter();
             TextDumper dumper = new TextDumper(pw);
             dumper.dump(book);
-//            PrettyPrinter dumper = new PrettyPrinter(pw);
-//            dumper.dump(book);
 
             pw.flush();
 
@@ -174,29 +173,11 @@ public class AppointmentBookServlet extends HttpServlet
             PrintWriter pw = response.getWriter();
             TextDumper dumper = new TextDumper(pw);
             dumper.dumpByDate(book, start, end);
-//            PrettyPrinter dumper = new PrettyPrinter(pw);
-//            dumper.dumpByDate(book, start, end);
 
             pw.flush();
 
             response.setStatus(HttpServletResponse.SC_OK);
         }
-    }
-
-    /**
-     * Writes all of the dictionary entries to the HTTP response.
-     *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
-     */
-    private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
-    {
-//        PrintWriter pw = response.getWriter();
-//        Messages.formatDictionaryEntries(pw, books);
-//
-//        pw.flush();
-//
-//        response.setStatus( HttpServletResponse.SC_OK );
     }
 
     /**

@@ -141,8 +141,7 @@ public class AppointmentBookServlet extends HttpServlet
     /**
      * Writes an error message about a missing parameter to the HTTP response.
      */
-    private void missingRequiredParameter( HttpServletResponse response, String parameterName )
-        throws IOException
+    private void missingRequiredParameter( HttpServletResponse response, String parameterName ) throws IOException
     {
         String message = "The required parameter \"%s\" is missing " + (parameterName);
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);

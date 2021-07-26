@@ -31,6 +31,17 @@ class Project4IT extends InvokeMainTestCase {
      * Check missing host
      */
     @Test
+    void missingHostName() {
+        MainMethodResult result = invokeMain( Project4.class, "-host");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
+    }
+
+    /**
+     * Tests that invoking the main method with no arguments issues an error
+     * Check missing host
+     */
+    @Test
     void noCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
@@ -65,6 +76,15 @@ class Project4IT extends InvokeMainTestCase {
             assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
             //assertThat(result.getTextWrittenToStandardError(), containsString("Port \"" + word + "\" must be an integer"));
         }
+    }
+
+    /**
+     * Tests that invoking the main method with -README, display readme.txt
+     */
+    @Test
+    void printReadme(){
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, "-README");
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Name: Wai Chan"));
     }
 
     /**

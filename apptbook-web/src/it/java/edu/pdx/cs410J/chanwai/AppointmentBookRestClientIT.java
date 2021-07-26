@@ -56,10 +56,20 @@ class AppointmentBookRestClientIT {
   }
 
   @Test
-  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-   // assertThat(response.getContent(), containsString("Precondition Failed"));
+    assertThat(response.getContent(), containsString("Precondition Failed"));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+  }
+
+  @Test
+  void canNotFindOwner() throws IOException {
+    String owner = "jim";
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+    HttpRequestHelper.Response response = client.getToMyURL(Map.of("owner", owner));
+    assertThat(response.getContent(), containsString("Not Found"));
+    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
   }
 }

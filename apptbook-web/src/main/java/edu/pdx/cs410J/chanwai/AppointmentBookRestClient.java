@@ -6,6 +6,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.module.ResolutionException;
 import java.util.Date;
 import java.util.Map;
 
@@ -36,7 +37,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * Returns the appointment for the given owner
    */
   public AppointmentBook getAppointments(String owner) throws IOException, ParserException {
-    Response response = get(this.url, Map.of("owner", owner));
+    //Response response = get(this.url, Map.of("owner", owner));
+    Response response = getToMyURL(Map.of("owner", owner));
     throwExceptionIfNotOkayHttpStatus(response);
     String text = response.getContent();
     TextParser parser = new TextParser(new StringReader(text));
@@ -44,7 +46,8 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   public AppointmentBook getAppointmentsBasedOnDate(String owner, String begin, String end) throws IOException, ParserException {
-    Response response = get(this.url, Map.of("owner", owner, "start", begin, "end", end));
+    //Response response = get(this.url, Map.of("owner", owner, "start", begin, "end", end));
+    Response response = getToMyURL(Map.of("owner", owner, "start", begin, "end", end));
     throwExceptionIfNotOkayHttpStatus(response);
     String text = response.getContent();
     TextParser parser = new TextParser(new StringReader(text));
@@ -57,13 +60,21 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   @VisibleForTesting
+  Response getToMyURL(Map<String, String> appointmentInfo) throws IOException {
+    return get(this.url, appointmentInfo);
+  }
+
+  @VisibleForTesting
   Response postToMyURL(Map<String, String> appointmentInfo) throws IOException {
     return post(this.url, appointmentInfo);
   }
 
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {
     int code = response.getCode();
-    if (code != HTTP_OK) {
+    if (code == 404){
+      String message = "Unable to find the owner.";
+      throw new RestException(code, message);
+    }else if (code != HTTP_OK) {
       String message = response.getContent();
       throw new RestException(code, message);
     }

@@ -62,36 +62,36 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
         pw.flush();
     }
 
-    public void dumpByDate(AppointmentBook book, Date start, Date end) throws IOException {
-        PrintWriter pw = new PrintWriter(this.writer);
-        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
-
-        for (Appointment a : book.getAppointments()) {
-            if (a.beginDate.after(start) && a.endDate.before(end)) {
-                long duration_In_Min = duration(a);
-                long diff_Hour = hour(duration_In_Min);
-                long diff_Min = min(duration_In_Min);
-                long diff_Day = day(duration_In_Min);
-
-                pw.println("\n");
-                pw.println("Description: " + a.description + "\n");
-                pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
-                pw.print("Duration: ");
-
-                if (diff_Day > 0) {
-                    pw.println(diff_Day + " days ");
-                }
-                if (diff_Hour > 0) {
-                    pw.println(diff_Hour + " hours ");
-                }
-                if (diff_Min > 0) {
-                    pw.println(diff_Min + " minutes");
-                }
-                pw.println("\n");
-            }
-        }
-        pw.flush();
-    }
+//    public void dumpByDate(AppointmentBook book, Date start, Date end) throws IOException {
+//        PrintWriter pw = new PrintWriter(this.writer);
+//        pw.println("Appointment Book:  " + book.getOwnerName() + "\tTotal Appointments: " + book.getAppointments().size() + "\n");
+//
+//        for (Appointment a : book.getAppointments()) {
+//            if (a.beginDate.after(start) && a.endDate.before(end)) {
+//                long duration_In_Min = duration(a);
+//                long diff_Hour = hour(duration_In_Min);
+//                long diff_Min = min(duration_In_Min);
+//                long diff_Day = day(duration_In_Min);
+//
+//                pw.println("\n");
+//                pw.println("Description: " + a.description + "\n");
+//                pw.println("From " + a.getBDateString() + " -> " + a.getEDateString() + "\n");
+//                pw.print("Duration: ");
+//
+//                if (diff_Day > 0) {
+//                    pw.println(diff_Day + " days ");
+//                }
+//                if (diff_Hour > 0) {
+//                    pw.println(diff_Hour + " hours ");
+//                }
+//                if (diff_Min > 0) {
+//                    pw.println(diff_Min + " minutes");
+//                }
+//                pw.println("\n");
+//            }
+//        }
+//        pw.flush();
+//    }
 
     /**
      * return the duration of an appointment

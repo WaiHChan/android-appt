@@ -144,15 +144,15 @@ public class Project4 {
                             endDateString = endDate + " " + endTime + " " + endAmPm;
                             begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
                             end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
-                            if (begin_date.compareTo(end_date) > 0){
+                            if (begin_date.compareTo(end_date) > 0) {
                                 usage(BEGIN_DATE_AFTER_END_DATE);
                             }
-                        }catch (ParseException e){
+                        } catch (ParseException e) {
                             usage("Can not parse the date.");
                         }
                         client.createAppointment(owner, description, beginDateString, endDateString);
                         System.out.println("Appointment added.");
-                        if (printFlag != null){
+                        if (printFlag != null) {
                             Appointment appointmentFromArgs = new Appointment(owner, description, begin_date, end_date);
                             System.out.println("New added appointment:");
                             System.out.println(appointmentFromArgs);

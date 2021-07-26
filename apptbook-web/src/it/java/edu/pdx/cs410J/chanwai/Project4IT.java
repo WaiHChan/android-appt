@@ -127,6 +127,17 @@ class Project4IT extends InvokeMainTestCase {
      * Tests that invoking the main method with missing begin date issues an error
      */
     @Test
+    void noSearchMissingDescription(){
+        String owner = "Jim";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, "-print", owner);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_DESCRIPTION));
+    }
+
+    /**
+     * Tests that invoking the main method with missing begin date issues an error
+     */
+    @Test
     void noSearchMissingBeginDate(){
         String owner = "Jim";
         String description = "Poker";
@@ -391,6 +402,345 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Can not parse the date."));
     }
 
+    /**
+     * Tests that invoking the main method with too many args issues an error
+     */
+    @Test
+    void tooManyArgs(){
+        String owner = "Jim";
+        String description = "Poker";
+        String beginDate = "1/1/2012";
+        String beginTime = "11:30";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:30";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am, "extra");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Extraneous command line argument:"));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidDateTrash(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/1/2012/1";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_DATE));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void missingMonth(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_DATE));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void missingDay(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_DATE));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void missingYear(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/1/";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_DATE));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidYearTooBig(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/1/10000";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.YEAR_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidYearTooSmall(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/1/0";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.YEAR_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidMonthTooBig(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "13/10/2012";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MONTH_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidMonthTooSmall(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "13/10/2000";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MONTH_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidDayTooBig(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "1/33/2012";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.DAY_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidDayTooSmall(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/0/2000";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.DAY_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidDate(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/XXXX";
+        String beginTime = "11:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid Date:"));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidTimeTrash(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "11:10:1";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_TIME));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidHour(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_TIME));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidMins(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "11";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_TIME));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidHourTooBig(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "13:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.HOUR_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidHourTooSmall(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "-2:10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.HOUR_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidMinsTooBig(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "12:60";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MINS_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidMinsTooSmall(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2001";
+        String beginTime = "11:-10";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MINS_OUT_OF_BOUNDS));
+    }
+
+    /**
+     * Tests that invoking the main method with invalid date issues an error
+     */
+    @Test
+    void invalidTime(){
+        String owner = "Jim";
+        String description = "anything";
+        String beginDate = "10/10/2012";
+        String beginTime = "11:1x";
+        String am = "AM";
+        String endDate = "1/1/2013";
+        String endTime = "11:10";
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port", PORT, owner, description, beginDate, beginTime, am, endDate, endTime, am);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_TIME));
+    }
 
 //
 //    @Test

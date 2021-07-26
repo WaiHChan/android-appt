@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 class IndexDotHtmlIT {
   private static final String HOSTNAME = "localhost";
-  private static final String PORT = System.getProperty("http.port", "8080");
+  private static final String PORT = System.getProperty("http.port", "1026");
 
   @Test
   void indexDotHtmlExists() throws IOException {

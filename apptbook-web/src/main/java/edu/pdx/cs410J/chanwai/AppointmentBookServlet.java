@@ -120,33 +120,31 @@ public class AppointmentBookServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK);
     }
 
-    /**
-     * Handles an HTTP DELETE request by removing all dictionary entries.  This
-     * behavior is exposed for testing purposes only.  It's probably not
-     * something that you'd want a real application to expose.
-     */
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-
-        this.books.clear();
-
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.allDictionaryEntriesDeleted());
-        pw.flush();
-
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
+//    /**
+//     * Handles an HTTP DELETE request by removing all dictionary entries.  This
+//     * behavior is exposed for testing purposes only.  It's probably not
+//     * something that you'd want a real application to expose.
+//     */
+//    @Override
+//    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        response.setContentType("text/plain");
+//
+//        this.books.clear();
+//
+//        PrintWriter pw = response.getWriter();
+//        pw.println(Messages.allDictionaryEntriesDeleted());
+//        pw.flush();
+//
+//        response.setStatus(HttpServletResponse.SC_OK);
+//    }
 
     /**
      * Writes an error message about a missing parameter to the HTTP response.
-     *
-     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
      */
     private void missingRequiredParameter( HttpServletResponse response, String parameterName )
         throws IOException
     {
-        String message = Messages.missingRequiredParameter(parameterName);
+        String message = "The required parameter \"%s\" is missing " + (parameterName);
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 

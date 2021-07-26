@@ -31,8 +31,30 @@ class Project4IT extends InvokeMainTestCase {
      * Check missing host
      */
     @Test
+    void noCommandLineArguments() {
+        MainMethodResult result = invokeMain( Project4.class );
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
+    }
+
+    /**
+     * Tests that invoking the main method with missing host issues an error
+     * Check missing host
+     */
+    @Test
     void missingHostName() {
         MainMethodResult result = invokeMain( Project4.class, "-host");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
+    }
+
+    /**
+     * Tests that invoking the main method with missing host issues an error
+     * Check missing host
+     */
+    @Test
+    void InvalidHostName() {
+        MainMethodResult result = invokeMain( Project4.class, HOSTNAME);
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
     }
@@ -42,10 +64,21 @@ class Project4IT extends InvokeMainTestCase {
      * Check missing host
      */
     @Test
-    void noCommandLineArguments() {
-        MainMethodResult result = invokeMain( Project4.class );
+    void missingPort() {
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, "-port");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_HOST));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_PORT));
+    }
+
+    /**
+     * Tests that invoking the main method with no arguments issues an error
+     * Check missing host
+     */
+    @Test
+    void invalidPort() {
+        MainMethodResult result = invokeMain( Project4.class, "-host", HOSTNAME, PORT);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_PORT));
     }
 
     /**
@@ -65,16 +98,11 @@ class Project4IT extends InvokeMainTestCase {
      */
     @Test
     void postIsNotNumber() {
-        //MainMethodResult result = invokeMain(Project4.class, "-host", HOSTNAME, "-post", PORT, word);
-        //assertThat(result.getTextWrittenToStandardError(), containsString("Port \"" + word + "\" must be an integer"));
         try {
             invokeMain(Project4.class, "-host", HOSTNAME, "-port", "String");
-            //fail("Expected a RestException to be thrown");
-
         } catch (NumberFormatException ex) {
             RestException cause = (RestException) ex.getCause();
             assertThat(cause.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
-            //assertThat(result.getTextWrittenToStandardError(), containsString("Port \"" + word + "\" must be an integer"));
         }
     }
 

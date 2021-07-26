@@ -99,7 +99,7 @@ public class Project4 {
         if (hostName == null) {
             usage( MISSING_HOST );
         } else if ( portString == null) {
-            usage( "Missing port" );
+            usage(MISSING_PORT);
         }
 
         int port;

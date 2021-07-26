@@ -33,14 +33,6 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   }
 
   /**
-   * Returns all dictionary entries from the server
-   */
-  public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url, Map.of());
-    return Messages.parseDictionary(response.getContent());
-  }
-
-  /**
    * Returns the appointment for the given owner
    */
   public AppointmentBook getAppointments(String owner) throws IOException, ParserException {
@@ -67,11 +59,6 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
   @VisibleForTesting
   Response postToMyURL(Map<String, String> appointmentInfo) throws IOException {
     return post(this.url, appointmentInfo);
-  }
-
-  public void removeAllAppointmentBooks() throws IOException {
-    Response response = delete(this.url, Map.of());
-    throwExceptionIfNotOkayHttpStatus(response);
   }
 
   private Response throwExceptionIfNotOkayHttpStatus(Response response) {

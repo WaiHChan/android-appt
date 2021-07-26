@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.chanwai;
 
+import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
@@ -26,32 +27,39 @@ class AppointmentBookRestClientIT {
     return new AppointmentBookRestClient(HOSTNAME, port);
   }
 
-//  @Test
-//  void test0RemoveAllAppointmentBooks() throws IOException {
-//    AppointmentBookRestClient client = newAppointmentBookRestClient();
-//    client.removeAllAppointmentBooks();
-//  }
-//
-//  @Test
-//  void test2CreateAppointmentBookWithOneAppointment() throws IOException {
-//    AppointmentBookRestClient client = newAppointmentBookRestClient();
-//    String owner = "Jim";
-//    String description = "Eyes Check more";
-//    String begin = "1/1/2019 10:30 AM";
-//    String end = "1/1/2019 11:00 AM";
-//    client.createAppointment(owner, description, begin, end);
-//
-//    String appointmentBookText = client.getAppointments(owner);
-//    assertThat(appointmentBookText, containsString(owner));
-//    assertThat(appointmentBookText, containsString(description));
-//  }
-//
-//  @Test
-//  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
-//    AppointmentBookRestClient client = newAppointmentBookRestClient();
-//    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-//    assertThat(response.getContent(), containsString("Precondition Failed"));
-//    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-//  }
+  @Test
+  void checkClientCreateAndGetAppointment() throws IOException, ParserException {
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+    String owner = "Jim";
+    String description = "Eyes";
+    String begin = "1/1/2019 10:30 AM";
+    String end = "1/1/2019 11:00 AM";
+    client.createAppointment(owner, description, begin, end);
 
+    AppointmentBook appointmentBookText = client.getAppointments(owner);
+    assertThat(appointmentBookText.getOwnerName(), containsString(owner));
+  }
+
+  @Test
+  void checkClientCreateAndGetAppointmentBasedOnDate() throws IOException, ParserException {
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+    String owner = "Jim";
+    String description = "Eyes";
+    String begin = "1/1/2019 10:30 AM";
+    String end = "1/1/2019 11:00 AM";
+    String start = "1/1/2017 10:00 AM";
+    String finish = "1/1/2020 11:00 AM";
+    client.createAppointment(owner, description, begin, end);
+
+    AppointmentBook appointmentBookText = client.getAppointmentsBasedOnDate(owner, start, finish);
+    assertThat(appointmentBookText.getOwnerName(), containsString(owner));
+  }
+
+  @Test
+  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+    AppointmentBookRestClient client = newAppointmentBookRestClient();
+    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
+   // assertThat(response.getContent(), containsString("Precondition Failed"));
+    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+  }
 }

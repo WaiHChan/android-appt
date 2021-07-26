@@ -573,7 +573,7 @@ class Project4IT extends InvokeMainTestCase {
     void invalidMonthTooSmall(){
         String owner = "Jim";
         String description = "anything";
-        String beginDate = "13/10/2000";
+        String beginDate = "-2/10/2000";
         String beginTime = "11:10";
         String am = "AM";
         String endDate = "1/1/2013";

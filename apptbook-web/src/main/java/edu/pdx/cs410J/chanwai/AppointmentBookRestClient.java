@@ -99,16 +99,11 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
    * @param response the response from get or post method
    * @return code that indicate if success or failure
    */
-  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+  private void throwExceptionIfNotOkayHttpStatus(Response response) {
     int code = response.getCode();
-    if (code == 404){
-      String message = "Unable to find the owner.";
-      throw new RestException(code, message);
-    }else if (code != HTTP_OK) {
-      String message = response.getContent();
-      throw new RestException(code, message);
+    if (code != HTTP_OK){
+      System.err.println(response.getContent());
+      System.exit(1);
     }
-    return response;
   }
-
 }

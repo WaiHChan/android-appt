@@ -70,12 +70,20 @@ public class Project4 {
             } else if (portFlag != null && portString == null) {
                 portString = arg;
             } else if (owner == null) {
-                owner = arg;
+                if (arg.contains(" ")){
+                    owner = "\"" + arg + "\"";
+                }else{
+                    owner = arg;
+                }
             } else if (searchFlag != null && description == null) {
                 description = "Invalid";
                 beginDate = isDateCorrect(arg);
             } else if (searchFlag == null && description == null){
-                description = arg;
+                if (arg.contains(" ")){
+                    description = "\"" + arg + "\"";
+                }else{
+                    description = arg;
+                }
             } else if (beginDate == null) {
                 beginDate = isDateCorrect(arg);
             } else if (beginTime == null) {

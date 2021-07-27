@@ -1,15 +1,12 @@
 package edu.pdx.cs410J.chanwai;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +24,11 @@ import static org.mockito.Mockito.*;
  */
 public class AppointmentBookServletTest {
 
+  /**
+   * Test the doGet method returns the text format of appointment information
+   * @throws ServletException
+   * @throws IOException
+   */
   @Test
   void gettingAppointmentBookReturnsTextFormat() throws ServletException, IOException {
     String owner = "Jim";
@@ -72,6 +74,11 @@ public class AppointmentBookServletTest {
     return sw;
   }
 
+  /**
+   * Test the doPost method can create a new appointment
+   * @throws ServletException
+   * @throws IOException
+   */
   @Test
   void addAppointment() throws ServletException, IOException {
     AppointmentBookServlet servlet = new AppointmentBookServlet();

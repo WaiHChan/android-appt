@@ -769,24 +769,4 @@ class Project4IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString(Project4.INVALID_TIME));
     }
-
-//
-//    @Test
-//    void test4AddDefinition() {
-//        String word = "WORD";
-//        String definition = "DEFINITION";
-//
-//        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT, word, definition );
-//        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-//        String out = result.getTextWrittenToStandardOut();
-//        assertThat(out, out, containsString(Messages.definedWordAs(word, definition)));
-//
-//        result = invokeMain( Project4.class, HOSTNAME, PORT, word );
-//        out = result.getTextWrittenToStandardOut();
-//        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
-//
-//        result = invokeMain( Project4.class, HOSTNAME, PORT );
-//        out = result.getTextWrittenToStandardOut();
-//        assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
-//    }
 }

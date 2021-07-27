@@ -67,19 +67,35 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
     return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(endDate);
   }
 
+  /**
+   * Returns a String that describes the Appointment begin date and time in format
+   * @return a begin date and time string
+   */
   public String getBDateString() {
     return df.format(beginDate);
   }
 
+  /**
+   * Returns a String that describes the Appointment end date and time in format
+   * @return a end date and time string
+   */
   public String getEDateString() {
     return df.format(endDate);
   }
 
+  /**
+   * Returns a date type that describes the Appointment begin date and time
+   * @return a begin date and time in date type
+   */
   @Override
   public Date getBeginTime(){
     return this.beginDate;
   }
 
+  /**
+   * Returns a date type that describes the Appointment end date and time
+   * @return a end date and time in date type
+   */
   @Override
   public Date getEndTime(){
     return this.endDate;

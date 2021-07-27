@@ -46,6 +46,10 @@ public class AppointmentBookTest {
         assertThat(newBook.toString(), containsString("Jim's appointment book with 1 appointments"));
     }
 
+    /**
+     * Test the addAppointment can add the appointment book
+     * @throws ParseException
+     */
     @Test
     void addingAnAppointmentAddsTheAppointment() throws ParseException {
         String description = "Eyes Check";

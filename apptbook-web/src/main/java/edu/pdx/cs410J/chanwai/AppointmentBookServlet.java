@@ -120,24 +120,6 @@ public class AppointmentBookServlet extends HttpServlet
         response.setStatus( HttpServletResponse.SC_OK);
     }
 
-//    /**
-//     * Handles an HTTP DELETE request by removing all dictionary entries.  This
-//     * behavior is exposed for testing purposes only.  It's probably not
-//     * something that you'd want a real application to expose.
-//     */
-//    @Override
-//    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        response.setContentType("text/plain");
-//
-//        this.books.clear();
-//
-//        PrintWriter pw = response.getWriter();
-//        pw.println(Messages.allDictionaryEntriesDeleted());
-//        pw.flush();
-//
-//        response.setStatus(HttpServletResponse.SC_OK);
-//    }
-
     /**
      * Writes an error message about a missing parameter to the HTTP response.
      */
@@ -147,6 +129,12 @@ public class AppointmentBookServlet extends HttpServlet
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
     }
 
+    /**
+     * Write the appointment book to the screen
+     * @param owner search for the owner's appointment book
+     * @param response set the response to ok if it can print, not found if the book is empty.
+     * @throws IOException
+     */
     private void writeAppointmentBook(String owner, HttpServletResponse response) throws IOException {
         AppointmentBook book = this.books.get(owner);
         if (book == null) {
@@ -162,6 +150,12 @@ public class AppointmentBookServlet extends HttpServlet
         }
     }
 
+    /**
+     * Write the appointment book to the screen based on the range of time
+     * @param owner search for the owner's appointment book
+     * @param response set the response to ok if it can print, not found if the book is empty.
+     * @throws IOException
+     */
     private void writeAppointmentBookByDate(String owner, Date start, Date end, HttpServletResponse response) throws IOException {
         AppointmentBook book = this.books.get(owner);
         if (book == null) {
@@ -192,11 +186,21 @@ public class AppointmentBookServlet extends HttpServlet
       }
     }
 
+    /**
+     * return an appointment book for testing
+     * @param owner the owner of the appointment book
+     * @return return an appointment book
+     */
     @VisibleForTesting
     public AppointmentBook getAppointmentBook(String owner) {
         return this.books.get(owner);
     }
 
+    /**
+     * Create an appointment book for testing
+     * @param owner name of the appointment book
+     * @return return the created appointment book
+     */
     public AppointmentBook createAppointmentBook(String owner) {
         AppointmentBook book = new AppointmentBook(owner);
         this.books.put(owner, book);

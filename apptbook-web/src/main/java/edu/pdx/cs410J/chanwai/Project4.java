@@ -6,7 +6,6 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Date;
 
@@ -16,8 +15,6 @@ import java.util.Date;
  */
 public class Project4 {
 
-    static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
-    public static final String TOO_MANY_ARGUMENTS = "Too many command line arguments";
     public static final String MISSING_OWNER = "Missing Owner";
     static final String MISSING_DESCRIPTION = "Missing Description";
     static final String MISSING_BEGIN_DATE = "Missing Begin Date";
@@ -200,6 +197,10 @@ public class Project4 {
         System.exit(0);
     }
 
+    /**
+     * A short cut to System.err
+     * @param message A error message
+     */
     private static void error( String message )
     {
         PrintStream err = System.err;

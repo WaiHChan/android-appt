@@ -100,5 +100,4 @@ public class TextParserTest {
 
         assertThat(book.getOwnerName(), equalTo(owner));
     }
-
 }

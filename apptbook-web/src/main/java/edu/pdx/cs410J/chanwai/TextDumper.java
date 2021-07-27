@@ -33,6 +33,14 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
         }
     }
 
+    /**
+     * Print the appointments based on the date provided
+     * @param book the appointment book that need to be filtered
+     * @param start search for the begin date and time after the start time
+     * @param end search for the end date and time before the end time
+     * @throws IOException
+     */
+
     public void dumpByDate(AppointmentBook book, Date start, Date end) throws IOException {
         PrintWriter pw = new PrintWriter(this.writer);
         for (Appointment a : book.getAppointments()) {

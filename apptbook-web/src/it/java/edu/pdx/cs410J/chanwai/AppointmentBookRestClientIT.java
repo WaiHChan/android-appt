@@ -27,6 +27,11 @@ class AppointmentBookRestClientIT {
     return new AppointmentBookRestClient(HOSTNAME, port);
   }
 
+  /**
+   * Test the createAppointment function and the getAppointment function
+   * @throws IOException
+   * @throws ParserException
+   */
   @Test
   void checkClientCreateAndGetAppointment() throws IOException, ParserException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
@@ -40,6 +45,11 @@ class AppointmentBookRestClientIT {
     assertThat(appointmentBookText.getOwnerName(), containsString(owner));
   }
 
+  /**
+   * Test the createAppointment function and the getAppointment function based on the date
+   * @throws IOException
+   * @throws ParserException
+   */
   @Test
   void checkClientCreateAndGetAppointmentBasedOnDate() throws IOException, ParserException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
@@ -55,14 +65,21 @@ class AppointmentBookRestClientIT {
     assertThat(appointmentBookText.getOwnerName(), containsString(owner));
   }
 
+  /**
+   * Test the response is 412 if missing parameter
+   * @throws IOException
+   */
   @Test
   void missingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    //assertThat(response.getContent(), containsString("Precondition Failed"));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 
+  /**
+   * Test the response is "Not Found" if the owner name given is not available
+   * @throws IOException
+   */
   @Test
   void canNotFindOwner() throws IOException {
     String owner = "jim";

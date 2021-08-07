@@ -17,20 +17,13 @@ import java.util.StringTokenizer;
 
 public class MakeNewAppointmentActivity extends AppCompatActivity {
 
-    static final String MISSING_DESCRIPTION = "Missing Description";
-    static final String MISSING_BEGIN_DATE = "Missing Begin Date";
-    static final String MISSING_BEGIN_TIME = "Missing Begin Time";
-    static final String MISSING_END_DATE = "Missing End Date";
-    static final String MISSING_END_TIME = "Missing End Time";
     static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
     static final String MONTH_OUT_OF_BOUNDS = "Month out of bounds" ;
     static final String DAY_OUT_OF_BOUNDS = "Day out of bounds" ;
     static final String HOUR_OUT_OF_BOUNDS = "Hour out of bounds";
     static final String MINS_OUT_OF_BOUNDS = "Minutes out of bounds";
-    static final String OWNER_NAME_NOT_EQUAL = "The owner's name on command line is different than the owner's name in the text file";
     static final String INVALID_DATE = "Invalid Date: ";
     static final String INVALID_TIME = "Invalid Time: ";
-    static final String MISSING_AMPM = "Missing AM or PM";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
 
     @Override
@@ -136,6 +129,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         try {
             begin_date = df.parse(beginDate + " " + beginTime + " " + beginAM);
             end_date = df.parse(endDate + " " + endTime + " " + endAM);
+            assert begin_date != null;
             if (begin_date.compareTo(end_date) > 0){
                 displayErrorMessage(BEGIN_DATE_AFTER_END_DATE);
             }

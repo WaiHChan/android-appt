@@ -13,6 +13,6 @@
     <string name="add">Add</string>
     <string name="owner">Owner</string>
     <string name="description">Description</string>
-    <string name="begin_date_and_time">Begin Date and Time</string>
-    <string name="end_date_and_time">End Date and Time</string>
+    <string name="begin_date_and_time">Begin Date, Time, AM/PM</string>
+    <string name="end_date_and_time">End Date, Time, AM/PM</string>
 </resources>

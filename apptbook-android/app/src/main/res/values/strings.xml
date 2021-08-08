@@ -15,4 +15,5 @@
     <string name="description">Description</string>
     <string name="begin_date_and_time">Begin Date, Time, AM/PM</string>
     <string name="end_date_and_time">End Date, Time, AM/PM</string>
+    <string name="return_to_main">Return To Main</string>
 </resources>

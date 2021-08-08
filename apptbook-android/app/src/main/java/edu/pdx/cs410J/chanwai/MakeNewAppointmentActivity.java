@@ -1,12 +1,16 @@
 package edu.pdx.cs410J.chanwai;
 
+import static edu.pdx.cs410J.chanwai.MainActivity.GET_APPOINTMENT_FROM_ACTIVITY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -26,6 +30,9 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     static final String INVALID_TIME = "Invalid Time: ";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
 
+    private Appointment newAppointment;
+    public static final String APPOINTMENT = "Appointment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,16 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
         Button addAppt = findViewById(R.id.add);
         addAppt.setOnClickListener(view -> addOperand());
+
+        Button returnToMain = findViewById(R.id.return_to_main);
+        returnToMain.setOnClickListener(v -> sendDataBackToMain());
+    }
+
+    private void sendDataBackToMain() {
+        Intent intent = new Intent();
+        intent.putExtra(APPOINTMENT, this.newAppointment);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void addOperand() {
@@ -136,6 +153,12 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         }catch (ParseException e){
             displayErrorMessage("Can not parse the date.");
         }
+
+        TextView appt = findViewById(R.id.sum);
+        this.newAppointment = new Appointment(owner, description, begin_date, end_date);
+        AppointmentBook appointmentBookFromFile = new AppointmentBook(owner);
+        appointmentBookFromFile.addAppointment(newAppointment);
+        appt.setText(newAppointment.toString());
     }
 
     private void displayErrorMessage(String message) {

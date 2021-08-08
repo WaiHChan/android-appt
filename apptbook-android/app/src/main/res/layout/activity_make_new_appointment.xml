@@ -10,8 +10,8 @@
         android:id="@+id/owner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp"
-        android:layout_marginEnd="75dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="100dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="7"
@@ -25,7 +25,7 @@
         android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="12dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="15"
@@ -39,13 +39,12 @@
         android:id="@+id/beginDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="5"
         android:text=""
+        app:layout_constraintBaseline_toBaselineOf="@+id/beginTime"
         app:layout_constraintStart_toStartOf="@+id/beginText"
-        app:layout_constraintTop_toBottomOf="@+id/beginText"
         tools:ignore="LabelFor,TextFields"
         tools:text="Begin Date" />
 
@@ -54,36 +53,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:minEms="3"
-        app:layout_constraintBaseline_toBaselineOf="@+id/beginDate"
-        app:layout_constraintStart_toEndOf="@+id/beginDate"
-        tools:text="Begin Time"
+        android:layout_marginTop="18dp"
         android:importantForAutofill="no"
-        tools:ignore="LabelFor,TextFields" />
+        android:minEms="3"
+        app:layout_constraintStart_toEndOf="@+id/beginDate"
+        app:layout_constraintTop_toBottomOf="@+id/beginText"
+        tools:ignore="LabelFor,TextFields"
+        tools:text="Begin Time" />
 
     <EditText
         android:id="@+id/beginAM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
+        android:importantForAutofill="no"
         android:minEms="2"
         app:layout_constraintBaseline_toBaselineOf="@+id/beginTime"
         app:layout_constraintStart_toEndOf="@+id/beginTime"
-        tools:text="Begin AM"
-        android:importantForAutofill="no"
-        tools:ignore="LabelFor,TextFields" />
+        tools:ignore="LabelFor,TextFields"
+        tools:text="Begin AM" />
 
     <EditText
         android:id="@+id/endDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="5"
         android:text=""
+        app:layout_constraintBaseline_toBaselineOf="@+id/endTime"
         app:layout_constraintStart_toStartOf="@+id/endText"
-        app:layout_constraintTop_toBottomOf="@+id/endText"
         tools:ignore="LabelFor,TextFields"
         tools:text="End Date" />
 
@@ -92,43 +91,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:minEms="3"
-        app:layout_constraintBaseline_toBaselineOf="@+id/endDate"
-        app:layout_constraintStart_toEndOf="@+id/endDate"
-        tools:text="End Time"
+        android:layout_marginTop="16dp"
         android:importantForAutofill="no"
-        tools:ignore="LabelFor,TextFields" />
+        android:minEms="3"
+        app:layout_constraintStart_toEndOf="@+id/endDate"
+        app:layout_constraintTop_toBottomOf="@+id/endText"
+        tools:ignore="LabelFor,TextFields"
+        tools:text="End Time" />
 
     <EditText
         android:id="@+id/endAM"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="18dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="27dp"
+        android:importantForAutofill="no"
         android:minEms="2"
+
         app:layout_constraintStart_toEndOf="@+id/endTime"
         app:layout_constraintTop_toBottomOf="@+id/endText"
-        tools:text="End AM"
-        android:importantForAutofill="no"
-        tools:ignore="LabelFor,TextFields" />
-
-    <Button
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="51dp"
-        android:text="@string/add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        tools:ignore="LabelFor,TextFields"
+        tools:text="End AM" />
 
     <TextView
         android:id="@+id/ownerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
         android:text="@string/owner"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="26dp"
         android:text="@string/description"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,11 +151,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="29dp"
         android:text="@string/end_date_and_time"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/beginDate" />
+
+    <TextView
+        android:id="@+id/sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="27dp"
+        android:minEms="20"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/endDate"
+        app:layout_constraintTop_toBottomOf="@+id/endDate" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sum" />
+
+    <Button
+        android:id="@+id/return_to_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="28dp"
+        android:text="@string/return_to_main"
+        app:layout_constraintEnd_toEndOf="@+id/sum"
+        app:layout_constraintTop_toBottomOf="@+id/sum" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

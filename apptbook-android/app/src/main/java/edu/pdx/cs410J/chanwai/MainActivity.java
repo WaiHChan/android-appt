@@ -1,31 +1,18 @@
 package edu.pdx.cs410J.chanwai;
 
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.chanwai.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,13 +20,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.chanwai.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,19 +40,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+//        binding = ActivityMainBinding.inflate(getLayoutInflater());
+//        setContentView(binding.getRoot());
+//
+//        setSupportActionBar(binding.toolbar);
+//
+////        binding.fab.setOnClickListener(new View.OnClickListener() {
+//////            @Override
+//////            public void onClick(View view) {
+//////                Appointment appointment = new Appointment("Jim","Temp", "08/02/2021 5:00 PM", "08/02/2021 6:00 PM");
+//////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//////                        .setAction("Action", null).show();
+//////            }
+////        });
 
-        setSupportActionBar(binding.toolbar);
 
-//        binding.fab.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                Appointment appointment = new Appointment("Jim","Temp", "08/02/2021 5:00 PM", "08/02/2021 6:00 PM");
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-////            }
-//        });
+        Button goToReadMe = findViewById(R.id.go_to_read);
+        goToReadMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ReadMeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Button makeAppt = findViewById(R.id.make_appointment);
         makeAppt.setOnClickListener(v -> {

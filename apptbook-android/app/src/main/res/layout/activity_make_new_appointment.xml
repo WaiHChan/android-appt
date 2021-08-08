@@ -182,10 +182,10 @@
         android:id="@+id/return_to_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="56dp"
-        android:layout_marginEnd="28dp"
         android:text="@string/return_to_main"
-        app:layout_constraintEnd_toEndOf="@+id/sum"
+        app:layout_constraintStart_toEndOf="@+id/add"
         app:layout_constraintTop_toBottomOf="@+id/sum" />
 
 

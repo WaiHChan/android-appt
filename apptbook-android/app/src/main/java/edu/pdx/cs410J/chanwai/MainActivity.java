@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.appts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+
         try {
             loadApptsFromFile();
         } catch (IOException | ParserException e) {
@@ -174,12 +175,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void writeApptsToFile() throws IOException {
         File apptsFile = getApptsFile();
+
         try (
             PrintWriter pw = new PrintWriter(new FileWriter(apptsFile))
         ){
             for (int i = 0; i < this.appts.getCount(); i++) {
-                Appointment appt = this.appts.getItem(i);
-                pw.println(appt.toString());
+                Appointment a = this.appts.getItem(i);
+                pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
             }
             pw.flush();
         }

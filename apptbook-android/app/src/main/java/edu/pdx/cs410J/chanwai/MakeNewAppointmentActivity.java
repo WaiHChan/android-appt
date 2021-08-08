@@ -17,6 +17,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class MakeNewAppointmentActivity extends AppCompatActivity {
@@ -30,6 +32,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     static final String INVALID_TIME = "Invalid Time: ";
     static final String BEGIN_DATE_AFTER_END_DATE = "Begin date occurs after End date";
 
+    private final Map<String, AppointmentBook> books = new HashMap<>();
     private Appointment newAppointment;
     public static final String APPOINTMENT = "Appointment";
 
@@ -67,7 +70,12 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
         String owner = ownerId.getText().toString();
         try {
-            owner = ownerId.getText().toString();
+            String arg = ownerId.getText().toString();
+            if (arg.contains(" ")){
+                owner = "\"" + arg + "\"";
+            }else{
+                owner = arg;
+            }
             if(owner.isEmpty()){
                 throw new NullPointerException("Cannot parse Owner name");
             }
@@ -79,7 +87,12 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
         String description = descriptionId.getText().toString();
         try {
-            description = descriptionId.getText().toString();
+            String arg = descriptionId.getText().toString();
+            if (arg.contains(" ")){
+                description = "\"" + arg + "\"";
+            }else{
+                description = arg;
+            }
             if(description.isEmpty()){
                 throw new NullPointerException("Cannot parse Description");
             }
@@ -155,10 +168,24 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         }
 
         TextView appt = findViewById(R.id.sum);
+        AppointmentBook book = this.books.get(owner);
+        if (book == null) {
+            book = createAppointmentBook(owner);
+        }
         this.newAppointment = new Appointment(owner, description, begin_date, end_date);
-        AppointmentBook appointmentBookFromFile = new AppointmentBook(owner);
-        appointmentBookFromFile.addAppointment(newAppointment);
-        appt.setText(newAppointment.toString());
+        book.addAppointment(newAppointment);
+        appt.setText(newAppointment.toString()); // -print option
+    }
+
+    /**
+     * Create an appointment book for testing
+     * @param owner name of the appointment book
+     * @return return the created appointment book
+     */
+    public AppointmentBook createAppointmentBook(String owner) {
+        AppointmentBook book = new AppointmentBook(owner);
+        this.books.put(owner, book);
+        return book;
     }
 
     private void displayErrorMessage(String message) {

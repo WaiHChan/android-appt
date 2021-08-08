@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class Project3 {
 
-    static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project1 [options] owner description begin_date begin_time end_date end_time";
+    static final String USAGE_MESSAGE = "usage: java edu.pdx.cs410J.<login-id>.Project3 [options] owner description begin_date begin_time end_date end_time";
     static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments";
     static final String TOO_MANY_COMMAND_LINE_ARGUMENTS = "Too many command line arguments";
     static final String MISSING_DESCRIPTION = "Missing Description";

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppointmentBook">
         <activity
+            android:name=".readme"
+            android:exported="true" />
+        <activity
             android:name=".MakeNewAppointmentActivity"
             android:exported="true" />
         <activity

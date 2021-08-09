@@ -10,19 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ReadMeActivity extends AppCompatActivity {
+public class readme extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.read_me);
+        setContentView(R.layout.activity_readme);
 
         Button b_read = findViewById(R.id.read_me);
         TextView tv_text = findViewById(R.id.tv_text);
         b_read.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text ="";
+                String text = "";
                 try {
                     InputStream is = getAssets().open("README.txt");
                     int size = is.available();

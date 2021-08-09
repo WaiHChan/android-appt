@@ -40,26 +40,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        binding = ActivityMainBinding.inflate(getLayoutInflater());
-//        setContentView(binding.getRoot());
-//
-//        setSupportActionBar(binding.toolbar);
-//
-////        binding.fab.setOnClickListener(new View.OnClickListener() {
-//////            @Override
-//////            public void onClick(View view) {
-//////                Appointment appointment = new Appointment("Jim","Temp", "08/02/2021 5:00 PM", "08/02/2021 6:00 PM");
-//////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//////                        .setAction("Action", null).show();
-//////            }
-////        });
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        setSupportActionBar(binding.toolbar);
+
+//        binding.fab.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                Appointment appointment = new Appointment("Jim","Temp", "08/02/2021 5:00 PM", "08/02/2021 6:00 PM");
+////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////                        .setAction("Action", null).show();
+////            }
+//        });
 
         Button goToReadMe = findViewById(R.id.go_to_read);
         goToReadMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ReadMeActivity.class);
+                Intent intent = new Intent(MainActivity.this, readme.class);
                 startActivity(intent);
             }
         });
@@ -72,18 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
         this.appts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 
-        try {
-            loadApptsFromFile();
-        } catch (IOException | ParserException e) {
-            toast("While reading file: " + e.getMessage());
-        }
+//        try {
+//            loadApptsFromFile();
+//        } catch (IOException | ParserException e) {
+//            toast("While reading file: " + e.getMessage());
+//        }
 
         ListView listOfAppts = findViewById(R.id.appts);
         listOfAppts.setAdapter(this.appts);
-    }
-
-    private void toast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -92,14 +87,25 @@ public class MainActivity extends AppCompatActivity {
 
         if(resultCode == RESULT_OK && requestCode == GET_APPOINTMENT_FROM_ACTIVITY && data != null){
             Appointment appointment = (Appointment) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENT);
-            Toast.makeText(this, "Received Appointment: " + appointment, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "New appointment created: " + appointment, Toast.LENGTH_LONG).show();
             this.appts.add(appointment);
+
+            try {
+                loadApptsFromFile();
+            } catch (IOException | ParserException e) {
+                toast("While reading file: " + e.getMessage());
+            }
+
             try {
                 writeApptsToFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void toast(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     private void loadApptsFromFile() throws IOException, ParserException {
@@ -178,9 +184,14 @@ public class MainActivity extends AppCompatActivity {
         try (
             PrintWriter pw = new PrintWriter(new FileWriter(apptsFile))
         ){
-            for (int i = 0; i < this.appts.getCount(); i++) {
-                Appointment a = this.appts.getItem(i);
-                pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
+            if(this.appts.getCount() == 0){
+                pw.println("Appointment is empty.");
+            }else {
+                pw.println(this.appts.getCount());
+                for (int i = 0; i < this.appts.getCount(); i++) {
+                    Appointment a = this.appts.getItem(i);
+                    pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
+                }
             }
             pw.flush();
         }

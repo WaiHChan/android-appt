@@ -18,4 +18,6 @@
     <string name="return_to_main">Return To Main</string>
     <string name="text">text</string>
     <string name="read_me">READ ME</string>
+    <string name="title_activity_readme">readme</string>
+    <string name="help">Help</string>
 </resources>

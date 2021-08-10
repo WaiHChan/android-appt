@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppointmentBook">
         <activity
+            android:name=".searchResults"
+            android:exported="true" />
+        <activity
+            android:name=".search"
+            android:exported="true" />
+        <activity
             android:name=".readme"
             android:exported="true" />
         <activity

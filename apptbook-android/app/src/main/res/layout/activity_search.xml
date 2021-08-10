@@ -4,113 +4,98 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MakeNewAppointmentActivity">
+    tools:context=".search">
 
     <EditText
-        android:id="@+id/owner"
+        android:id="@+id/ownerForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="2dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="7"
         android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/beginText"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="LabelFor,TextFields"
         tools:text="Owner" />
 
     <EditText
-        android:id="@+id/description"
+        android:id="@+id/beginDateForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:importantForAutofill="no"
         android:minHeight="48dp"
-        android:minEms="15"
-        android:text=""
-        app:layout_constraintStart_toStartOf="@+id/descriptionText"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionText"
-        tools:ignore="LabelFor,TextFields"
-        tools:text="Description" />
-
-    <EditText
-        android:id="@+id/beginDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:importantForAutofill="no"
-        android:minHeight="48dp"
         android:minEms="5"
         android:text=""
-        app:layout_constraintBaseline_toBaselineOf="@+id/beginTime"
         app:layout_constraintStart_toStartOf="@+id/beginText"
+        app:layout_constraintTop_toBottomOf="@+id/beginText"
         tools:ignore="LabelFor,TextFields"
         tools:text="Begin Date" />
 
     <EditText
-        android:id="@+id/beginTime"
+        android:id="@+id/beginTimeForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="11dp"
         android:importantForAutofill="no"
         android:minEms="3"
-        app:layout_constraintStart_toEndOf="@+id/beginDate"
-        app:layout_constraintTop_toBottomOf="@+id/beginText"
+        app:layout_constraintBaseline_toBaselineOf="@+id/beginDateForSearch"
+        app:layout_constraintStart_toEndOf="@+id/beginDateForSearch"
         tools:ignore="LabelFor,TextFields"
         tools:text="Begin Time" />
 
     <EditText
-        android:id="@+id/beginAM"
+        android:id="@+id/beginAMForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="12dp"
         android:importantForAutofill="no"
         android:minEms="2"
-        app:layout_constraintBaseline_toBaselineOf="@+id/beginTime"
-        app:layout_constraintStart_toEndOf="@+id/beginTime"
+        app:layout_constraintBaseline_toBaselineOf="@+id/beginTimeForSearch"
+        app:layout_constraintStart_toEndOf="@+id/beginTimeForSearch"
         tools:ignore="LabelFor,TextFields"
         tools:text="Begin AM" />
 
     <EditText
-        android:id="@+id/endDate"
+        android:id="@+id/endDateForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:importantForAutofill="no"
         android:minHeight="48dp"
         android:minEms="5"
         android:text=""
-        app:layout_constraintBaseline_toBaselineOf="@+id/endTime"
+        app:layout_constraintBaseline_toBaselineOf="@+id/endTimeForSearch"
         app:layout_constraintStart_toStartOf="@+id/endText"
         tools:ignore="LabelFor,TextFields"
         tools:text="End Date" />
 
     <EditText
-        android:id="@+id/endTime"
+        android:id="@+id/endTimeForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="11dp"
         android:layout_marginTop="16dp"
         android:importantForAutofill="no"
         android:minEms="3"
-        app:layout_constraintStart_toEndOf="@+id/endDate"
+        app:layout_constraintStart_toEndOf="@+id/endDateForSearch"
         app:layout_constraintTop_toBottomOf="@+id/endText"
         tools:ignore="LabelFor,TextFields"
         tools:text="End Time" />
 
     <EditText
-        android:id="@+id/endAM"
+        android:id="@+id/endAMForSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="27dp"
+
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="1dp"
         android:importantForAutofill="no"
         android:minEms="2"
-
-        app:layout_constraintStart_toEndOf="@+id/endTime"
-        app:layout_constraintTop_toBottomOf="@+id/endText"
+        app:layout_constraintStart_toEndOf="@+id/endTimeForSearch"
+        app:layout_constraintTop_toTopOf="@+id/endTimeForSearch"
         tools:ignore="LabelFor,TextFields"
         tools:text="End AM" />
 
@@ -118,75 +103,61 @@
         android:id="@+id/ownerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="20dp"
         android:text="@string/owner"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/descriptionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="26dp"
-        android:text="@string/description"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ownerText" />
-
-    <TextView
         android:id="@+id/beginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="14dp"
         android:text="@string/begin_date_and_time"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintStart_toStartOf="@+id/ownerText"
+        app:layout_constraintTop_toBottomOf="@+id/ownerForSearch" />
 
     <TextView
         android:id="@+id/endText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="16dp"
         android:text="@string/end_date_and_time"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/beginDate" />
+        app:layout_constraintStart_toStartOf="@+id/beginDateForSearch"
+        app:layout_constraintTop_toBottomOf="@+id/beginDateForSearch" />
 
     <TextView
-        android:id="@+id/print"
+        android:id="@+id/sum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="28dp"
         android:minEms="20"
         android:text=""
-        app:layout_constraintStart_toStartOf="@+id/endDate"
-        app:layout_constraintTop_toBottomOf="@+id/endDate" />
-
-    <Button
-        android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="56dp"
-        android:text="@string/add"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/print" />
+        app:layout_constraintTop_toBottomOf="@+id/endDateForSearch" />
 
     <Button
-        android:id="@+id/return_to_main"
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="56dp"
-        android:text="@string/return_to_main"
-        app:layout_constraintStart_toEndOf="@+id/add"
-        app:layout_constraintTop_toBottomOf="@+id/print" />
+        android:layout_marginStart="41dp"
+        android:text="@string/search"
+        app:layout_constraintBaseline_toBaselineOf="@+id/return_to_main_search"
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/return_to_main_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="73dp"
+        android:text="@string/return_to_main"
+        app:layout_constraintStart_toEndOf="@+id/search_button"
+        app:layout_constraintTop_toBottomOf="@+id/sum" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,10 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     public static final int GET_APPOINTMENT_FROM_ACTIVITY = 42;
+    public static final String APPOINTMENTBOOK = "Appointment Book";
     private ArrayAdapter<Appointment> appts;
+    private ArrayAdapter<AppointmentBook> bookArrayAdapter;
+    private ArrayAdapter<Map<String, AppointmentBook>> allBooks;
+    private final Map<String, AppointmentBook> books = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
 ////            }
 //        });
 
+        Button goToSearch = findViewById(R.id.go_to_search);
+        goToSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, search.class);
+                startActivity(intent);
+            }
+        });
+
         Button goToReadMe = findViewById(R.id.go_to_read);
         goToReadMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.appts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-
+        this.bookArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        this.allBooks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 //        try {
 //            loadApptsFromFile();
 //        } catch (IOException | ParserException e) {
@@ -78,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         ListView listOfAppts = findViewById(R.id.appts);
-        listOfAppts.setAdapter(this.appts);
+        listOfAppts.setAdapter(this.allBooks);
     }
 
     @Override
@@ -86,22 +103,32 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK && requestCode == GET_APPOINTMENT_FROM_ACTIVITY && data != null){
-            Appointment appointment = (Appointment) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENT);
-            Toast.makeText(this, "New appointment created: " + appointment, Toast.LENGTH_LONG).show();
-            this.appts.add(appointment);
+  //          Appointment appointment = (Appointment) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENT); //passed by MakeNewAppointmentActivity
+  //          AppointmentBook book = (AppointmentBook) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENTBOOK); //passed by MakeNewAppointmentActivity
+            HashMap<String, AppointmentBook> books = (HashMap<String, AppointmentBook>) data.getSerializableExtra(MakeNewAppointmentActivity.ALLBOOK);
+//            Toast.makeText(this, "New appointment created: " + appointment.owner, Toast.LENGTH_LONG).show();
+//            this.appts.add(appointment);
+//            this.bookArrayAdapter.add(book);
+//            AppointmentBook book = this.books.get(appointment.owner);
+//            if (book == null) {
+//                book = createAppointmentBook(appointment.owner);
+//            }
+//            book.addAppointment(appointment);
+//            this.books.put(appointment.owner, book);
+            this.allBooks.add(books);
 
-            try {
-                loadApptsFromFile();
-            } catch (IOException | ParserException e) {
-                toast("While reading file: " + e.getMessage());
-            }
-
-            try {
-                writeApptsToFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                writeApptsToFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
+    }
+
+    public AppointmentBook createAppointmentBook(String owner) {
+        AppointmentBook book = new AppointmentBook(owner);
+        this.books.put(owner, book);
+        return book;
     }
 
     private void toast(String message) {
@@ -178,24 +205,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void writeApptsToFile() throws IOException {
-        File apptsFile = getApptsFile();
-
-        try (
-            PrintWriter pw = new PrintWriter(new FileWriter(apptsFile))
-        ){
-            if(this.appts.getCount() == 0){
-                pw.println("Appointment is empty.");
-            }else {
-                pw.println(this.appts.getCount());
-                for (int i = 0; i < this.appts.getCount(); i++) {
-                    Appointment a = this.appts.getItem(i);
-                    pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
-                }
-            }
-            pw.flush();
-        }
-    }
+//    private void writeApptsToFile() throws IOException {
+//        File apptsFile = getApptsFile();
+//
+//        try (
+//            PrintWriter pw = new PrintWriter(new FileWriter(apptsFile))
+//        ){
+//                ArrayList<Appointment> appointments = (ArrayList<Appointment>) book.getAppointments();
+////                for (int i = 0; i < this.bookArrayAdapter.getCount(); i++) {
+////                    Appointment a = this.bookArrayAdapter.getItem(i);
+////                    pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
+////                }
+//            pw.flush();
+//        }
+//    }
 
     @NonNull
     private File getApptsFile() {

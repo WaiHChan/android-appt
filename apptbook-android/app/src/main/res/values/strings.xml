@@ -20,4 +20,5 @@
     <string name="read_me">READ ME</string>
     <string name="title_activity_readme">readme</string>
     <string name="help">Help</string>
+    <string name="search">Search</string>
 </resources>

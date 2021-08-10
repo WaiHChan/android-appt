@@ -1,36 +1,28 @@
 package edu.pdx.cs410J.chanwai;
 
-import static edu.pdx.cs410J.chanwai.MainActivity.GET_APPOINTMENT_FROM_ACTIVITY;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.Editable;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-public class MakeNewAppointmentActivity extends AppCompatActivity {
+public class search extends AppCompatActivity {
 
     static final String YEAR_OUT_OF_BOUNDS = "Year out of bounds";
     static final String MONTH_OUT_OF_BOUNDS = "Month out of bounds" ;
@@ -46,55 +38,36 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     private static final String INVALID_HOUR = "Invalid Hour: ";
     private static final String INVALID_MINS = "Invalid Minutes: ";
 
-    private final HashMap<String, AppointmentBook> books = new HashMap<>();
-   // private Appointment newAppointment;
-    //private AppointmentBook newBook;
-    public static final String APPOINTMENT = "Appointment";
-    public static final String APPOINTMENTBOOK = "Appointment Book";
-    public static final String ALLBOOK = "All The Appointment Books";
+    private Map<String, AppointmentBook> books = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_new_appointment);
+        setContentView(R.layout.activity_search);
 
-        Button addAppt = findViewById(R.id.add);
-        addAppt.setOnClickListener(view -> addOperand());
+        this.books = (Map<String, AppointmentBook>) (HashMap<String, AppointmentBook>) getIntent().getSerializableExtra(MakeNewAppointmentActivity.ALLBOOK);
 
-        Button returnToMain = findViewById(R.id.return_to_main);
-        Button goToSearch = findViewById(R.id.return_to_main);
-        goToSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passDataToSearch();
+        Button returnToMain = findViewById(R.id.return_to_main_search);
+        returnToMain.setOnClickListener(v -> finish());
+
+        Button search = findViewById(R.id.search_button);
+        search.setOnClickListener(view -> {
+            try {
+                searchForAppts();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
-        returnToMain.setOnClickListener(v -> sendDataBackToMain());
     }
 
-    private void passDataToSearch() {
-        Intent intent = new Intent(this, search.class);
-        intent.putExtra(ALLBOOK, (Serializable) this.books);
-        startActivity(intent);
-    }
-    private void sendDataBackToMain() {
-        Intent intent = new Intent();
- //       intent.putExtra(APPOINTMENT, this.newAppointment);
-//        intent.putExtra(APPOINTMENTBOOK, this.newBook);
-        intent.putExtra(ALLBOOK, (Serializable) this.books);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    private void addOperand() {
-        EditText ownerId = findViewById(R.id.owner);
-        EditText descriptionId = findViewById(R.id.description);
-        EditText beginDateId = findViewById(R.id.beginDate);
-        EditText beginTimeId = findViewById(R.id.beginTime);
-        EditText beginAmId = findViewById(R.id.beginAM);
-        EditText endDateId = findViewById(R.id.endDate);
-        EditText endTimeId = findViewById(R.id.endTime);
-        EditText endAmId = findViewById(R.id.endAM);
+    private void searchForAppts() throws IOException {
+        EditText ownerId = findViewById(R.id.ownerForSearch);
+        EditText beginDateId = findViewById(R.id.beginDateForSearch);
+        EditText beginTimeId = findViewById(R.id.beginTimeForSearch);
+        EditText beginAmId = findViewById(R.id.beginAMForSearch);
+        EditText endDateId = findViewById(R.id.endDateForSearch);
+        EditText endTimeId = findViewById(R.id.endTimeForSearch);
+        EditText endAmId = findViewById(R.id.endAMForSearch);
         Date begin_date = null;
         Date end_date = null;
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
@@ -112,23 +85,6 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Owner name: " + owner;
-            displayErrorMessage(message);
-            return;
-        }
-
-        String description = descriptionId.getText().toString();
-        try {
-            String arg = descriptionId.getText().toString();
-            if (arg.contains(" ")){
-                description = "\"" + arg + "\"";
-            }else{
-                description = arg;
-            }
-            if(description.isEmpty()){
-                throw new NullPointerException("Cannot parse Description.");
-            }
-        }catch (NullPointerException e) {
-            String message = "Cannot parse Description: " + description;
             displayErrorMessage(message);
             return;
         }
@@ -220,31 +176,20 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
             return;
         }
 
-        TextView appt = findViewById(R.id.print);
-
         AppointmentBook book = this.books.get(owner);
+
         if (book == null) {
-            book = createAppointmentBook(owner);
+            displayErrorMessage("No appointments found");
+        }else {
+            Toast.makeText(search.this, book.ownerName, Toast.LENGTH_LONG).show();
+//            File apptsFile = getApptsFile();
+//            try (
+//                    PrintWriter pw = new PrintWriter(new FileWriter(apptsFile));
+//            ) {
+//                TextDumper dumper = new TextDumper(pw);
+//                dumper.dumpByDate(book, begin_date, end_date);
+//            }
         }
-
-        Appointment newAppt = new Appointment(owner, description, begin_date, end_date);
-        //this.newAppointment = newAppt;
-        book.addAppointment(newAppt);
-//        this.newBook = new AppointmentBook(newAppt.owner);
-//        this.newBook.addAppointment(newAppt);
-        this.books.put(newAppt.owner,book);
-        appt.setText(newAppt.toString()); // -print option
-
-    }
-
-    public AppointmentBook createAppointmentBook(String owner) {
-        AppointmentBook book = new AppointmentBook(owner);
-        this.books.put(owner, book);
-        return book;
-    }
-
-    private void displayErrorMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @NonNull
@@ -347,5 +292,9 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
             displayErrorMessage(INVALID_TIME + time);
             return null;
         }
+    }
+
+    private void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

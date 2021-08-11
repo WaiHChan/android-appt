@@ -2,8 +2,6 @@ package edu.pdx.cs410J.chanwai;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,44 +18,45 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.pdx.cs410J.ParserException;
 
-public class displayAll extends AppCompatActivity {
+public class displayAllResult extends AppCompatActivity {
 
-    private ArrayAdapter<String> fileName;
-    public static final String FILENAME = "Name of The File";
-
+    private ArrayAdapter<Appointment> appt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_all);
+        setContentView(R.layout.activity_display_all_result);
 
-        Button returnToMain = findViewById(R.id.backToMain);
-        returnToMain.setOnClickListener(v -> finish());
+        Button goBack = findViewById(R.id.goBack);
+        goBack.setOnClickListener(v -> finish());
 
-        this.fileName = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        findFiles();
-        ListView listOfAppts = findViewById(R.id.displayAppointment);
-        listOfAppts.setAdapter(this.fileName);
+        Intent intent = getIntent();
+        String ownerFromFile = intent.getStringExtra(displayAll.FILENAME);
 
-        listOfAppts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Object item = adapterView.getAdapter().getItem(i);
-                String message = "Selected Owner " + ": " + item;
-                toast(message);
-                Intent intent = new Intent(displayAll.this, displayAllResult.class);
-                intent.putExtra(FILENAME, item.toString());
-                startActivity(intent);
-            }
-        });
+        AppointmentBook book = null;
+        try {
+            book = loadApptsFromFile(ownerFromFile);
+        } catch (IOException | ParserException e) {
+            toast("While loading from file: " + e.getMessage());
+        }
+        this.appt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        for (Appointment a : book.getAppointments()){
+            this.appt.add(a);
+        }
+
+        ListView listOfAppointment = findViewById(R.id.displayAppointment);
+        listOfAppointment.setAdapter(this.appt);
     }
 
-    private AppointmentBook loadApptsFromFile(String ownerFile) throws IOException, ParserException {
+    private void toast(String message) {
+        Toast.makeText(displayAllResult.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private AppointmentBook loadApptsFromFile(String fileOwner) throws IOException, ParserException {
 
         String owner = null;
         String description = null;
@@ -71,10 +70,9 @@ public class displayAll extends AppCompatActivity {
         Date end_date = null;
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
-        File apptsFile = getApptsFile(ownerFile);
+        File apptsFile = getApptsFile(fileOwner);
         if (!apptsFile.exists()) {
-            AppointmentBook book = new AppointmentBook(ownerFile);
-            return book;
+            return new AppointmentBook(fileOwner);
         }
 
         try (
@@ -121,7 +119,7 @@ public class displayAll extends AppCompatActivity {
                     begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
                     end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
                 }catch (ParseException e){
-                    throw new ParserException("While reading text", e);
+                    toast("While reading from file: " + e.getMessage());
                 }
                 book.addAppointment(new Appointment(owner, description, begin_date, end_date));
                 line = br.readLine();
@@ -134,22 +132,5 @@ public class displayAll extends AppCompatActivity {
     private File getApptsFile(String owner) {
         File contextDirectory = getApplicationContext().getDataDir();
         return new File(contextDirectory, owner + ".txt");
-    }
-
-    private void findFiles(){
-        File contextDirectory = getApplicationContext().getDataDir();
-        if (contextDirectory.exists()) {
-            for (File f : Objects.requireNonNull(contextDirectory.listFiles())) {
-                String name = f.getName();
-                if(name.endsWith(".txt")){
-                    String temp = name.substring(0, name.lastIndexOf('.'));
-                    this.fileName.add(temp);
-                }
-            }
-        }
-    }
-
-    private void toast(String message) {
-        Toast.makeText(displayAll.this, message, Toast.LENGTH_LONG).show();
     }
 }

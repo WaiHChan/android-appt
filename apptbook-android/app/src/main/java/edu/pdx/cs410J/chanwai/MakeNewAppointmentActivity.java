@@ -1,34 +1,30 @@
 package edu.pdx.cs410J.chanwai;
 
-import static edu.pdx.cs410J.chanwai.MainActivity.GET_APPOINTMENT_FROM_ACTIVITY;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.Editable;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import edu.pdx.cs410J.ParserException;
 
 public class MakeNewAppointmentActivity extends AppCompatActivity {
 
@@ -46,7 +42,6 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     private static final String INVALID_HOUR = "Invalid Hour: ";
     private static final String INVALID_MINS = "Invalid Minutes: ";
 
-    private final Map<String, AppointmentBook> books = new HashMap<>();
     private Appointment newAppointment;
     public static final String APPOINTMENT = "Appointment";
     public static final String ALLBOOK = "All The Appointment Books";
@@ -57,23 +52,16 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_make_new_appointment);
 
         Button addAppt = findViewById(R.id.add);
-        addAppt.setOnClickListener(view -> addOperand());
-
-        Button returnToMain = findViewById(R.id.return_to_main);
-        Button goToSearch = findViewById(R.id.return_to_main);
-        goToSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passDataToSearch();
+        addAppt.setOnClickListener(view -> {
+            try {
+                addOperand();
+            } catch (IOException | ParserException e) {
+                e.printStackTrace();
             }
         });
-        returnToMain.setOnClickListener(v -> sendDataBackToMain());
-    }
 
-    private void passDataToSearch() {
-        Intent intent = new Intent(this, search.class);
-        intent.putExtra(ALLBOOK, (Serializable) this.books);
-        startActivity(intent);
+        Button returnToMain = findViewById(R.id.return_to_main);
+        returnToMain.setOnClickListener(v -> sendDataBackToMain());
     }
 
     private void sendDataBackToMain() {
@@ -83,7 +71,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         finish();
     }
 
-    private void addOperand() {
+    private void addOperand() throws IOException, ParserException {
         EditText ownerId = findViewById(R.id.owner);
         EditText descriptionId = findViewById(R.id.description);
         EditText beginDateId = findViewById(R.id.beginDate);
@@ -219,26 +207,110 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
         TextView appt = findViewById(R.id.print);
 
-        AppointmentBook book = this.books.get(owner);
-        if (book == null) {
-            book = createAppointmentBook(owner);
-            Toast.makeText(MakeNewAppointmentActivity.this, "New Book", Toast.LENGTH_LONG).show();
-        }
-
         Appointment newAppt = new Appointment(owner, description, begin_date, end_date);
         this.newAppointment = newAppt;
+
+        AppointmentBook book;
+        if(findApptFromDisk(newAppt.owner)){
+            //Appointment book contains data from previous appointments
+            book = loadApptsFromFile(newAppt.owner);
+        }else {
+            // file not found, create one
+            book = new AppointmentBook(newAppt.owner);
+        }
         book.addAppointment(newAppt);
-        this.books.put(newAppt.owner, book);
         appt.setText(newAppt.toString()); // -print option
 
         try {
             writeApptsToFile(book);
         } catch (IOException e) {
-            e.printStackTrace();
+            toast("While writing to file: " + e.getMessage());
         }
     }
 
-        private void writeApptsToFile(AppointmentBook book) throws IOException {
+    private void toast(String message) {
+        Toast.makeText(MakeNewAppointmentActivity.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private AppointmentBook loadApptsFromFile(String fileOwner) throws IOException, ParserException {
+
+        String owner = null;
+        String description = null;
+        String beginDate = null;
+        String beginTime = null;
+        String beginAmPm = null;
+        String endDate = null;
+        String endTime = null;
+        String endAmPm = null;
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+
+        File apptsFile = getApptsFile(fileOwner);
+        if (!apptsFile.exists()) {
+            AppointmentBook book = new AppointmentBook(fileOwner);
+            return book;
+        }
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(apptsFile))
+        ) {
+            AppointmentBook book = new AppointmentBook();
+            String regex = "\"([^\"]*)\"|(\\S+)";
+            String line = br.readLine();
+            while(line != null) {
+                Matcher m = Pattern.compile(regex).matcher(line);
+                if (m.find()) {
+                    if (m.group(1) != null) {
+                        owner = "\"" + m.group(1) + "\"";
+                    } else {
+                        owner = m.group(2);
+                    }
+                }
+                if (m.find()){
+                    if (m.group(1) != null) {
+                        description = "\"" + m.group(1) + "\"";
+                    } else {
+                        description = m.group(2);
+                    }
+                }
+                if (m.find()){
+                    beginDate = m.group(2);
+                }
+                if (m.find()){
+                    beginTime = m.group(2);
+                }
+                if (m.find()){
+                    beginAmPm = m.group(2);
+                }
+                if (m.find()){
+                    endDate = m.group(2);
+                }
+                if (m.find()){
+                    endTime = m.group(2);
+                }
+                if (m.find()){
+                    endAmPm = m.group(2);
+                }
+                try {
+                    begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+                    end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+                }catch (ParseException e){
+                    throw new ParserException("While reading text", e);
+                }
+                book.addAppointment(new Appointment(owner, description, begin_date, end_date));
+                line = br.readLine();
+            }
+            return book;
+        }
+    }
+
+    private boolean findApptFromDisk(String owner) {
+        File apptsFile = getApptsFile(owner);
+        return apptsFile.exists();
+    }
+
+    private void writeApptsToFile(AppointmentBook book) throws IOException {
         File apptsFile = getApptsFile(book.ownerName);
 
         try (
@@ -249,12 +321,6 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         }
     }
 
-    public AppointmentBook createAppointmentBook(String owner) {
-        AppointmentBook book = new AppointmentBook(owner);
-        this.books.put(owner, book);
-        return book;
-    }
-
     private void displayErrorMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
@@ -262,7 +328,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     @NonNull
     private File getApptsFile(String owner) {
         File contextDirectory = getApplicationContext().getDataDir();
-        return new File(contextDirectory, owner + "'s_appts.txt");
+        return new File(contextDirectory, owner + ".txt");
     }
 
     private String isDateCorrect(String date) {

@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
-    private final Writer writer;
+    private final PrintWriter writer;
 
-    public TextDumper(Writer writer){
+    public TextDumper(PrintWriter writer){
         this.writer = writer;
     }
 
@@ -27,10 +27,12 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
     @Override
     public void dump(AppointmentBook book) throws IOException {
 
-        PrintWriter pw = new PrintWriter(this.writer);
+        //PrintWriter pw = new PrintWriter(this.writer);
+        PrintWriter pw = this.writer;
         for (Appointment a : book.getAppointments()){
             pw.println(a.owner + " " + a.description + " " + a.getBDateString() + " " + a.getEDateString());
         }
+        pw.flush();
     }
 
     /**

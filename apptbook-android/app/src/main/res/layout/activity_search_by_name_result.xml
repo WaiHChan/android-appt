@@ -4,29 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".displayAll"
+    tools:context=".displayAllResult"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp">
 
     <Button
-        android:id="@+id/backToMain"
+        android:id="@+id/goBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/back_to_main" />
+        android:text="@string/go_back" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="@string/all_appointment_books"
+        android:text="@string/searched_appointment"
         android:textSize="32sp"/>
 
     <ListView
-        android:id="@+id/displayAppointment"
+        android:id="@+id/displayAppointmentByName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
-
 </LinearLayout>

@@ -8,23 +8,23 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class searchResults extends AppCompatActivity {
+public class searchByNameResult extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_search_by_name_result);
 
         Button goBack = findViewById(R.id.goBack);
         goBack.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();
-        AppointmentBook searchedBook = (AppointmentBook) intent.getSerializableExtra(search.APPOINTMENTBOOKINRANGE);
+        AppointmentBook searchedBook = (AppointmentBook) intent.getSerializableExtra(searchByName.APPOINTMENTBOOKINNAME);
         ArrayAdapter<Appointment> appt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         for (Appointment a : searchedBook.getAppointments()){
             appt.add(a);
         }
-        ListView listOfAppointment = findViewById(R.id.displayAppointmentInSearch);
+        ListView listOfAppointment = findViewById(R.id.displayAppointmentByName);
         listOfAppointment.setAdapter(appt);
     }
 }

@@ -3,10 +3,8 @@ package edu.pdx.cs410J.chanwai;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,38 +24,63 @@ import java.util.regex.Pattern;
 
 import edu.pdx.cs410J.ParserException;
 
-public class displayAll extends AppCompatActivity {
+public class searchByName extends AppCompatActivity {
 
-    private ArrayAdapter<String> fileName;
-    public static final String FILENAME = "Name of The File";
+    public static final String APPOINTMENTBOOKINNAME = "The searched owner's appointment book";
+    private AppointmentBook searchNameAappointmentBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_all);
+        setContentView(R.layout.activity_search_by_name);
 
-        Button returnToMain = findViewById(R.id.backToMain);
+        Button returnToMain = findViewById(R.id.return_to_main_search_Name);
         returnToMain.setOnClickListener(v -> finish());
 
-        this.fileName = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        findFiles();
-        ListView listOfAppts = findViewById(R.id.displayAppointment);
-        listOfAppts.setAdapter(this.fileName);
-
-        listOfAppts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Button search = findViewById(R.id.searchButtonInName);
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Object item = adapterView.getAdapter().getItem(i);
-                String message = "Selected Owner " + ": " + item;
-                toast(message);
-                Intent intent = new Intent(displayAll.this, displayAllResult.class);
-                intent.putExtra(FILENAME, item.toString());
+            public void onClick(View v) {
+                try {
+                    searchForAppts();
+                } catch (IOException | ParserException e) {
+                    toast("While search appointment: " + e.getMessage());
+                }
+                Intent intent = new Intent(searchByName.this, searchByNameResult.class);
+                intent.putExtra(APPOINTMENTBOOKINNAME, searchNameAappointmentBook);
                 startActivity(intent);
             }
         });
     }
 
-    private AppointmentBook loadApptsFromFile(String ownerFile) throws IOException, ParserException {
+    private void searchForAppts() throws IOException, ParserException {
+        EditText ownerId = findViewById(R.id.searchName);
+
+        String owner = ownerId.getText().toString();
+        try {
+            String arg = ownerId.getText().toString();
+            if (arg.contains(" ")){
+                owner = "\"" + arg + "\"";
+            }else{
+                owner = arg;
+            }
+            if(owner.isEmpty()){
+                throw new NullPointerException("Cannot parse Owner name.");
+            }
+        }catch (NullPointerException e) {
+            String message = "Cannot parse Owner name: " + owner;
+            displayErrorMessage(message);
+            return;
+        }
+
+        if (findFiles(owner)){ // book exists
+            this.searchNameAappointmentBook = loadApptsFromFile(owner);
+        }else {
+            displayErrorMessage("File Doesn't Exists");
+        }
+    }
+
+    private AppointmentBook loadApptsFromFile(String ownerFile) throws IOException{
 
         String owner = null;
         String description = null;
@@ -73,8 +96,7 @@ public class displayAll extends AppCompatActivity {
 
         File apptsFile = getApptsFile(ownerFile);
         if (!apptsFile.exists()) {
-            AppointmentBook book = new AppointmentBook(ownerFile);
-            return book;
+            return new AppointmentBook(ownerFile);
         }
 
         try (
@@ -121,7 +143,7 @@ public class displayAll extends AppCompatActivity {
                     begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
                     end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
                 }catch (ParseException e){
-                    throw new ParserException("While reading text", e);
+                    displayErrorMessage("Cannot Parse the Date");
                 }
                 book.addAppointment(new Appointment(owner, description, begin_date, end_date));
                 line = br.readLine();
@@ -136,20 +158,27 @@ public class displayAll extends AppCompatActivity {
         return new File(contextDirectory, owner + ".txt");
     }
 
-    private void findFiles(){
+    private boolean findFiles(String ownerRequest){
         File contextDirectory = getApplicationContext().getDataDir();
         if (contextDirectory.exists()) {
             for (File f : Objects.requireNonNull(contextDirectory.listFiles())) {
                 String name = f.getName();
                 if(name.endsWith(".txt")){
                     String temp = name.substring(0, name.lastIndexOf('.'));
-                    this.fileName.add(temp);
+                    if (ownerRequest.equals(temp)){
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
 
     private void toast(String message) {
-        Toast.makeText(displayAll.this, message, Toast.LENGTH_LONG).show();
+        Toast.makeText(searchByName.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void displayErrorMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

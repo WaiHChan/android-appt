@@ -1,8 +1,5 @@
 package edu.pdx.cs410J.chanwai;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,18 +7,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import edu.pdx.cs410J.ParserException;
 
 public class search extends AppCompatActivity {
 
@@ -39,29 +41,37 @@ public class search extends AppCompatActivity {
     private static final String INVALID_HOUR = "Invalid Hour: ";
     private static final String INVALID_MINS = "Invalid Minutes: ";
 
-    private Map<String, AppointmentBook> books = new HashMap<>();
-
+    private AppointmentBook appointmentBookInRange;
+    public static final String APPOINTMENTBOOKINRANGE = "The appointment book in search range";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        this.books = (Map<String, AppointmentBook>) (HashMap<String, AppointmentBook>) getIntent().getSerializableExtra(MakeNewAppointmentActivity.ALLBOOK);
-
         Button returnToMain = findViewById(R.id.return_to_main_search);
         returnToMain.setOnClickListener(v -> finish());
 
         Button search = findViewById(R.id.search_button);
-        search.setOnClickListener(view -> {
-            try {
-                searchForAppts();
-            } catch (IOException e) {
-                e.printStackTrace();
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    searchForAppts();
+                } catch (IOException | ParserException e) {
+                    toast("While search appointment: " + e.getMessage());
+                }
+                Intent intent = new Intent(search.this, searchResults.class);
+                intent.putExtra(APPOINTMENTBOOKINRANGE, appointmentBookInRange);
+                startActivity(intent);
             }
         });
     }
 
-    private void searchForAppts() throws IOException {
+    private void toast(String message) {
+        Toast.makeText(search.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    private void searchForAppts() throws IOException, ParserException {
         EditText ownerId = findViewById(R.id.ownerForSearch);
         EditText beginDateId = findViewById(R.id.beginDateForSearch);
         EditText beginTimeId = findViewById(R.id.beginTimeForSearch);
@@ -179,32 +189,112 @@ public class search extends AppCompatActivity {
 
         String beginDateString = beginDate + " " + beginTime + " " + beginAM;
         String endDateString = endDate + " " + endTime + " " + endAM;
-//        AppointmentBook book = getAppointmentsBasedOnDate(owner, beginDateString, endDateString);
 
-//        if (book == null) {
-//            displayErrorMessage("No appointments found");
-//        }else {
-//            Toast.makeText(search.this, book.ownerName, Toast.LENGTH_LONG).show();
-//            File apptsFile = getApptsFile();
-//            try (
-//                    PrintWriter pw = new PrintWriter(new FileWriter(apptsFile));
-//            ) {
-//                TextDumper dumper = new TextDumper(pw);
-//                dumper.dumpByDate(book, begin_date, end_date);
-//            }
- //       }
+        if (findFiles(owner)){ // book exists
+            this.appointmentBookInRange = loadApptsFromFile(owner, beginDateString, endDateString);
+        }else {
+            displayErrorMessage("File Doesn't Exists");
+        }
     }
 
-//    private AppointmentBook getAppointmentsBasedOnDate(String owner, String beginDateString, String endDateString) {
-//
-//        TextParser parser = new TextParser(new StringReader(text));
-//        return parser.parse();
-//    }
+    private AppointmentBook loadApptsFromFile(String ownerFile, String beginDateString, String endDateString) throws IOException, ParserException {
+
+        String owner = null;
+        String description = null;
+        String beginDate = null;
+        String beginTime = null;
+        String beginAmPm = null;
+        String endDate = null;
+        String endTime = null;
+        String endAmPm = null;
+        Date begin_date = null;
+        Date end_date = null;
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+
+        File apptsFile = getApptsFile(ownerFile);
+        if (!apptsFile.exists()) {
+            AppointmentBook book = new AppointmentBook(ownerFile);
+            return book;
+        }
+
+        try (
+                BufferedReader br = new BufferedReader(new FileReader(apptsFile))
+        ) {
+            AppointmentBook book = new AppointmentBook();
+            String regex = "\"([^\"]*)\"|(\\S+)";
+            String line = br.readLine();
+            while(line != null) {
+                Matcher m = Pattern.compile(regex).matcher(line);
+                if (m.find()) {
+                    if (m.group(1) != null) {
+                        owner = "\"" + m.group(1) + "\"";
+                    } else {
+                        owner = m.group(2);
+                    }
+                }
+                if (m.find()){
+                    if (m.group(1) != null) {
+                        description = "\"" + m.group(1) + "\"";
+                    } else {
+                        description = m.group(2);
+                    }
+                }
+                if (m.find()){
+                    beginDate = m.group(2);
+                }
+                if (m.find()){
+                    beginTime = m.group(2);
+                }
+                if (m.find()){
+                    beginAmPm = m.group(2);
+                }
+                if (m.find()){
+                    endDate = m.group(2);
+                }
+                if (m.find()){
+                    endTime = m.group(2);
+                }
+                if (m.find()){
+                    endAmPm = m.group(2);
+                }
+                try {
+                    Date requiredBegin_date = df.parse(beginDateString);
+                    Date requiredEnd_date = df.parse(endDateString);
+                    begin_date = df.parse(beginDate + " " + beginTime + " " + beginAmPm);
+                    end_date = df.parse(endDate + " " + endTime + " " + endAmPm);
+                    assert begin_date != null;
+                    if ((begin_date.after(requiredBegin_date) || begin_date.equals(requiredBegin_date)) && (Objects.requireNonNull(end_date).before(requiredEnd_date)|| end_date.equals(requiredEnd_date))){
+                        book.addAppointment(new Appointment(owner, description, begin_date, end_date));
+                    }
+                }catch (ParseException e){
+                    displayErrorMessage("Cannot Parse the Date");
+                }
+                line = br.readLine();
+            }
+            return book;
+        }
+    }
+
+    private boolean findFiles(String ownerRequest){
+        File contextDirectory = getApplicationContext().getDataDir();
+        if (contextDirectory.exists()) {
+            for (File f : Objects.requireNonNull(contextDirectory.listFiles())) {
+                String name = f.getName();
+                if(name.endsWith(".txt")){
+                    String temp = name.substring(0, name.lastIndexOf('.'));
+                    if (ownerRequest.equals(temp)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     @NonNull
-    private File getApptsFile() {
+    private File getApptsFile(String owner) {
         File contextDirectory = getApplicationContext().getDataDir();
-        return new File(contextDirectory, "appts.txt");
+        return new File(contextDirectory, owner + ".txt");
     }
 
     private String isDateCorrect(String date) {

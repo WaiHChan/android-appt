@@ -22,4 +22,11 @@
     <string name="help">Help</string>
     <string name="search">Search</string>
     <string name="display_all">Display All</string>
+    <string name="all_appointment_books">All Appointment Books</string>
+    <string name="back_to_main">Back To Main</string>
+    <string name="all_appointment">All Appointment</string>
+    <string name="go_back">Go Back</string>
+    <string name="searched_appointment">Searched Appointment</string>
+    <string name="search_by_name_and_time">Search By Name and Time</string>
+    <string name="search_by_name">Search By Name</string>
 </resources>

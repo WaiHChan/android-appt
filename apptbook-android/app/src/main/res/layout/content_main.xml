@@ -10,45 +10,49 @@
         android:id="@+id/go_to_read"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="1dp"
+        android:layout_marginTop="60dp"
         android:text="@string/help"
-        app:layout_constraintEnd_toEndOf="@+id/go_to_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/go_to_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
-        android:text="@string/search"
-        app:layout_constraintEnd_toEndOf="@+id/go_to_display"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_read" />
+        android:layout_marginTop="52dp"
+        android:text="@string/search_by_name_and_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_by_name" />
 
     <Button
         android:id="@+id/go_to_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="160dp"
         android:text="@string/display_all"
-        app:layout_constraintStart_toStartOf="@+id/make_appointment"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_search" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/make_appointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="52dp"
         android:text="@string/make_appointment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_display" />
+        app:layout_constraintTop_toBottomOf="@+id/go_to_search" />
 
-    <ListView
-        android:id="@+id/appts"
+    <Button
+        android:id="@+id/search_by_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="205dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="52dp"
+        android:text="@string/search_by_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_display" />
 </androidx.constraintlayout.widget.ConstraintLayout>

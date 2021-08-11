@@ -48,9 +48,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
     private final Map<String, AppointmentBook> books = new HashMap<>();
     private Appointment newAppointment;
-    //private AppointmentBook newBook;
     public static final String APPOINTMENT = "Appointment";
-    public static final String APPOINTMENTBOOK = "Appointment Book";
     public static final String ALLBOOK = "All The Appointment Books";
 
     @Override
@@ -80,9 +78,6 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
     private void sendDataBackToMain() {
         Intent intent = new Intent();
- //       intent.putExtra(APPOINTMENT, this.newAppointment);
-//        intent.putExtra(APPOINTMENTBOOK, this.newBook);
-//        intent.putExtra(ALLBOOK, (Serializable) this.books);
         intent.putExtra(APPOINTMENT, newAppointment);
         setResult(RESULT_OK, intent);
         finish();
@@ -227,11 +222,13 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         AppointmentBook book = this.books.get(owner);
         if (book == null) {
             book = createAppointmentBook(owner);
+            Toast.makeText(MakeNewAppointmentActivity.this, "New Book", Toast.LENGTH_LONG).show();
         }
 
         Appointment newAppt = new Appointment(owner, description, begin_date, end_date);
         this.newAppointment = newAppt;
         book.addAppointment(newAppt);
+        this.books.put(newAppt.owner, book);
         appt.setText(newAppt.toString()); // -print option
 
         try {

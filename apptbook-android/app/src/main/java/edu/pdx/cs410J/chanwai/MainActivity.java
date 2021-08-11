@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private File getApptsFile() {
         File contextDirectory = getApplicationContext().getDataDir();
-        return new File(contextDirectory, "appts.txt");
+        return new File(contextDirectory, "jim's_appts.txt");
     }
 
     @Override

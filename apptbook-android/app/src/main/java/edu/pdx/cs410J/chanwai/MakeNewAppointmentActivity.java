@@ -46,8 +46,8 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     private static final String INVALID_HOUR = "Invalid Hour: ";
     private static final String INVALID_MINS = "Invalid Minutes: ";
 
-    private final HashMap<String, AppointmentBook> books = new HashMap<>();
-   // private Appointment newAppointment;
+    private final Map<String, AppointmentBook> books = new HashMap<>();
+    private Appointment newAppointment;
     //private AppointmentBook newBook;
     public static final String APPOINTMENT = "Appointment";
     public static final String APPOINTMENTBOOK = "Appointment Book";
@@ -77,11 +77,13 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         intent.putExtra(ALLBOOK, (Serializable) this.books);
         startActivity(intent);
     }
+
     private void sendDataBackToMain() {
         Intent intent = new Intent();
  //       intent.putExtra(APPOINTMENT, this.newAppointment);
 //        intent.putExtra(APPOINTMENTBOOK, this.newBook);
-        intent.putExtra(ALLBOOK, (Serializable) this.books);
+//        intent.putExtra(ALLBOOK, (Serializable) this.books);
+        intent.putExtra(APPOINTMENT, newAppointment);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -228,13 +230,26 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         }
 
         Appointment newAppt = new Appointment(owner, description, begin_date, end_date);
-        //this.newAppointment = newAppt;
+        this.newAppointment = newAppt;
         book.addAppointment(newAppt);
-//        this.newBook = new AppointmentBook(newAppt.owner);
-//        this.newBook.addAppointment(newAppt);
-        this.books.put(newAppt.owner,book);
         appt.setText(newAppt.toString()); // -print option
 
+        try {
+            writeApptsToFile(book);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        private void writeApptsToFile(AppointmentBook book) throws IOException {
+        File apptsFile = getApptsFile(book.ownerName);
+
+        try (
+            PrintWriter pw = new PrintWriter(new FileWriter(apptsFile))
+        ){
+            TextDumper dumper = new TextDumper(pw);
+            dumper.dump(book);
+        }
     }
 
     public AppointmentBook createAppointmentBook(String owner) {
@@ -248,9 +263,9 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private File getApptsFile() {
+    private File getApptsFile(String owner) {
         File contextDirectory = getApplicationContext().getDataDir();
-        return new File(contextDirectory, "appts.txt");
+        return new File(contextDirectory, owner + "'s_appts.txt");
     }
 
     private String isDateCorrect(String date) {

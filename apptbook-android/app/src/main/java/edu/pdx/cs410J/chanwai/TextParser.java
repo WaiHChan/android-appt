@@ -16,19 +16,10 @@ import java.util.regex.Pattern;
 public class TextParser implements AppointmentBookParser {
     private final Reader reader;
 
-    /**
-     * Create a Reader
-     * @param reader Create a bufferedReader for reading file
-     */
     public TextParser(Reader reader){
         this.reader = reader;
     }
 
-    /**
-     * Read a file and return an appointment book
-     * @return it returns an appointment book
-     * @throws ParserException if it can't read the data, raise exception
-     */
     @Override
     public AppointmentBook parse() throws ParserException {
         BufferedReader br = new BufferedReader(this.reader);

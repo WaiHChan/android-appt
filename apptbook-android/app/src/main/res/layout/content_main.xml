@@ -10,7 +10,7 @@
         android:id="@+id/go_to_read"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="1dp"
         android:text="@string/help"
         app:layout_constraintEnd_toEndOf="@+id/go_to_search"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,28 +19,36 @@
         android:id="@+id/go_to_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="18dp"
         android:text="@string/search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/go_to_display"
         app:layout_constraintTop_toBottomOf="@+id/go_to_read" />
+
+    <Button
+        android:id="@+id/go_to_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/display_all"
+        app:layout_constraintStart_toStartOf="@+id/make_appointment"
+        app:layout_constraintTop_toBottomOf="@+id/go_to_search" />
 
     <Button
         android:id="@+id/make_appointment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:text="@string/make_appointment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go_to_search" />
+        app:layout_constraintTop_toBottomOf="@+id/go_to_display" />
 
     <ListView
         android:id="@+id/appts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="290dp"
-        android:layout_marginBottom="289dp"
+        android:layout_marginBottom="205dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_appointment" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

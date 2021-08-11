@@ -70,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button goToDisplay = findViewById(R.id.go_to_display);
+        goToDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, displayAll.class);
+                startActivity(intent);
+            }
+        });
         Button goToReadMe = findViewById(R.id.go_to_read);
         goToReadMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
         this.appts = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         this.bookArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         this.allBooks = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-//        try {
-//            loadApptsFromFile();
-//        } catch (IOException | ParserException e) {
-//            toast("While reading file: " + e.getMessage());
-//        }
+        try {
+            loadApptsFromFile();
+        } catch (IOException | ParserException e) {
+            toast("While reading file: " + e.getMessage());
+        }
 
         ListView listOfAppts = findViewById(R.id.appts);
-        listOfAppts.setAdapter(this.allBooks);
+        listOfAppts.setAdapter(this.appts);
     }
 
     @Override
@@ -106,22 +114,9 @@ public class MainActivity extends AppCompatActivity {
   //          Appointment appointment = (Appointment) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENT); //passed by MakeNewAppointmentActivity
   //          AppointmentBook book = (AppointmentBook) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENTBOOK); //passed by MakeNewAppointmentActivity
             HashMap<String, AppointmentBook> books = (HashMap<String, AppointmentBook>) data.getSerializableExtra(MakeNewAppointmentActivity.ALLBOOK);
-//            Toast.makeText(this, "New appointment created: " + appointment.owner, Toast.LENGTH_LONG).show();
-//            this.appts.add(appointment);
-//            this.bookArrayAdapter.add(book);
-//            AppointmentBook book = this.books.get(appointment.owner);
-//            if (book == null) {
-//                book = createAppointmentBook(appointment.owner);
-//            }
-//            book.addAppointment(appointment);
-//            this.books.put(appointment.owner, book);
             this.allBooks.add(books);
-
-//            try {
-//                writeApptsToFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+//            Appointment appointment = (Appointment) data.getSerializableExtra(MakeNewAppointmentActivity.APPOINTMENT);
+//            toast("Got appointment: " + appointment);
         }
     }
 
@@ -200,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                     throw new ParserException("While reading text", e);
                 }
                 this.appts.add(new Appointment(owner, description, begin_date, end_date));
+
                 line = br.readLine();
             }
         }

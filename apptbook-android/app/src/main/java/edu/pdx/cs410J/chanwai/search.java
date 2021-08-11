@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -176,12 +177,14 @@ public class search extends AppCompatActivity {
             return;
         }
 
-        AppointmentBook book = this.books.get(owner);
+        String beginDateString = beginDate + " " + beginTime + " " + beginAM;
+        String endDateString = endDate + " " + endTime + " " + endAM;
+//        AppointmentBook book = getAppointmentsBasedOnDate(owner, beginDateString, endDateString);
 
-        if (book == null) {
-            displayErrorMessage("No appointments found");
-        }else {
-            Toast.makeText(search.this, book.ownerName, Toast.LENGTH_LONG).show();
+//        if (book == null) {
+//            displayErrorMessage("No appointments found");
+//        }else {
+//            Toast.makeText(search.this, book.ownerName, Toast.LENGTH_LONG).show();
 //            File apptsFile = getApptsFile();
 //            try (
 //                    PrintWriter pw = new PrintWriter(new FileWriter(apptsFile));
@@ -189,8 +192,14 @@ public class search extends AppCompatActivity {
 //                TextDumper dumper = new TextDumper(pw);
 //                dumper.dumpByDate(book, begin_date, end_date);
 //            }
-        }
+ //       }
     }
+
+//    private AppointmentBook getAppointmentsBasedOnDate(String owner, String beginDateString, String endDateString) {
+//
+//        TextParser parser = new TextParser(new StringReader(text));
+//        return parser.parse();
+//    }
 
     @NonNull
     private File getApptsFile() {

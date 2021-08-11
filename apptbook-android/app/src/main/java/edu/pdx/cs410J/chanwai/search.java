@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.chanwai;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -52,17 +52,15 @@ public class search extends AppCompatActivity {
         returnToMain.setOnClickListener(v -> finish());
 
         Button search = findViewById(R.id.search_button);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    searchForAppts();
-                } catch (IOException | ParserException e) {
-                    toast("While search appointment: " + e.getMessage());
+        search.setOnClickListener(v -> {
+            try {
+                if(searchForAppts()){
+                    Intent intent = new Intent(search.this, searchResults.class);
+                    intent.putExtra(APPOINTMENTBOOKINRANGE, appointmentBookInRange);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(search.this, searchResults.class);
-                intent.putExtra(APPOINTMENTBOOKINRANGE, appointmentBookInRange);
-                startActivity(intent);
+            } catch (IOException | ParserException e) {
+                toast("While search appointment: " + e.getMessage());
             }
         });
     }
@@ -71,7 +69,7 @@ public class search extends AppCompatActivity {
         Toast.makeText(search.this, message, Toast.LENGTH_LONG).show();
     }
 
-    private void searchForAppts() throws IOException, ParserException {
+    private boolean searchForAppts() throws IOException, ParserException {
         EditText ownerId = findViewById(R.id.ownerForSearch);
         EditText beginDateId = findViewById(R.id.beginDateForSearch);
         EditText beginTimeId = findViewById(R.id.beginTimeForSearch);
@@ -79,9 +77,9 @@ public class search extends AppCompatActivity {
         EditText endDateId = findViewById(R.id.endDateForSearch);
         EditText endTimeId = findViewById(R.id.endTimeForSearch);
         EditText endAmId = findViewById(R.id.endAMForSearch);
-        Date begin_date = null;
-        Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date;
+        Date end_date;
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         String owner = ownerId.getText().toString();
         try {
@@ -92,40 +90,41 @@ public class search extends AppCompatActivity {
                 owner = arg;
             }
             if(owner.isEmpty()){
-                throw new NullPointerException("Cannot parse Owner name.");
+                displayErrorMessage("Cannot parse Owner name.");
+                return false;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Owner name: " + owner;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String beginDate = beginDateId.getText().toString();
         try {
             String arg = isDateCorrect(beginDateId.getText().toString());
             if (arg == null){
-                return;
+                return false;
             }else{
                 beginDate = arg;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Begin Date: " + beginDate;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String beginTime = beginTimeId.getText().toString();
         try {
             String arg = isTimeCorrect(beginTimeId.getText().toString());
             if (arg == null){
-                return;
+                return false;
             }else{
                 beginTime = arg;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Begin Time: " + beginTime;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String beginAM = beginAmId.getText().toString();
@@ -134,35 +133,35 @@ public class search extends AppCompatActivity {
         }catch (NullPointerException e) {
             String message = "Cannot parse Begin AM/PM: " + beginAM;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String endDate = endDateId.getText().toString();
         try {
             String arg = isDateCorrect(endDateId.getText().toString());
             if (arg == null){
-                return;
+                return false;
             }else{
                 endDate = arg;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse End Date: " + endDate;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String endTime = endTimeId.getText().toString();
         try {
             String arg = isTimeCorrect(endTimeId.getText().toString());
             if (arg == null){
-                return;
+                return false;
             }else{
                 endTime = arg;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse End Time: " + endTime;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         String endAM = endAmId.getText().toString();
@@ -171,7 +170,7 @@ public class search extends AppCompatActivity {
         }catch (NullPointerException e) {
             String message = "Cannot parse End AM/PM: " + endAM;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         try {
@@ -180,11 +179,11 @@ public class search extends AppCompatActivity {
             assert begin_date != null;
             if (begin_date.compareTo(end_date) > 0){
                 displayErrorMessage(BEGIN_DATE_AFTER_END_DATE);
-                return;
+                return false;
             }
         }catch (ParseException e){
             displayErrorMessage("Can not parse the date.");
-            return;
+            return false;
         }
 
         String beginDateString = beginDate + " " + beginTime + " " + beginAM;
@@ -194,10 +193,12 @@ public class search extends AppCompatActivity {
             this.appointmentBookInRange = loadApptsFromFile(owner, beginDateString, endDateString);
         }else {
             displayErrorMessage("File Doesn't Exists");
+            return false;
         }
+        return true;
     }
 
-    private AppointmentBook loadApptsFromFile(String ownerFile, String beginDateString, String endDateString) throws IOException, ParserException {
+    private AppointmentBook loadApptsFromFile(String ownerFile, String beginDateString, String endDateString) throws IOException {
 
         String owner = null;
         String description = null;
@@ -207,14 +208,13 @@ public class search extends AppCompatActivity {
         String endDate = null;
         String endTime = null;
         String endAmPm = null;
-        Date begin_date = null;
-        Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date;
+        Date end_date;
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         File apptsFile = getApptsFile(ownerFile);
         if (!apptsFile.exists()) {
-            AppointmentBook book = new AppointmentBook(ownerFile);
-            return book;
+            return new AppointmentBook(ownerFile);
         }
 
         try (

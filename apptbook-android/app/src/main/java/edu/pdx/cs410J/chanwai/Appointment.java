@@ -1,10 +1,12 @@
 package edu.pdx.cs410J.chanwai;
 
-import edu.pdx.cs410J.AbstractAppointment;
+import android.annotation.SuppressLint;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import edu.pdx.cs410J.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment implements Comparable<Appointment> {
 
@@ -12,6 +14,7 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
     protected String description;
     protected Date beginDate;
     protected Date endDate;
+    @SuppressLint("SimpleDateFormat")
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
     public Appointment(String owner, String description, Date beginDate, Date endDate){
@@ -29,6 +32,10 @@ public class Appointment extends AbstractAppointment implements Comparable<Appoi
     @Override
     public String getEndTimeString() {
         return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(endDate);
+    }
+
+    public String getOwner(){
+        return this.owner;
     }
 
     public String getBDateString() {

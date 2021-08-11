@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.chanwai;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -44,7 +45,6 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
 
     private Appointment newAppointment;
     public static final String APPOINTMENT = "Appointment";
-    public static final String ALLBOOK = "All The Appointment Books";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
             try {
                 addOperand();
             } catch (IOException | ParserException e) {
-                e.printStackTrace();
+                displayErrorMessage("While creating appointment: " + e.getMessage());
             }
         });
 
@@ -80,9 +80,9 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         EditText endDateId = findViewById(R.id.endDate);
         EditText endTimeId = findViewById(R.id.endTime);
         EditText endAmId = findViewById(R.id.endAM);
-        Date begin_date = null;
-        Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date;
+        Date end_date;
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         String owner = ownerId.getText().toString();
         try {
@@ -110,7 +110,8 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
                 description = arg;
             }
             if(description.isEmpty()){
-                throw new NullPointerException("Cannot parse Description.");
+                displayErrorMessage("Cannot parse Description.");
+                return;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Description: " + description;
@@ -242,14 +243,13 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
         String endDate = null;
         String endTime = null;
         String endAmPm = null;
-        Date begin_date = null;
-        Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        Date begin_date;
+        Date end_date;
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         File apptsFile = getApptsFile(fileOwner);
         if (!apptsFile.exists()) {
-            AppointmentBook book = new AppointmentBook(fileOwner);
-            return book;
+            return new AppointmentBook(fileOwner);
         }
 
         try (

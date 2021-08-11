@@ -1,8 +1,8 @@
 package edu.pdx.cs410J.chanwai;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -38,22 +38,20 @@ public class searchByName extends AppCompatActivity {
         returnToMain.setOnClickListener(v -> finish());
 
         Button search = findViewById(R.id.searchButtonInName);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    searchForAppts();
-                } catch (IOException | ParserException e) {
-                    toast("While search appointment: " + e.getMessage());
+        search.setOnClickListener(v -> {
+            try {
+                if(searchForAppts()){
+                    Intent intent = new Intent(searchByName.this, searchByNameResult.class);
+                    intent.putExtra(APPOINTMENTBOOKINNAME, searchNameAappointmentBook);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(searchByName.this, searchByNameResult.class);
-                intent.putExtra(APPOINTMENTBOOKINNAME, searchNameAappointmentBook);
-                startActivity(intent);
+            } catch (IOException | ParserException e) {
+                displayErrorMessage("While search appointment: " + e.getMessage());
             }
         });
     }
 
-    private void searchForAppts() throws IOException, ParserException {
+    private boolean searchForAppts() throws IOException, ParserException {
         EditText ownerId = findViewById(R.id.searchName);
 
         String owner = ownerId.getText().toString();
@@ -65,19 +63,22 @@ public class searchByName extends AppCompatActivity {
                 owner = arg;
             }
             if(owner.isEmpty()){
-                throw new NullPointerException("Cannot parse Owner name.");
+                displayErrorMessage("Cannot parse Owner name.");
+                return false;
             }
         }catch (NullPointerException e) {
             String message = "Cannot parse Owner name: " + owner;
             displayErrorMessage(message);
-            return;
+            return false;
         }
 
         if (findFiles(owner)){ // book exists
             this.searchNameAappointmentBook = loadApptsFromFile(owner);
         }else {
             displayErrorMessage("File Doesn't Exists");
+            return false;
         }
+        return true;
     }
 
     private AppointmentBook loadApptsFromFile(String ownerFile) throws IOException{
@@ -92,7 +93,7 @@ public class searchByName extends AppCompatActivity {
         String endAmPm = null;
         Date begin_date = null;
         Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         File apptsFile = getApptsFile(ownerFile);
         if (!apptsFile.exists()) {
@@ -172,10 +173,6 @@ public class searchByName extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    private void toast(String message) {
-        Toast.makeText(searchByName.this, message, Toast.LENGTH_LONG).show();
     }
 
     private void displayErrorMessage(String message) {

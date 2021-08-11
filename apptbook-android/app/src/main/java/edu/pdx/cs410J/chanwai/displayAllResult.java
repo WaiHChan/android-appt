@@ -1,8 +1,9 @@
 package edu.pdx.cs410J.chanwai;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,11 +27,13 @@ import edu.pdx.cs410J.ParserException;
 
 public class displayAllResult extends AppCompatActivity {
 
-    private ArrayAdapter<Appointment> appt;
+    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_all_result);
+        Log.d(TAG, "onCreate: Started.");
+        ListView mListView = findViewById(R.id.displayAppointment);
 
         Button goBack = findViewById(R.id.goBack);
         goBack.setOnClickListener(v -> finish());
@@ -43,13 +47,12 @@ public class displayAllResult extends AppCompatActivity {
         } catch (IOException | ParserException e) {
             toast("While loading from file: " + e.getMessage());
         }
-        this.appt = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        for (Appointment a : book.getAppointments()){
-            this.appt.add(a);
-        }
 
-        ListView listOfAppointment = findViewById(R.id.displayAppointment);
-        listOfAppointment.setAdapter(this.appt);
+        assert book != null;
+        ArrayList<Appointment> ApptList = new ArrayList<>(book.getAppointments());
+
+        AppointmentListAdapter adapter = new AppointmentListAdapter(this, R.layout.adapter_view_layout, ApptList);
+        mListView.setAdapter(adapter);
     }
 
     private void toast(String message) {
@@ -68,7 +71,7 @@ public class displayAllResult extends AppCompatActivity {
         String endAmPm = null;
         Date begin_date = null;
         Date end_date = null;
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
 
         File apptsFile = getApptsFile(fileOwner);
         if (!apptsFile.exists()) {

@@ -46,6 +46,7 @@ public class MakeNewAppointmentActivity extends AppCompatActivity {
     private Appointment newAppointment;
     public static final String APPOINTMENT = "Appointment";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
